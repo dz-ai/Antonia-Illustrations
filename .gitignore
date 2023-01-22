@@ -94,7 +94,7 @@ fabric.properties
 ### Example user template template
 ### Example user template
 
-backend/node_modules
+node_modules
 
 # IntelliJ project files
 .idea
