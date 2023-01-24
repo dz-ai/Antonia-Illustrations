@@ -1,0 +1,33 @@
+@mixin container($flexDirection, $justifyContent, $alignItems) {
+  display: flex;
+  flex-direction: $flexDirection;
+  justify-content: $justifyContent;
+  align-items: $alignItems;
+  width: 100%;
+}
+ //$width, $height, $border: none, $radius: 10px, $background
+@mixin card($border: none, $radius: 10px, $background: green) {
+  border: $border;
+  border-radius: $radius;
+  background: $background;
+}
+
+@mixin dimensions($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+@mixin btn($bck-hover, $color-hover) {
+
+    background: none;
+    padding: 5px 10px;
+    border: none;
+
+    &:hover {
+      background: $bck-hover;
+      border-radius: 3px;
+      color: $color-hover;
+      cursor: pointer;
+    }
+
+}

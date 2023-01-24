@@ -1,0 +1,46 @@
+@import "src/styles/general";
+
+$mandala-img: "https://ik.imagekit.io/thfdl6dmv/antonia-illustrations/mandala.png?ik-sdk-version=javascript-1.4.3&updatedAt=1674546392371";
+
+.home-up-page {
+  @include container(column, center, center);
+  background: url($mandala-img) no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: 150% auto;
+  flex: 1;
+
+  h1 {
+    margin-top: 210px;
+    font-size: 80px;
+    background: #eae7b500;
+    color: #7f5edd;
+    text-align: center;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  }
+}
+
+.blur-home-img {
+  @include container(column, center, center);
+  @include dimensions(100%, 100%);
+  background: #aabaff96;
+}
+
+.home-down-page {
+  @include container(row, center, center);
+  height: 150px;
+
+  button {
+    @include btn(#2196f3, aliceblue);
+    font-size: 35px;
+    margin: 10px;
+    color: #2c027a;
+  }
+}
+
+
+
+
+
+
