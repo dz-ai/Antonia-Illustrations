@@ -1,0 +1,26 @@
+@import "src/styles/general";
+
+footer {
+  @include container(column, center, center);
+  height: fit-content;
+  background: #083E41;
+  color: white;
+  padding: 40px 0;
+
+  .footer-details {
+    @include container(row, center, center);
+
+    a {
+      text-decoration: none;
+      color: white;
+    }
+  }
+  .footer-details section {
+    @include container(column, center, center);
+    height: 153px;
+    flex: 0.4;
+  }
+  .leave-message:hover {
+    @include btn(blue, white)
+  }
+}

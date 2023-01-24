@@ -1,0 +1,69 @@
+.main-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+  background: rgba(20, 38, 247, 0.5411764706);
+}
+
+.main-header nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: unset;
+  width: 100%;
+  padding: 5px 15px 5px 0;
+}
+.main-header nav button {
+  background: none;
+  padding: 5px 10px;
+  border: none;
+  min-height: 35px;
+  margin: 0 2px;
+  padding: 5px 5px;
+  font-size: 15px;
+}
+.main-header nav button:hover {
+  background: #4141ca;
+  border-radius: 3px;
+  color: white;
+  cursor: pointer;
+}
+.main-header nav .search-btn {
+  min-height: fit-content;
+  width: 30px;
+}
+.main-header nav .search-btn:hover {
+  border-radius: 30px;
+}
+.main-header nav .cart-btn {
+  height: 35px;
+  padding: 0 5px;
+  margin-left: 10px;
+}
+.main-header nav .cart-btn svg {
+  font-size: 20px;
+}
+.main-header nav input {
+  height: 25px;
+  margin-bottom: 5px;
+}
+
+.dropdown-wrapper {
+  margin-right: 5px;
+}
+.dropdown-wrapper:hover {
+  cursor: pointer;
+}
+.dropdown-wrapper .select {
+  width: 120px;
+  padding: 5px 0 0 5px;
+  background: none;
+}
+.dropdown-wrapper .option {
+  border: 1px solid #cad0d9;
+  text-align: center;
+}
+
+/*# sourceMappingURL=header.css.map */

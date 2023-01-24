@@ -1,0 +1,65 @@
+@import "general";
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+}
+
+#root {
+  height: 100%;
+}
+
+.app {
+  @include container(column, center, center);
+  height: 100%;
+  background: rgba(206, 233, 243, 1);
+  overflow: hidden;
+
+  font-family: 'Quicksand', sans-serif;
+
+  button {
+    font-family: 'Quicksand', sans-serif;
+  }
+}
+
+.app-card {
+  @include container(column, center, center);
+  @include card(200px, 200px, 1px solid green);
+}
+
+.content-footer-wrapper {
+  width: 100%;
+  height: 100%;
+  display: block;
+  flex: 1;
+  overflow: auto;
+}
+
+img {
+  border-radius: 7px;
+}
+
+.content {
+  @include container(column, center, center);
+  height: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
