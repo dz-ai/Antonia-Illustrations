@@ -101,7 +101,7 @@ export function Portfolio() {
                         images
                             .map((image, index) =>
 
-                                <div className="image-card-wrapper image-card-wrapper-hover">
+                                <div className="image-card-wrapper image-card-wrapper-hover image-card-wrapper-active">
                                     <img
                                         key={image}
                                         src={image}
@@ -109,6 +109,7 @@ export function Portfolio() {
                                         width="200"
                                         alt='img'
                                         onClick={() => setFullScreen(image)}
+                                        loading="lazy"
                                     />
                                     <p>description</p>
                                 </div>
