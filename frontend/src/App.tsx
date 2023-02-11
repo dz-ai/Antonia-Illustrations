@@ -1,7 +1,8 @@
 import './styles/app.scss'
 import {Header} from "./layout/header/header";
 import {Footer} from "./layout/footer/footer";
-import {Content} from "./layout/content/content";
+import {Outlet} from "react-router-dom";
+import React from "react";
 
 function App() {
 
@@ -10,7 +11,7 @@ function App() {
         <Header />
         
         <div className="content-footer-wrapper">
-            <Content/>
+            <Outlet/>
             <Footer/>
         </div>
         

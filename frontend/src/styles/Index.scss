@@ -2,11 +2,23 @@
 
 @import "general";
 
-@import "src/utils-and-hooks/dropdownStyle";
+@import "src/components/util-components/dropdownStyle";
 
 @import "src/layout/header/header";
 
+@import "../layout/footer/footerStyle";
+
 @import "../pages/home/homeStyle";
 
-@import "../layout/footer/footerStyle";
+@import "../pages/portfolio/portfolioStyle";
+
+@import "src/components/slider/sliderStyle";
+
+@import "src/components/slider/sliderRowStyle";
+
+@import "src/components/slider/slideTheme";
+
+@import "src/pages/errorPage/errorStyle";
+
+
 

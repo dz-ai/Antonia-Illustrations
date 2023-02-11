@@ -1,3 +1,5 @@
+$mandala-img: "https://ik.imagekit.io/thfdl6dmv/antonia-illustrations/mandala.png?ik-sdk-version=javascript-1.4.3&updatedAt=1674546392371";
+
 @mixin container($flexDirection, $justifyContent, $alignItems) {
   display: flex;
   flex-direction: $flexDirection;
@@ -17,6 +19,20 @@
   height: $height;
 }
 
+@mixin mandalaBackGround() {
+  background: url($mandala-img) no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: 150% auto;
+  flex: 1;
+}
+
+@mixin blurBackGround() {
+  @include dimensions(100%, 100%);
+  background: #aabaff96;
+}
+
 @mixin btn($bck-hover, $color-hover) {
 
     background: none;
@@ -31,3 +47,5 @@
     }
 
 }
+
+

@@ -2,9 +2,27 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import './styles/Index.scss'
+import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from "react-router-dom";
+import {Portfolio} from "./pages/portfolio/portfolio";
+import {ErrorPage} from "./pages/errorPage/errorPage";
+import {HomePage} from "./pages/home/homePage";
+
+const router = createBrowserRouter(
+    createRoutesFromElements(
+        <Route
+            path="/"
+            element={<App/>}
+            errorElement={<ErrorPage/>}
+        >
+            <Route index element={<HomePage/>}/>
+            <Route path="/portfolio" element={<Portfolio/>}/>
+        </Route>
+    )
+);
+
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <React.StrictMode>
+        <RouterProvider router={router}/>
+    </React.StrictMode>,
 )

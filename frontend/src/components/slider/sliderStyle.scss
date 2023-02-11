@@ -1,0 +1,38 @@
+@import "../../styles/general";
+
+.slider {
+  @include container(row, space-between, center);
+  width: 100%;
+
+
+
+  .slider-image-wrapper {
+    @include container(row, center, center);
+    flex: 1;
+  }
+
+  img {
+    max-width: 100%;
+    max-height: 350px;
+    box-shadow: 0 0 10px 1px black;
+  }
+
+  .btn-slider-container {
+    @include container(column, center, center);
+    width: 20%;
+  }
+
+  .slider-btn {
+    @include btn(#5454ad, white);
+    height: 50px;
+    width: 50px;
+    padding: 0;
+    font-size: 50px;
+
+    &:hover {
+      border-radius: 25px;
+    }
+  }
+}
+
+
