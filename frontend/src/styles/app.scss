@@ -92,6 +92,9 @@ img {
   transform: translate(2px, 2px);
 }
 
+.image-card-wrapper-active:active {
+  box-shadow: 0 0 4px;
+}
 
 
 
