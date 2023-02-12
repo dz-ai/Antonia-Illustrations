@@ -2,9 +2,11 @@ import Dropdown from "../../components/dropdown/dropdown";
 import {HiOutlineShoppingCart} from "react-icons/hi";
 import {HiMagnifyingGlass} from "react-icons/all";
 import {useState} from "react";
-import {nav} from "../../pages/portfolio/portfolio";
+import {useNavigate} from 'react-router-dom';
 
 export function Header() {
+    const navigate = useNavigate();
+
     const [showSearchInput, setShowSearchInput] = useState(false);
     const [inputFocus, setInputFocus] = useState(false);
 
@@ -17,11 +19,11 @@ export function Header() {
         <header className="main-header">
 
             <nav>
-                <button>Home</button>
+                <button onClick={() => navigate('/')}>Home</button>
 
-                <button>Portfolio</button>
+                <button onClick={() => navigate('/portfolio-shop/portfolio')}>Portfolio</button>
 
-                <button>Shop</button>
+                <button onClick={() => navigate('/portfolio-shop/shop')}>Shop</button>
 
                 <div className="dropdown-wrapper">
                     <Dropdown

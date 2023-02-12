@@ -1,6 +1,7 @@
-
 import Slider from "react-slick";
 import {Dispatch, SetStateAction} from "react";
+import {AiFillMinusCircle, BsPlusLg, FaMinusCircle, FaPlusCircle} from "react-icons/all";
+import {AddToCart} from "../addToCart/addToCart";
 
 
 interface IMagesRow {
@@ -11,9 +12,10 @@ interface IMagesRow {
     focusOnSelect: boolean;
     nav: undefined | Slider;
     setNav: Dispatch<SetStateAction<any>>;
+    addToCart?: boolean;
 }
 
-export function SliderComponent({images, numOfImages, auto, scroll, focusOnSelect, nav, setNav}: IMagesRow) {
+export function SliderComponent({images, numOfImages, auto, scroll, focusOnSelect, nav, setNav, addToCart}: IMagesRow) {
 
     const settings = {
         dots: false,
@@ -36,13 +38,21 @@ export function SliderComponent({images, numOfImages, auto, scroll, focusOnSelec
                 {
                     images
                         .map((image) =>
-
-                            <img
+                            <div
                                 key={image}
-                                src={image}
-                                alt='img'
-                                loading="lazy"
-                            />
+                                className="my-slider-image"
+                            >
+                                <img
+                                    key={image}
+                                    src={image}
+                                    alt='img'
+                                    loading="lazy"
+                                />
+                                {
+                                    addToCart &&
+                                   <AddToCart/>
+                                }
+                            </div>
                         )
                 }
 

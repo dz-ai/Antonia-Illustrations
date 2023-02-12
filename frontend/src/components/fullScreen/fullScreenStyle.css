@@ -21,6 +21,9 @@
   max-height: 80%;
   position: relative;
 }
+#ful-screen-image #full-screen-img-wrapper .image-card-wrapper {
+  width: unset;
+}
 #ful-screen-image #full-screen-img-wrapper .close-button {
   background: none;
   padding: 5px 10px;

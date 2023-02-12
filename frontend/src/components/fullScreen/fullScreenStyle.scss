@@ -18,6 +18,10 @@
     max-height: 80%;
     position: relative;
 
+    .image-card-wrapper {
+      width: unset;
+    }
+
     .close-button {
       @include btn(unset, gray);
       font-size: 25px;

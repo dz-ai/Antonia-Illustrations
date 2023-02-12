@@ -1,13 +1,15 @@
 import Masonry from "react-masonry-css";
 import React, {Dispatch, SetStateAction} from "react";
+import {AddToCart} from "../addToCart/addToCart";
 
 type Props = {
     imageArray: string[];
     setRemEListener: Dispatch<SetStateAction<boolean>>;
     setFullScreen: Dispatch<SetStateAction<string | boolean>>;
+    addToCart?: boolean;
 };
 
-export function MasonryGrid({imageArray, setRemEListener, setFullScreen}: Props) {
+export function MasonryGrid({imageArray, setRemEListener, setFullScreen, addToCart}: Props) {
     const breakpoints = {
         default: 4,
         1100: 3,
@@ -30,23 +32,27 @@ export function MasonryGrid({imageArray, setRemEListener, setFullScreen}: Props)
                             key={image}
                             className="image-card-wrapper image-card-wrapper-hover image-card-wrapper-active"
                         >
-                            <img
+                                <img
+                                    src={image}
+                                    height="auto"
+                                    width="200"
+                                    alt='img'
+                                    onClick={() => {
+                                        setRemEListener(true);
+                                        setFullScreen(image);
 
-                                src={image}
-                                height="auto"
-                                width="200"
-                                alt='img'
-                                onClick={() => {
-                                    setRemEListener(true);
-                                    setFullScreen(image);
+                                        setTimeout(() => {
+                                            setRemEListener(false);
+                                        },500);
+                                    }}
+                                    loading="lazy"
+                                />
+                                <p>description description description description</p>
+                                {
+                                    addToCart &&
+                                    <AddToCart/>
+                                }
 
-                                    setTimeout(() => {
-                                        setRemEListener(false);
-                                    },500);
-                                }}
-                                loading="lazy"
-                            />
-                            <p>description</p>
                         </div>
                     )
             }

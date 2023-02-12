@@ -6,6 +6,10 @@
   width: auto;
   overflow: auto;
   padding: 50px 0;
+
+  p {
+    margin: 5px 0;
+  }
 }
 
 .my-masonry-grid_column {
@@ -13,6 +17,38 @@
   display: flex;
   flex-direction: column;
 
+}
+
+.image-card-wrapper {
+  margin: 10px 0;
+  text-align: center;
+  background: #f9eccc;
+  border-radius: 7px;
+  box-shadow: 0 0 6px;
+  width: min-content;
+
+  p {
+    margin: 5px;
+    overflow-wrap: normal;
+  }
+
+  .add-to-cart {
+    position: unset;
+  }
+
+  img {
+    border-radius: 7px 7px 0 0;
+  }
+}
+
+.image-card-wrapper-hover:hover {
+  box-shadow: -1px -1px 10px;
+  cursor: pointer;
+  transform: translate(2px, 2px);
+}
+
+.image-card-wrapper-active:active {
+  box-shadow: 0 0 4px;
 }
 
 
