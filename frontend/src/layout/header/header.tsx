@@ -1,4 +1,4 @@
-import Dropdown from "../../components/util-components/dropdown";
+import Dropdown from "../../components/dropdown/dropdown";
 import {HiOutlineShoppingCart} from "react-icons/hi";
 import {HiMagnifyingGlass} from "react-icons/all";
 import {useState} from "react";

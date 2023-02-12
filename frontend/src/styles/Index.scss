@@ -2,7 +2,7 @@
 
 @import "general";
 
-@import "src/components/util-components/dropdownStyle";
+@import "src/components/dropdown/dropdownStyle";
 
 @import "src/layout/header/header";
 
@@ -17,6 +17,10 @@
 @import "src/components/slider/sliderRowStyle";
 
 @import "src/components/slider/slideTheme";
+
+@import "src/components/fullScreen/fullScreenStyle";
+
+@import "src/components/masonryGrid/masonryGridStyle";
 
 @import "src/pages/errorPage/errorStyle";
 
