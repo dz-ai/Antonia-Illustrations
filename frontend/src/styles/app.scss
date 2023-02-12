@@ -28,14 +28,6 @@ body {
   button {
     font-family: 'Quicksand', sans-serif;
   }
-
-  .close-button {
-    @include btn(blue, white);
-    font-size: 25px;
-    position: fixed;
-    right: 50px;
-    top: 50px;
-  }
 }
 
 .app-card {
@@ -54,25 +46,6 @@ body {
 img {
   border-radius: 7px;
 }
-
-// grid layout classes
-.my-masonry-grid {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  width: auto;
-  overflow: auto;
-  padding: 50px 0;
-}
-
-.my-masonry-grid_column {
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-
-}
-
-///
 
 .image-card-wrapper {
   margin: 10px 0;

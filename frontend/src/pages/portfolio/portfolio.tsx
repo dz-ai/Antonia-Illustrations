@@ -1,8 +1,10 @@
 import {SliderComponent} from "../../components/slider/sliderComponent";
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Slider from "react-slick";
 import Masonry from "react-masonry-css";
 import {imageArray} from "../../imgs/imagesArray";
+import {FullScreen} from "../../components/fullScreen/fullScreen";
+import {MasonryGrid} from "../../components/masonryGrid/MasonryGrid";
 
 export const nav = (
     <div className="category-navbar">
@@ -17,22 +19,15 @@ export const nav = (
 
 export function Portfolio() {
     const ref = useRef<HTMLDivElement>(null);
-    const refFullScreen = useRef<HTMLDivElement>(null);
 
     const [isInViewPort, setIsInViewPort] = useState<boolean>(true);
 
     const [fullScreen, setFullScreen] = useState<boolean | string>(false);
+    const [remEListener, setRemEListener] = useState<boolean>(false);
 
     const [sliderBig, setSliderBig] = useState<undefined | Slider>(undefined);
     const [sliderRow, setSliderRow] = useState<undefined | Slider>(undefined);
 
-
-    const breakpoints = {
-        default: 4,
-        1100: 3,
-        850: 2,
-        600: 1,
-    };
 
     useEffect(() => {
         const observer = new IntersectionObserver((entry) => {
@@ -49,6 +44,9 @@ export function Portfolio() {
             ref.current !== null && observer.unobserve(ref.current);
         }
     }, [ref.current]);
+
+
+
 
 
     return (
@@ -92,51 +90,18 @@ export function Portfolio() {
                 {
                     !isInViewPort && nav
                 }
-                <Masonry
-                    className="my-masonry-grid"
-                    columnClassName="my-masonry-grid_column"
-                    breakpointCols={breakpoints}
-                >
-
-                    {
-                        imageArray
-                            .map((image) =>
-
-                                <div
-                                    key={image}
-                                    className="image-card-wrapper image-card-wrapper-hover image-card-wrapper-active"
-                                >
-                                    <img
-
-                                        src={image}
-                                        height="auto"
-                                        width="200"
-                                        alt='img'
-                                        onClick={() => setFullScreen(image)}
-                                        loading="lazy"
-                                    />
-                                    <p>description</p>
-                                </div>
-                            )
-                    }
-                </Masonry>
+                <MasonryGrid
+                    imageArray={imageArray}
+                    setRemEListener={setRemEListener}
+                    setFullScreen={setFullScreen}
+                />
                 {
                     typeof fullScreen === 'string' &&
-                    <div id="ful-screen-image" ref={refFullScreen}>
-                        <button
-                            className="close-button"
-                            onClick={() => setFullScreen(false)}
-                        >
-                            ✖
-                        </button>
-
-                        <div id="full-screen-img-wrapper">
-                            <div className="image-card-wrapper">
-                                <img src={fullScreen} alt=""/>
-                                <p>description</p>
-                            </div>
-                        </div>
-                    </div>
+                    <FullScreen
+                        fullScreen={fullScreen}
+                        setFullScreen={setFullScreen}
+                        removeEListener={remEListener}
+                    />
                 }
             </section>
 
