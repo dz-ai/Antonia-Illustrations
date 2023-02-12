@@ -1,8 +1,8 @@
-import images from '../../imgs/imagesArray'
 import {SliderComponent} from "../../components/slider/sliderComponent";
 import {useEffect, useRef, useState} from "react";
 import Slider from "react-slick";
 import Masonry from "react-masonry-css";
+import {imageArray} from "../../imgs/imagesArray";
 
 export const nav = (
     <div className="category-navbar">
@@ -25,6 +25,7 @@ export function Portfolio() {
 
     const [sliderBig, setSliderBig] = useState<undefined | Slider>(undefined);
     const [sliderRow, setSliderRow] = useState<undefined | Slider>(undefined);
+
 
     const breakpoints = {
         default: 4,
@@ -62,7 +63,7 @@ export function Portfolio() {
 
                 <div className="slide-container">
                     <SliderComponent
-                        images={images}
+                        images={imageArray}
                         numOfImages={1}
                         auto={false}
                         scroll={1}
@@ -74,7 +75,7 @@ export function Portfolio() {
 
                 <div className="portfolio-up-hor-display">
                     <SliderComponent
-                        images={images}
+                        images={imageArray}
                         numOfImages={5}
                         auto={false}
                         scroll={3}
@@ -98,12 +99,15 @@ export function Portfolio() {
                 >
 
                     {
-                        images
-                            .map((image, index) =>
+                        imageArray
+                            .map((image) =>
 
-                                <div className="image-card-wrapper image-card-wrapper-hover image-card-wrapper-active">
+                                <div
+                                    key={image}
+                                    className="image-card-wrapper image-card-wrapper-hover image-card-wrapper-active"
+                                >
                                     <img
-                                        key={image}
+
                                         src={image}
                                         height="auto"
                                         width="200"
