@@ -6,11 +6,13 @@
   "scripts": {
     "vite": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start:env": "env-cmd .env npm start"
   },
   "dependencies": {
     "@types/react-responsive": "^8.0.5",
     "@types/react-router-dom": "^5.3.3",
+    "imagekitio-react": "^2.0.0",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "react": "^18.2.0",

@@ -41,6 +41,7 @@ export function SliderComponent({images, numOfImages, auto, scroll, focusOnSelec
                                 key={image}
                                 src={image}
                                 alt='img'
+                                loading="lazy"
                             />
                         )
                 }
