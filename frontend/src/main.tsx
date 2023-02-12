@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import './styles/Index.scss'
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from "react-router-dom";
-import {Portfolio} from "./pages/portfolio/portfolio";
+import {PortfolioShop} from "./pages/portfolio-shop/portfolio-shop";
 import {ErrorPage} from "./pages/errorPage/errorPage";
 import {HomePage} from "./pages/home/homePage";
 
@@ -14,8 +14,8 @@ const router = createBrowserRouter(
             element={<App/>}
             errorElement={<ErrorPage/>}
         >
-            <Route index element={<HomePage/>}/>
-            <Route path="/portfolio" element={<Portfolio/>}/>
+            <Route index element={<HomePage/>} />
+            <Route path="/portfolio-shop/:page" element={<PortfolioShop/>} />
         </Route>
     )
 );

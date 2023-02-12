@@ -46,4 +46,13 @@
   border-radius: 25px;
 }
 
+.slick-slide img {
+  max-height: 350px;
+  width: 100%;
+}
+
+.my-slider-image {
+  position: relative;
+}
+
 /*# sourceMappingURL=sliderStyle.css.map */

@@ -10,7 +10,7 @@
 
 @import "../pages/home/homeStyle";
 
-@import "../pages/portfolio/portfolioStyle";
+@import "../pages/portfolio-shop/portfolioStyle";
 
 @import "src/components/slider/sliderStyle";
 
@@ -21,6 +21,10 @@
 @import "src/components/fullScreen/fullScreenStyle";
 
 @import "src/components/masonryGrid/masonryGridStyle";
+
+@import "src/components/categoryNavBar/categoryNavBarStyle";
+
+@import "src/components/addToCart/addToCartStyle";
 
 @import "src/pages/errorPage/errorStyle";
 

@@ -1,6 +1,6 @@
 
 
-const rab1 =            `https://ik.imagekit.io/${import.meta.env.VITE_IMAGEKIT_KEY}/antonia-illustrations/rabiet1.png?ik-sdk-version=javascript-1.4.3&updatedAt=1676150909599`,
+export const rab1 =            `https://ik.imagekit.io/${import.meta.env.VITE_IMAGEKIT_KEY}/antonia-illustrations/rabiet1.png?ik-sdk-version=javascript-1.4.3&updatedAt=1676150909599`,
     colorFullLC =       `https://ik.imagekit.io/${import.meta.env.VITE_IMAGEKIT_KEY}/antonia-illustrations/post2.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1676150696028`,
     post1 =             `https://ik.imagekit.io/${import.meta.env.VITE_IMAGEKIT_KEY}/antonia-illustrations/post1.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1676150655157`,
     lanScaSilkViolet =  `https://ik.imagekit.io/${import.meta.env.VITE_IMAGEKIT_KEY}/antonia-illustrations/landscap-silk-in-violet_brown.png?ik-sdk-version=javascript-1.4.3&updatedAt=1676150596572`,
@@ -15,6 +15,7 @@ const rab1 =            `https://ik.imagekit.io/${import.meta.env.VITE_IMAGEKIT_
     mandala =           `https://ik.imagekit.io/${import.meta.env.VITE_IMAGEKIT_KEY}/antonia-illustrations/mandala.png?ik-sdk-version=javascript-1.4.3&updatedAt=1674546392371`,
     rab4 =              `https://ik.imagekit.io/${import.meta.env.VITE_IMAGEKIT_KEY}/antonia-illustrations/rabiet4.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1674411247931`,
     mainImage =         `https://ik.imagekit.io/${import.meta.env.VITE_IMAGEKIT_KEY}/antonia-illustrations/main-img.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1674409287998`;
+
 
 export const imageArray = [
     colorFullLC,

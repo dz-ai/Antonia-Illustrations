@@ -1,0 +1,18 @@
+@import "../src/styles/general";
+
+.category-navbar {
+  @include container(row, center, center);
+  position: sticky;
+  z-index: 999999;
+  width: 100%;
+  top: 0;
+  height: 35px;
+
+  button {
+    @include btn(unset, unset);
+    min-height: 35px;
+    margin: 0 2px;
+    padding: 5px 5px;
+    font-size: 15px;
+  }
+}

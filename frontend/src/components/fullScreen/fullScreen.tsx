@@ -24,7 +24,7 @@ export function FullScreen({fullScreen, setFullScreen, removeEListener}:Props) {
             </button>
                 <div className="image-card-wrapper" ref={refFullScreen}>
                     <img src={typeof fullScreen === 'string' ? fullScreen : ''} alt=""/>
-                    <p>description</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
                 </div>
             </div>
         </div>

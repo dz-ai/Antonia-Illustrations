@@ -1,24 +1,19 @@
 import {SliderComponent} from "../../components/slider/sliderComponent";
 import React, {useEffect, useRef, useState} from "react";
 import Slider from "react-slick";
-import Masonry from "react-masonry-css";
-import {imageArray} from "../../imgs/imagesArray";
+import {imageArray, mandala} from "../../imgs/imagesArray";
 import {FullScreen} from "../../components/fullScreen/fullScreen";
 import {MasonryGrid} from "../../components/masonryGrid/MasonryGrid";
+import {CategoryNavBar} from "../../components/categoryNavBar/categoryNavBar";
+import {categories} from "../../types/types";
+import {useParams} from "react-router-dom";
 
-export const nav = (
-    <div className="category-navbar">
-        <button>category</button>
-        <button>category</button>
-        <button>category</button>
-        <button>category</button>
-        <button>category</button>
-        <button>category</button>
-    </div>
-);
 
-export function Portfolio() {
+export function PortfolioShop() {
     const ref = useRef<HTMLDivElement>(null);
+    const {page} = useParams() as any;
+
+    const categories:categories = ['category', 'category', 'category', 'category', 'category', 'category'];
 
     const [isInViewPort, setIsInViewPort] = useState<boolean>(true);
 
@@ -51,10 +46,19 @@ export function Portfolio() {
 
     return (
         <>
-            <div className="portfolio-up-page" ref={ref}>
+            <div
+                className="portfolio-up-page"
+                ref={ref}
+                style={{
+                    background: `url(${mandala}) no-repeat center center`,
+                    backgroundSize: '150% auto',
+                    flex: '1'
+                }}
+            >
 
                 {
-                    isInViewPort && nav
+                    isInViewPort &&
+                    <CategoryNavBar categories={categories} />
                 }
                 <div className="portfolio-page-blur"/>
 
@@ -68,6 +72,7 @@ export function Portfolio() {
                         focusOnSelect={false}
                         nav={sliderRow}
                         setNav={setSliderBig}
+                        addToCart={page === 'shop'}
                     />
                 </div>
 
@@ -88,12 +93,14 @@ export function Portfolio() {
 
             <section className="portfolio-down-page">
                 {
-                    !isInViewPort && nav
+                    !isInViewPort &&
+                    <CategoryNavBar categories={categories} />
                 }
                 <MasonryGrid
                     imageArray={imageArray}
                     setRemEListener={setRemEListener}
                     setFullScreen={setFullScreen}
+                    addToCart={page === 'shop'}
                 />
                 {
                     typeof fullScreen === 'string' &&

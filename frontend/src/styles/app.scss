@@ -47,27 +47,7 @@ img {
   border-radius: 7px;
 }
 
-.image-card-wrapper {
-  margin: 10px 0;
-  text-align: center;
-  background: cadetblue;
-  border-radius: 7px;
-  box-shadow: 0 0 6px;
 
-  img {
-    border-radius: 7px 7px 0 0;
-  }
-}
-
-.image-card-wrapper-hover:hover {
-  box-shadow: -1px -1px 10px;
-  cursor: pointer;
-  transform: translate(2px, 2px);
-}
-
-.image-card-wrapper-active:active {
-  box-shadow: 0 0 4px;
-}
 
 
 

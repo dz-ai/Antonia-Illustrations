@@ -1,0 +1,2 @@
+export type categories = string[];
+
