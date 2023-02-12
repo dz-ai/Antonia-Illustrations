@@ -1,0 +1,49 @@
+#ful-screen-image {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 999999999;
+  background: rgba(240, 248, 255, 0.3607843137);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+#ful-screen-image #full-screen-img-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  width: auto;
+  max-height: 80%;
+  position: relative;
+}
+#ful-screen-image #full-screen-img-wrapper .image-card-wrapper {
+  width: unset;
+}
+#ful-screen-image #full-screen-img-wrapper .close-button {
+  background: none;
+  padding: 5px 10px;
+  border: none;
+  font-size: 25px;
+  position: absolute;
+  right: 15px;
+  top: -15px;
+  color: #171717;
+  text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px 1px 0 #ffffff;
+}
+#ful-screen-image #full-screen-img-wrapper .close-button:hover {
+  background: unset;
+  border-radius: 3px;
+  color: gray;
+  cursor: pointer;
+}
+#ful-screen-image #full-screen-img-wrapper img {
+  width: 100%;
+  max-height: 80vh;
+}
+
+/*# sourceMappingURL=fullScreenStyle.css.map */

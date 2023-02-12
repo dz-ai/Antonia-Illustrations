@@ -1,0 +1,51 @@
+@import "src/styles/general";
+
+.add-to-cart {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+
+  @include container(row, space-between, center);
+
+  .add-to-cart-quantity {
+    background: rgb(165 42 42 / 93%);
+    width: 60%;
+    padding: 2px;
+
+    p {
+      margin: 0;
+      border-right: 2px solid #ed143d96;
+      border-left: 2px solid #ed143d96;
+      color: #ffffdd;
+    }
+
+  }
+
+  .plus-btn, .minus-btn {
+    flex: 1;
+    background: #a52a2aa3;
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    button {
+      @include btn(unset, unset);
+      padding: 4px 10px;
+      color: #ffffdd;
+
+      &:active {
+        color: #ffffdd;
+      }
+    }
+  }
+
+  .minus-btn {
+    border-bottom-left-radius: 7px;
+  }
+
+  .plus-btn {
+    border-bottom-right-radius: 7px;
+  }
+}

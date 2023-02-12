@@ -1,9 +1,12 @@
-import Dropdown from "../../utils-and-hooks/dropdown";
+import Dropdown from "../../components/dropdown/dropdown";
 import {HiOutlineShoppingCart} from "react-icons/hi";
 import {HiMagnifyingGlass} from "react-icons/all";
 import {useState} from "react";
+import {useNavigate} from 'react-router-dom';
 
 export function Header() {
+    const navigate = useNavigate();
+
     const [showSearchInput, setShowSearchInput] = useState(false);
     const [inputFocus, setInputFocus] = useState(false);
 
@@ -16,6 +19,12 @@ export function Header() {
         <header className="main-header">
 
             <nav>
+                <button onClick={() => navigate('/')}>Home</button>
+
+                <button onClick={() => navigate('/portfolio-shop/portfolio')}>Portfolio</button>
+
+                <button onClick={() => navigate('/portfolio-shop/shop')}>Shop</button>
+
                 <div className="dropdown-wrapper">
                     <Dropdown
                         options={['Category', 'Category1', 'Category2', 'Category3', 'Category4']}
@@ -48,9 +57,9 @@ export function Header() {
                 <button className="cart-btn">
                     <HiOutlineShoppingCart style={{height: '30px'}}/>
                 </button>
+
                 <button>About Me</button>
             </nav>
-
         </header>
     );
 };

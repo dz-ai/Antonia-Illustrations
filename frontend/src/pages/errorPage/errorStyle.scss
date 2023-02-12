@@ -1,0 +1,11 @@
+@import "../../styles/general";
+
+.error-page {
+  @include container(column, center, center);
+  height: 100%;
+}
+
+.error-page-content {
+  @include container(column, center, center);
+  font-size: 35px;
+}

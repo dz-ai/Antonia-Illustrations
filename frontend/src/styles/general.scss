@@ -1,3 +1,4 @@
+
 @mixin container($flexDirection, $justifyContent, $alignItems) {
   display: flex;
   flex-direction: $flexDirection;
@@ -17,6 +18,11 @@
   height: $height;
 }
 
+@mixin blurBackGround() {
+  @include dimensions(100%, 100%);
+  background: #aabaff96;
+}
+
 @mixin btn($bck-hover, $color-hover) {
 
     background: none;
@@ -31,3 +37,5 @@
     }
 
 }
+
+

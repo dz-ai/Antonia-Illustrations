@@ -60,6 +60,7 @@
   width: 120px;
   padding: 5px 0 0 5px;
   background: none;
+  z-index: 99999999;
 }
 .dropdown-wrapper .option {
   border: 1px solid #cad0d9;

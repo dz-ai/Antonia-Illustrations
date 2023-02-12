@@ -36,22 +36,16 @@ body {
 }
 
 .content-footer-wrapper {
-  width: 100%;
+  @include container(column, center, center);
   height: 100%;
   display: block;
-  flex: 1;
   overflow: auto;
+  position: relative;
 }
 
 img {
   border-radius: 7px;
 }
-
-.content {
-  @include container(column, center, center);
-  height: 100%;
-}
-
 
 
 
