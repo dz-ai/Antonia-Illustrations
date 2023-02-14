@@ -18,8 +18,8 @@ export function HomePage() {
                     <h1>Antonia <br/> Illustrations</h1>
 
                     <nav className="home-down-page">
-                    <button className="home-btn-r" onClick={() => navigate('/portfolio-shop/portfolio')}>Portfolio</button>
-                    <button className="home-btn-l" onClick={() => navigate('/portfolio-shop/shop')}>Shop</button>
+                    <button className="home-btn-r" onClick={() => navigate('/portfolio-shop-Page/portfolio')}>Portfolio</button>
+                    <button className="home-btn-l" onClick={() => navigate('/portfolio-shop-Page/shop')}>Shop</button>
                 </nav>
                 </div>
 

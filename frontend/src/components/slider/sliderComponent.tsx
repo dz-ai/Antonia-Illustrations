@@ -1,6 +1,5 @@
 import Slider from "react-slick";
 import {Dispatch, SetStateAction} from "react";
-import {AiFillMinusCircle, BsPlusLg, FaMinusCircle, FaPlusCircle} from "react-icons/all";
 import {AddToCart} from "../addToCart/addToCart";
 
 
@@ -50,7 +49,7 @@ export function SliderComponent({images, numOfImages, auto, scroll, focusOnSelec
                                 />
                                 {
                                     addToCart &&
-                                   <AddToCart/>
+                                   <AddToCart />
                                 }
                             </div>
                         )

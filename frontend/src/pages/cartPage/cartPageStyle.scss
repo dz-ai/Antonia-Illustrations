@@ -1,0 +1,64 @@
+@import "src/styles/general";
+
+.cart {
+  @include dimensions(100%, 100%);
+
+  .blur-cart-img {
+    @include blurBackGround();
+    background: rgb(170 186 255 / 76%);
+  }
+
+  h2 {
+    margin: 20px;
+    display: inline;
+    border-bottom: 2px solid #6a80f5;
+    color: #193131;
+  }
+
+  .cart-wrapper {
+    @include container(column, start, space-between);
+    height: 100%;
+    box-shadow: inset 0 2px 9px 0;
+  }
+
+  .cart-container {
+    @include container(row, space-between, center);
+    flex: 1;
+  }
+
+  .cart-container-l, .cart-container-r {
+    height: 100%;
+  }
+
+
+  ////////////////// CONTAINER LEFT ///////////////
+
+  .cart-container-l {
+    border-right: 1px solid #6a80f5;
+    flex: 2;
+  }
+
+  ////////////////// CONTAINER RIGHT ///////////////
+
+  .cart-container-r {
+    @include container(column, start, start);
+    flex: 1;
+
+    #total-cart-wrapper {
+      padding-left: 20px;
+    }
+
+    .btn {
+      @include container(unset, center, center);
+      flex: 1;
+    }
+
+    button {
+      @include btn(gray, white);
+      background: green;
+      border-radius: 3px;
+      color: gainsboro;
+      font-size: 1.5em;
+    }
+  }
+}

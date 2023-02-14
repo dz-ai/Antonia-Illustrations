@@ -21,9 +21,9 @@ export function Header() {
             <nav>
                 <button onClick={() => navigate('/')}>Home</button>
 
-                <button onClick={() => navigate('/portfolio-shop/portfolio')}>Portfolio</button>
+                <button onClick={() => navigate('/portfolio-shop-Page/portfolio')}>Portfolio</button>
 
-                <button onClick={() => navigate('/portfolio-shop/shop')}>Shop</button>
+                <button onClick={() => navigate('/portfolio-shop-Page/shop')}>Shop</button>
 
                 <div className="dropdown-wrapper">
                     <Dropdown
@@ -54,7 +54,10 @@ export function Header() {
                     </button>
                 </div>
 
-                <button className="cart-btn">
+                <button
+                    className="cart-btn"
+                    onClick={() => navigate('/cart')}
+                >
                     <HiOutlineShoppingCart style={{height: '30px'}}/>
                 </button>
 
@@ -62,4 +65,4 @@ export function Header() {
             </nav>
         </header>
     );
-};
+}
