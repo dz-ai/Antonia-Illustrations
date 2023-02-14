@@ -50,7 +50,7 @@ export function MasonryGrid({imageArray, setRemEListener, setFullScreen, addToCa
                                 <p>description description description description</p>
                                 {
                                     addToCart &&
-                                    <AddToCart/>
+                                    <AddToCart />
                                 }
 
                         </div>

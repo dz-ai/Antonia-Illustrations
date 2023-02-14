@@ -6,11 +6,19 @@
 
 @import "src/layout/header/header";
 
-@import "../layout/footer/footerStyle";
+@import "src/layout/footer/footerStyle";
 
-@import "../pages/home/homeStyle";
+@import "../pages/homePage/homeStyle";
 
-@import "../pages/portfolio-shop/portfolioStyle";
+@import "../pages/portfolio-shop-Page/portfolioStyle";
+
+@import "src/pages/cartPage/cartPageStyle";
+
+@import "src/pages/checkoutPage/checkoutStyle";
+
+@import "src/pages/errorPage/errorStyle";
+
+@import "src/components/cart/cartStyle";
 
 @import "src/components/slider/sliderStyle";
 
@@ -26,7 +34,6 @@
 
 @import "src/components/addToCart/addToCartStyle";
 
-@import "src/pages/errorPage/errorStyle";
 
 
 

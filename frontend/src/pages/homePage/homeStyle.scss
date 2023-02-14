@@ -22,9 +22,9 @@
   height: 150px;
 
   button {
-    @include btn(#2196f3, aliceblue);
+    @include btn(#855c9d, aliceblue);
     font-size: 35px;
-    margin: 10px;
+    margin: 10px 10px 65px;
     color: #2c027a;
   }
 }

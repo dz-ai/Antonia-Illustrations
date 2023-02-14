@@ -1,0 +1,102 @@
+@import "src/styles/general";
+
+.cart-item {
+  @include container(row, space-around, unset);
+  margin: 20px;
+  background: #faebd754;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 3px #0000ff78;
+  width: unset;
+  max-width: 100%;
+
+  .image-cart-wrapper, .description-add-wrapper, .total-wrapper, .cart-rm-btn {
+    margin: 0 5px;
+  }
+
+  .image-cart-wrapper, .description-add-wrapper {
+    border-right: 1px solid #6a80f5;
+  }
+
+  .image-cart-wrapper {
+    @include container(unset, center, center);
+    flex: 1;
+
+    img {
+      max-width: 100px;
+      max-height: 100px;
+      margin: 3px;
+    }
+  }
+
+  .description-add-wrapper {
+    @include container(column, space-between, center);
+    flex: 1;
+
+    p {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+  }
+
+  .add-to-cart-cart {
+    @include container(row, space-between, center);
+    width: 100px;
+
+  }
+
+  .total-wrapper {
+    @include container(column, end, start);
+    flex: 1;
+
+  }
+
+  .cart-rm-btn {
+    @include container(column, end, end);
+    flex: 1;
+
+    button {
+      @include btn(#a94949, white);
+
+    }
+  }
+
+  .cart-quantity {
+    background: blue;
+    color: aliceblue;
+    flex: 1;
+    text-align: center;
+  }
+
+  .minus-btn-cart, .plus-btn-cart {
+    @include btn(#2224f9cc, white);
+    @include container(unset, center, center);
+    flex: 1;
+    background: blue;
+    height: 20px;
+    padding: 0 5px;
+    color: white;
+  }
+
+  .plus-btn-cart {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+
+    &:hover {
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+  }
+
+  .minus-btn-cart {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+
+    &:hover {
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+    }
+  }
+
+}
