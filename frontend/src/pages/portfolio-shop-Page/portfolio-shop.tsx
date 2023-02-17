@@ -1,5 +1,5 @@
 import {SliderComponent} from "../../components/slider/sliderComponent";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import Slider from "react-slick";
 import {imageArray, mandala} from "../../imgs/imagesArray";
 import {FullScreen} from "../../components/fullScreen/fullScreen";
@@ -7,39 +7,21 @@ import {MasonryGrid} from "../../components/masonryGrid/MasonryGrid";
 import {CategoryNavBar} from "../../components/categoryNavBar/categoryNavBar";
 import {categories} from "../../types/types";
 import {useParams} from "react-router-dom";
+import {useInterSectionObserver} from "../../Hooks/useInterSectionObserver";
 
 
 export function PortfolioShop() {
     const ref = useRef<HTMLDivElement>(null);
+    const isInViewPort:boolean = useInterSectionObserver(ref);
     const {page} = useParams() as any;
 
     const categories:categories = ['category', 'category', 'category', 'category', 'category', 'category'];
-
-    const [isInViewPort, setIsInViewPort] = useState<boolean>(true);
 
     const [fullScreen, setFullScreen] = useState<boolean | string>(false);
     const [remEListener, setRemEListener] = useState<boolean>(false);
 
     const [sliderBig, setSliderBig] = useState<undefined | Slider>(undefined);
     const [sliderRow, setSliderRow] = useState<undefined | Slider>(undefined);
-
-
-    useEffect(() => {
-        const observer = new IntersectionObserver((entry) => {
-                setIsInViewPort(entry[0].isIntersecting);
-            },
-            {
-                threshold: 0,
-                rootMargin: '0px 0px 90% 0px'
-            });
-
-        ref.current !== null && observer.observe(ref.current);
-
-        return () => {
-            ref.current !== null && observer.unobserve(ref.current);
-        }
-    }, [ref.current]);
-
 
 
 

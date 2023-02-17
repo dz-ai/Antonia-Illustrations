@@ -1,17 +1,20 @@
 import {deliverTrack} from "../../imgs/imagesArray";
-import {useRef, useState} from "react";
+import React, {useRef} from "react";
+import {FaArrowAltCircleUp} from "react-icons/all";
+import {useInterSectionObserver} from "../../Hooks/useInterSectionObserver";
 
 export function CheckoutPage() {
     const ref = useRef<HTMLDivElement>(null);
     const upRef = useRef<HTMLDivElement>(null);
 
+    const isInViewPort:boolean = useInterSectionObserver(ref);
 
     const handleClick = () => {
-        (ref.current as HTMLDivElement).scrollIntoView({ behavior: 'smooth' });
+        (ref.current as HTMLDivElement).scrollIntoView({behavior: 'smooth'});
     };
 
     const handleBackClick = () => {
-        (upRef.current as HTMLDivElement).scrollIntoView({ behavior: 'smooth' });
+        (upRef.current as HTMLDivElement).scrollIntoView({behavior: 'smooth'});
     };
 
     return (
@@ -70,12 +73,12 @@ export function CheckoutPage() {
 
                     <div className="continue-btn">
 
-                       <button
-                           onClick={handleClick}
-                           className="btn"
-                       >
-                           ↓ Continue ↓
-                       </button>
+                        <button
+                            onClick={handleClick}
+                            className="btn"
+                        >
+                            ↓ Continue ↓
+                        </button>
                     </div>
 
                 </div>
@@ -94,12 +97,19 @@ export function CheckoutPage() {
 
             </div>
 
-            <div className="checkout-down-page" ref={ref}>
-                <button className="up-btn" onClick={handleBackClick}>Up</button>
+            <div className="checkout-down-page">
+
+                {
+                    isInViewPort &&
+
+                    <button className="up-btn" onClick={handleBackClick}>
+                    <FaArrowAltCircleUp/>
+                    </button>
+                }
 
                 <h3>Payment Detail</h3>
 
-                <div className="payment-card">
+                <div className="payment-card" ref={ref}>
                     <div className="credit-total">
                         <h4>You Got: 0 Items </h4>
                         <h4>Total: 0 ₪</h4>

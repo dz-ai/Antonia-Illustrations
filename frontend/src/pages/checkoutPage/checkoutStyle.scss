@@ -67,9 +67,31 @@
   background: linear-gradient(188deg, #3355ea, transparent);
 
   .up-btn {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
+
+    @include btn(unset, white);
+    display: inline;
+    position: sticky;
+    top: 30px;
+
+    height: 41px;
+    margin: 30px -90% 0 0;
+    padding: 5px 10px;
+
+    font-size: 1.2em;
+    color: white;
+    border: 1px solid #0000ff36;
+    border-radius: 25px;
+    box-shadow: 0 0 6px #1b1bb7;
+
+      svg {
+        margin-top: 4px;
+      }
+
+    &:hover {
+      box-shadow: 0 0 10px #1b1bb7;
+      border-radius: 25px;
+
+    }
   }
 
   h3 {

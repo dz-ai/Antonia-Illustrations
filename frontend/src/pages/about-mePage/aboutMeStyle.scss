@@ -1,0 +1,68 @@
+@import "src/styles/general";
+
+.about-me {
+  @include container(row, center, centeer);
+  min-height: 100%;
+
+  .blur-about-img {
+    @include blurBackGround();
+    background: rgb(170 186 255 / 67%);
+    @include container(column, start, center);
+
+    h2 {
+      border-bottom: 0 solid;
+      background-image: linear-gradient(to right,#05007a, #0085d9);
+      background-position: bottom;
+      background-size: 100% 2px;
+      background-repeat: no-repeat;
+      text-align: center;
+    }
+
+    .text-container {
+      max-width: 550px;
+      margin: 20px 50px 50px 50px;
+      padding: 0 20px;
+      border-right: 1px solid #44425c;
+      border-left: 1px solid #44425c;
+    }
+
+    img {
+      float: right;
+      width: 250px;
+      height: auto;
+      margin-left: 20px;
+    }
+
+    p {
+      text-align: justify;
+    }
+
+  .back-btn {
+    @include btn(blue, white);
+    margin-bottom: 50px;
+    font-size: 1.2em;
+  }
+
+    @media (max-width: 600px) {
+      .text-container {
+        @include container(column, start, center);
+        padding: 0;
+        border: none;
+      }
+
+      p {
+        min-width: 250px;
+        margin: 0 25px;
+        padding: 0 20px;
+        border-right: 1px solid #44425c;
+        border-left: 1px solid #44425c;
+      }
+
+      img {
+        float: unset;
+        margin: 0 0 20px 0;
+      }
+    }
+
+  }
+}
