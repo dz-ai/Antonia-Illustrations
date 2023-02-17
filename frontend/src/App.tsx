@@ -1,22 +1,36 @@
 import './styles/app.scss'
 import {Header} from "./layout/header/header";
 import {Footer} from "./layout/footer/footer";
-import {Outlet} from "react-router-dom";
+import {Outlet, useLocation} from "react-router-dom";
 import React from "react";
 
 function App() {
+    const location = useLocation();
 
-  return (
-    <div className="app">
-        <Header />
-        
-        <div className="content-footer-wrapper">
-            <Outlet/>
-            <Footer/>
+    console.log(location.pathname);
+
+    return (
+        <div className="app">
+            {
+                location.pathname !== "/register" ?
+
+                    <>
+                        <Header/>
+                        <div className="content-footer-wrapper">
+                            <Outlet/>
+                            <Footer/>
+                        </div>
+                    </>
+
+                    :
+
+                    <Outlet/>
+
+            }
+
+
         </div>
-        
-    </div>
-  )
+    )
 }
 
 export default App

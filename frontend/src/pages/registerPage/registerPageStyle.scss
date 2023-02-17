@@ -1,0 +1,42 @@
+@import "src/styles/general";
+
+.register-page {
+  @include container(unset, center, center);
+  background: #000000db;
+  height: 100%;
+
+  .register-card {
+    @include container(column, center, center);
+    background: #dfdfdfb0;
+    width: fit-content;
+    padding: 50px;
+    border-radius: 15px;
+    box-shadow: 5px 5px 5px 0 #002b7f;
+
+    h2 {
+      color: #401616;
+    }
+
+    input {
+      margin: 3px;
+    }
+
+    p {
+      color: #11046b;
+      font-size: 0.8em;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    button {
+      @include btn(gray, white);
+      background: #9f4545;
+      border-radius: 4px;
+      margin: 20px 0 10px 0;
+    }
+
+  }
+
+
+}

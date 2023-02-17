@@ -69,7 +69,6 @@
   .up-btn {
 
     @include btn(unset, white);
-    display: inline;
     position: sticky;
     top: 30px;
 
