@@ -15,8 +15,9 @@ export const
     mandala =           `https://ik.imagekit.io/${import.meta.env.VITE_IMAGEKIT_KEY}/antonia-illustrations/mandala.png?ik-sdk-version=javascript-1.4.3&updatedAt=1674546392371`,
     rab4 =              `https://ik.imagekit.io/${import.meta.env.VITE_IMAGEKIT_KEY}/antonia-illustrations/rabiet4.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1674411247931`,
     mainImage =         `https://ik.imagekit.io/${import.meta.env.VITE_IMAGEKIT_KEY}/antonia-illustrations/main-img.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1674409287998`,
+    meWithBook =        `https://ik.imagekit.io/${import.meta.env.VITE_IMAGEKIT_KEY}/antonia-illustrations/me-with-book.jpeg?ik-sdk-version=javascript-1.4.3&updatedAt=1676623904151`,
     deliverTrack =      `https://ik.imagekit.io/${import.meta.env.VITE_IMAGEKIT_KEY}/antonia-illustrations/pngwing.com.png?ik-sdk-version=javascript-1.4.3&updatedAt=1676387191520`,
-    cartImage =         `https://ik.imagekit.io/${import.meta.env.VITE_IMAGEKIT_KEY}/antonia-illustrations/shopping-cart.png?ik-sdk-version=javascript-1.4.3&updatedAt=1676358037417`
+    cartImage =         `https://ik.imagekit.io/${import.meta.env.VITE_IMAGEKIT_KEY}/antonia-illustrations/shopping-cart.png?ik-sdk-version=javascript-1.4.3&updatedAt=1676358037417`;
 
 
 export const imageArray = [

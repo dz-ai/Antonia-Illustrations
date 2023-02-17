@@ -61,7 +61,7 @@ export function Header() {
                     <HiOutlineShoppingCart style={{height: '30px'}}/>
                 </button>
 
-                <button>About Me</button>
+                <button onClick={() => navigate('/about-me')}>About Me</button>
             </nav>
         </header>
     );

@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction, useRef} from "react";
-import {useOutClick} from "../Hooks/useOutClick";
+import {useOutClick} from "../../Hooks/useOutClick";
 
 type Props = {
     fullScreen: boolean | string;

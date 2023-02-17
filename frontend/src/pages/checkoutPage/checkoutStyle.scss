@@ -67,29 +67,30 @@
   background: linear-gradient(188deg, #3355ea, transparent);
 
   .up-btn {
-    @include container(row, end, center);
+
+    @include btn(unset, white);
+    display: inline;
     position: sticky;
-    top: 0;
-    width: 100%;
-    padding: 30px 30px 0 0;
+    top: 30px;
 
-    button {
-      @include btn(unset, white);
-      font-size: 1.2em;
-      color: white;
-      border: 1px solid #0000ff36;
-      height: 41px;
-      border-radius: 25px;
-      box-shadow: 0 0 6px #1b1bb7;
+    height: 41px;
+    margin: 30px -90% 0 0;
+    padding: 5px 10px;
 
-      &:hover {
-        box-shadow: 0 0 10px #1b1bb7;
-        border-radius: 25px;
-      }
+    font-size: 1.2em;
+    color: white;
+    border: 1px solid #0000ff36;
+    border-radius: 25px;
+    box-shadow: 0 0 6px #1b1bb7;
 
       svg {
         margin-top: 4px;
       }
+
+    &:hover {
+      box-shadow: 0 0 10px #1b1bb7;
+      border-radius: 25px;
+
     }
   }
 

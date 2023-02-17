@@ -1,13 +1,13 @@
 import {deliverTrack} from "../../imgs/imagesArray";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useRef} from "react";
 import {FaArrowAltCircleUp} from "react-icons/all";
+import {useInterSectionObserver} from "../../Hooks/useInterSectionObserver";
 
 export function CheckoutPage() {
     const ref = useRef<HTMLDivElement>(null);
     const upRef = useRef<HTMLDivElement>(null);
 
-    const [isInViewPort, setIsInViewPort] = useState<boolean>(true);
-
+    const isInViewPort:boolean = useInterSectionObserver(ref);
 
     const handleClick = () => {
         (ref.current as HTMLDivElement).scrollIntoView({behavior: 'smooth'});
@@ -16,23 +16,6 @@ export function CheckoutPage() {
     const handleBackClick = () => {
         (upRef.current as HTMLDivElement).scrollIntoView({behavior: 'smooth'});
     };
-
-    useEffect(() => {
-        const observer = new IntersectionObserver((entry) => {
-                setIsInViewPort(entry[0].isIntersecting);
-            },
-            {
-                threshold: 0,
-                rootMargin: '0px 0px 90% 0px'
-            });
-
-        ref.current !== null && observer.observe(ref.current);
-
-        return () => {
-            ref.current !== null && observer.unobserve(ref.current);
-        }
-    }, [ref.current]);
-
 
     return (
         <>
@@ -118,11 +101,10 @@ export function CheckoutPage() {
 
                 {
                     isInViewPort &&
-                    <div className="up-btn">
-                        <button onClick={handleBackClick}>
-                            <FaArrowAltCircleUp/>
-                        </button>
-                    </div>
+
+                    <button className="up-btn" onClick={handleBackClick}>
+                    <FaArrowAltCircleUp/>
+                    </button>
                 }
 
                 <h3>Payment Detail</h3>

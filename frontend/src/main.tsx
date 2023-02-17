@@ -8,6 +8,7 @@ import {ErrorPage} from "./pages/errorPage/errorPage";
 import {HomePage} from "./pages/homePage/homePage";
 import {CartPage} from "./pages/cartPage/cartPage";
 import {CheckoutPage} from "./pages/checkoutPage/checkoutPage";
+import {AboutMePage} from "./pages/about-mePage/aboutMePage";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -20,6 +21,7 @@ const router = createBrowserRouter(
             <Route path="/portfolio-shop/:page" element={<PortfolioShop/>} />
             <Route path="/cart" element={<CartPage/>} />
             <Route path="/checkout" element={<CheckoutPage/>} />
+            <Route path="/about-me" element={<AboutMePage/>} />
         </Route>
     )
 );
