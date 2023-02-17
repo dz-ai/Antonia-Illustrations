@@ -7,6 +7,7 @@ import React from "react";
 function App() {
     const location = useLocation();
 
+
     console.log(location.pathname);
 
     return (
