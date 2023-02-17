@@ -8,9 +8,6 @@ import {RegisterPage} from "./pages/registerPage/registerPage";
 function App() {
     const location = useLocation();
 
-
-    console.log(location.pathname);
-
     return (
         <div className="app">
             {
@@ -26,7 +23,7 @@ function App() {
 
                     :
 
-                    <RegisterPage/>
+                    <Outlet/>
 
             }
 
