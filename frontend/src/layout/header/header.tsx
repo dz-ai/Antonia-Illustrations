@@ -21,9 +21,9 @@ export function Header() {
             <nav>
                 <button onClick={() => navigate('/')}>Home</button>
 
-                <button onClick={() => navigate('/portfolio-shop-Page/portfolio')}>Portfolio</button>
+                <button onClick={() => navigate('/portfolio-shop/portfolio')}>Portfolio</button>
 
-                <button onClick={() => navigate('/portfolio-shop-Page/shop')}>Shop</button>
+                <button onClick={() => navigate('/portfolio-shop/shop')}>Shop</button>
 
                 <div className="dropdown-wrapper">
                     <Dropdown

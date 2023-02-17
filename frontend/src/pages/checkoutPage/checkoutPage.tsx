@@ -1,18 +1,38 @@
 import {deliverTrack} from "../../imgs/imagesArray";
-import {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
+import {FaArrowAltCircleUp} from "react-icons/all";
 
 export function CheckoutPage() {
     const ref = useRef<HTMLDivElement>(null);
     const upRef = useRef<HTMLDivElement>(null);
 
+    const [isInViewPort, setIsInViewPort] = useState<boolean>(true);
+
 
     const handleClick = () => {
-        (ref.current as HTMLDivElement).scrollIntoView({ behavior: 'smooth' });
+        (ref.current as HTMLDivElement).scrollIntoView({behavior: 'smooth'});
     };
 
     const handleBackClick = () => {
-        (upRef.current as HTMLDivElement).scrollIntoView({ behavior: 'smooth' });
+        (upRef.current as HTMLDivElement).scrollIntoView({behavior: 'smooth'});
     };
+
+    useEffect(() => {
+        const observer = new IntersectionObserver((entry) => {
+                setIsInViewPort(entry[0].isIntersecting);
+            },
+            {
+                threshold: 0,
+                rootMargin: '0px 0px 90% 0px'
+            });
+
+        ref.current !== null && observer.observe(ref.current);
+
+        return () => {
+            ref.current !== null && observer.unobserve(ref.current);
+        }
+    }, [ref.current]);
+
 
     return (
         <>
@@ -70,12 +90,12 @@ export function CheckoutPage() {
 
                     <div className="continue-btn">
 
-                       <button
-                           onClick={handleClick}
-                           className="btn"
-                       >
-                           ↓ Continue ↓
-                       </button>
+                        <button
+                            onClick={handleClick}
+                            className="btn"
+                        >
+                            ↓ Continue ↓
+                        </button>
                     </div>
 
                 </div>
@@ -94,12 +114,20 @@ export function CheckoutPage() {
 
             </div>
 
-            <div className="checkout-down-page" ref={ref}>
-                <button className="up-btn" onClick={handleBackClick}>Up</button>
+            <div className="checkout-down-page">
+
+                {
+                    isInViewPort &&
+                    <div className="up-btn">
+                        <button onClick={handleBackClick}>
+                            <FaArrowAltCircleUp/>
+                        </button>
+                    </div>
+                }
 
                 <h3>Payment Detail</h3>
 
-                <div className="payment-card">
+                <div className="payment-card" ref={ref}>
                     <div className="credit-total">
                         <h4>You Got: 0 Items </h4>
                         <h4>Total: 0 ₪</h4>
