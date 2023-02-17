@@ -1,4 +1,4 @@
-import {blueLPlant, lineDeco, mandala, meWithBook} from "../../imgs/imagesArray";
+import {blueLPlant, meWithBook} from "../../imgs/imagesArray";
 import {useNavigate} from "react-router-dom";
 
 
