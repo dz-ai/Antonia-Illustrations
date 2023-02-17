@@ -3,6 +3,7 @@ import {Header} from "./layout/header/header";
 import {Footer} from "./layout/footer/footer";
 import {Outlet, useLocation} from "react-router-dom";
 import React from "react";
+import {RegisterPage} from "./pages/registerPage/registerPage";
 
 function App() {
     const location = useLocation();
@@ -25,7 +26,7 @@ function App() {
 
                     :
 
-                    <Outlet/>
+                    <RegisterPage/>
 
             }
 
