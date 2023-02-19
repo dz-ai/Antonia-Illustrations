@@ -8,12 +8,22 @@ import {CategoryNavBar} from "../../components/categoryNavBar/categoryNavBar";
 import {categories} from "../../types/types";
 import {useParams} from "react-router-dom";
 import {useInterSectionObserver} from "../../Hooks/useInterSectionObserver";
+import {useMediaQuery} from "react-responsive";
+import {TUseScrollIntoView, useScrollIntoView} from "../../Hooks/useScrollIntoView";
+import {FaArrowAltCircleUp} from "react-icons/all";
 
 
 export function PortfolioShop() {
     const ref = useRef<HTMLDivElement>(null);
-    const isInViewPort:boolean = useInterSectionObserver(ref);
+    const downRef = useRef<HTMLDivElement>(null);
     const {page} = useParams() as any;
+
+    // Customise Hooks //
+    const isInViewPort:boolean = useInterSectionObserver(ref);
+    const isDownInViewPort:boolean = useInterSectionObserver(downRef);
+    const scrollIntoView:TUseScrollIntoView = useScrollIntoView();
+
+    const isUnder950pxScreen = useMediaQuery({query: '(max-width: 950px)'});
 
     const categories:categories = ['category', 'category', 'category', 'category', 'category', 'category'];
 
@@ -24,8 +34,6 @@ export function PortfolioShop() {
     const [sliderRow, setSliderRow] = useState<undefined | Slider>(undefined);
 
 
-
-
     return (
         <>
             <div
@@ -33,7 +41,7 @@ export function PortfolioShop() {
                 ref={ref}
                 style={{
                     background: `url(${mandala}) no-repeat center center`,
-                    backgroundSize: '150% auto',
+                    backgroundSize: isUnder950pxScreen ? 'auto 120%' : '150% auto',
                     flex: '1'
                 }}
             >
@@ -73,10 +81,21 @@ export function PortfolioShop() {
             </div>
 
 
-            <section className="portfolio-down-page">
+            <section className="portfolio-down-page" ref={downRef}>
                 {
                     !isInViewPort &&
                     <CategoryNavBar categories={categories} />
+                }
+
+                {
+                    isDownInViewPort &&
+                    <button
+                        id="up-btn"
+                        onClick={() => scrollIntoView(ref)}
+                    >
+                        <FaArrowAltCircleUp/>
+                    </button>
+                    // TODO try to make up btn as a reusable component
                 }
                 <MasonryGrid
                     imageArray={imageArray}

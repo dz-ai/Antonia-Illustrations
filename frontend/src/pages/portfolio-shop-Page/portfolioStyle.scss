@@ -19,6 +19,14 @@
 
   .slide-container {
     width: 300px;
+  }
+
+  @media (max-width: 280px) {
+    .slide-container {
+      width: 222px;
+    }
+
+
 
     .slick-slide.slick-current.slick-active > div {
       padding: 10px;
@@ -41,6 +49,32 @@
   @include container(column, center, center);
   background: repeating-linear-gradient(45deg, #939fdf, #ccd6d8 100px);
 
+  #up-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+
+    height: 45px;
+    padding: 5px 10px;
+
+    background: rgba(255, 255, 255, 0.23);
+    font-size: 1.2em;
+    color: #5151b9;
+    border: 1px solid #0000ff36;
+    border-radius: 25px;
+    box-shadow: 0 0 6px #1b1bb7;
+
+    svg {
+      margin-top: 4px;
+    }
+
+    &:hover {
+      box-shadow: 0 0 10px #1b1bb7;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+
+  }
 }
 
 .category-navbar {
@@ -65,5 +99,19 @@
 
 .portfolio-down-page-none {
   display: none;
+}
+
+@media (min-height: 1000px) {
+  .slide-container {
+    min-width: 450px;
+    height: fit-content;
+  }
+}
+
+@media (min-height: 1050px) {
+   .slide-container {
+    min-width: 500px;
+     height: fit-content;
+  }
 }
 

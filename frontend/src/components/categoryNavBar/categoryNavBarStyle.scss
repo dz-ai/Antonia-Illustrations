@@ -7,6 +7,8 @@
   width: 100%;
   top: 0;
   height: 35px;
+  overflow-y: auto;
+  -ms-overflow-style: none;
 
   button {
     @include btn(unset, unset);
@@ -15,4 +17,8 @@
     padding: 5px 5px;
     font-size: 15px;
   }
+}
+
+.category-navbar::-webkit-scrollbar {
+ display: none;
 }
