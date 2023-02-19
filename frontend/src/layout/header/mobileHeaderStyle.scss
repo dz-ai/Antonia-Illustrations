@@ -1,0 +1,155 @@
+@import "../../styles/general";
+
+
+.mobile-header {
+  @include container(row, end, center);
+  background: #1426f78a;
+  padding: 10px;
+
+  #burger-btn {
+    @include btn(#4141ca, white);
+    @include container(column, center, center);
+    width: unset;
+    min-height: 25px;
+    margin: 0 2px;
+    padding: 5px 5px;
+    font-size: 20px;
+    color: darkslategrey;
+
+    &:hover {
+      padding: 0;
+
+      svg {
+        margin: 5px 5px;
+      }
+    }
+  }
+
+  //
+
+  .nav-blur {
+    position: absolute;
+    top: 0;
+    right: -100%;
+    z-index: 9;
+    width: 100%;
+    height: 100%;
+    transition: all 0.5s ease-in-out;
+  }
+
+  .nav-blur-active {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 9;
+    width: 100%;
+    height: 100%;
+    background: rgb(0 0 0 / 54%);
+    transition: all 0.5s ease-in-out;
+
+  }
+
+  //
+
+  nav {
+    @include container(column, unset, center);
+    transition: dispalay 0.5s;
+    width: unset;
+    height: 100%;
+    min-width: 200px;
+    padding: 0 5px;
+
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 9;
+    background: rgb(167 175 255);
+
+    .display-none {
+      display: none;
+    }
+
+
+    .dropdown-wrapper {
+      @include container(row, center, center);
+      margin: 3px;
+      background: white;
+      box-shadow: 0 0 5px #2626b9;
+
+      .icon {
+        top: 7px;
+      }
+
+
+      &:hover {
+        box-shadow: 0 0 10px #2626b9;
+        background: #2c027a;
+        color: white;
+      }
+
+      &:active {
+        box-shadow: 0 0 10px #2626b9;
+        background: #2c027a;
+        color: white;
+      }
+
+      .select.container {
+        @include container(row, center, center);
+        padding: 0;
+
+        &:hover {
+          background: #2c027a;
+          color: white;
+        }
+
+        &:active {
+          background: #2c027a;
+          color: white;
+        }
+      }
+
+      .option {
+        color: black;
+      }
+    }
+
+    #search-btn-mobil {
+      display: flex;
+
+      button {
+        @include container(row, center, center);
+        width: unset;
+        height: 20px;
+        border-radius: 5px;
+        font-size: 15px;
+      }
+
+      input {
+        padding: 0;
+      }
+    }
+
+    button {
+      @include container(row, center, center);
+      width: 100%;
+      border: none;
+      background: white;
+      margin: 3px;
+      height: 35px;
+      box-shadow: 0 0 5px #2626b9;
+
+      &:hover {
+        box-shadow: 0 0 10px #2626b9;
+        background: #2c027a;
+        color: white;
+      }
+
+      &:active {
+        box-shadow: 0 0 10px #2626b9;
+        background: #2c027a;
+        color: white;
+      }
+    }
+  }
+
+}

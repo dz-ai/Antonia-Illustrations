@@ -1,8 +1,7 @@
 @import "../../styles/general";
-@import "../../styles/general";
 
 .main-header {
-  @include container(column, start, center);
+  @include container(column, center, end);
   background: #1426f78a;
 }
 
@@ -18,7 +17,13 @@
     font-size: 15px;
   }
 
+  #search-btn-main {
+    @include container(row, center, center);
+    width: unset;
+  }
+
   .search-btn {
+    @include container(row, center, center);
     min-height: fit-content;
     width: 30px;
   }
@@ -28,12 +33,15 @@
   }
 
   .cart-btn {
+    @include container(row, end, center);
+    width: unset;
     height: 35px;
     padding: 0 5px;
     margin-left: 10px;
 
     svg {
-      font-size: 20px;
+      display: unset;
+      height: unset;
     }
   }
 
@@ -51,9 +59,13 @@
     cursor: pointer;
   }
 
+  .icon {
+    top: 10px;
+  }
+
   .select {
     width: 120px;
-    padding: 5px 0 0 5px;
+    padding: 8px 0 0 5px;
     background: none;
     z-index: 99999999;
   }
