@@ -2,7 +2,7 @@
 
 footer {
   @include container(column, center, center);
-  height: fit-content;
+  height: 250px;
   background: #083E41;
   color: white;
   padding: 40px 0;
@@ -15,12 +15,31 @@ footer {
       color: white;
     }
   }
+
+  @media (max-width: 700px) {
+    .footer-details {
+      flex-direction: column;
+      justify-content: unset;
+      margin-bottom: 10px;
+    }
+
+    .footer-details section div {
+        text-align: center;
+    }
+
+    .footer-details a {
+      margin-bottom: 20px;
+    }
+  }
   .footer-details section {
     @include container(column, center, center);
     height: 153px;
     flex: 0.4;
   }
-  .leave-message:hover {
-    @include btn(blue, white)
+
+  .leave-message {
+    @include btn(blue, white);
+    color: white;
   }
+
 }

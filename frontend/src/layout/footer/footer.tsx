@@ -10,13 +10,13 @@ export function Footer() {
 
                 <section>
                     <div>
-                        <a href="tel: 0585118479"><BsFillTelephoneFill/> 0585118479</a>
-                        <br/>
                     <AiOutlineMail/> winkelmann@gmail.com</div>
+                        <br/>
+                        <a href="tel: 0585118479"><BsFillTelephoneFill/> 0585118479</a>
                 </section>
 
                 <section>
-                    <p className="leave-message"><SiMinutemailer/> leave me a massage</p>
+                    <button className="leave-message"><SiMinutemailer/> leave me a massage</button>
                 </section>
 
             </section>

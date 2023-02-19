@@ -1,44 +1,28 @@
 import React, {useState} from "react";
 import {IoIosArrowDropdown, IoIosArrowDropup} from "react-icons/all";
-//import {useMediaQuery} from "react-responsive";
 
 interface IDropdown {
     options: string[];
     categoryValue: string;
     setCategoryValue: (arg: string) => void;
-    removeEventListener: boolean;
-    setRemoveEventListener: (arg: boolean) => void;
 }
 
 function Dropdown(
-    {options, categoryValue, setCategoryValue, removeEventListener, setRemoveEventListener}:IDropdown) {
-
-    //const isMobile = useMediaQuery({query: '(max-width: 670px)'});
-
-
-    //const ref = useRef();
+    {options, categoryValue, setCategoryValue}:IDropdown) {
 
     const optionShow = 'options-show';
     const optionHide = 'options-hide';
 
     const [optionsShowState, setOptionShowState] = useState<string>(optionHide);
 
-    //useOutClick(ref, removeEventListener, null, setOptionShowState);
-
     const handleDropdown = () => {
         if (optionsShowState === optionHide) {
-            setRemoveEventListener(true);
             setOptionShowState(optionShow);
 
-            setTimeout(() => {
-                setRemoveEventListener(false);
-            }, 100);
         } else {
-            setRemoveEventListener(true);
             setOptionShowState(optionHide);
 
             setTimeout(() => {
-                setRemoveEventListener(false);
             }, 100);
         }
     };
@@ -51,7 +35,6 @@ function Dropdown(
     return (
 
         <div
-            // ref={!isMobile ? ref : null}
             className={optionsShowState !== optionShow ? "hover select container" : "select container"}
             onClick={handleDropdown}
             onMouseLeave={() => optionsShowState === optionShow && handleDropdown() }

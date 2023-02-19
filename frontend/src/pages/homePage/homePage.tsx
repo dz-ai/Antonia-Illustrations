@@ -1,8 +1,10 @@
 import {mandala} from "../../imgs/imagesArray";
 import {useNavigate} from 'react-router-dom';
+import {useMediaQuery} from "react-responsive";
 
 export function HomePage() {
     const navigate = useNavigate();
+    const isSmallScreen = useMediaQuery({query: '(max-width: 700px)'});
 
     return (
         <>
@@ -10,7 +12,7 @@ export function HomePage() {
                 className="home-up-page"
             style={{
                 background: `url(${mandala}) no-repeat center center`,
-                backgroundSize: '150% auto',
+                backgroundSize: isSmallScreen ? 'cover' : '150% auto',
                 flex: '1'
             }}
             >
