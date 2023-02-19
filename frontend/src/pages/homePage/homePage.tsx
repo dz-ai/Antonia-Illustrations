@@ -1,10 +1,25 @@
 import {mandala} from "../../imgs/imagesArray";
 import {useNavigate} from 'react-router-dom';
 import {useMediaQuery} from "react-responsive";
+import {useEffect, useState} from "react";
 
 export function HomePage() {
     const navigate = useNavigate();
-    const isSmallScreen = useMediaQuery({query: '(max-width: 700px)'});
+    const isSmallScreen = useMediaQuery({query: '(max-width: 850px)'});
+    const isHighScreen = useMediaQuery({query: '(min-height: 800px)'});
+
+    const [imageDimensions, setImageDimensions] = useState<string>('150% auto');
+
+    useEffect(() => {
+        if (isHighScreen) {
+            setImageDimensions('cover');
+        } else if (isSmallScreen) {
+            setImageDimensions('auto 130%');
+        } else {
+            setImageDimensions('150% auto');
+        }
+    }, [isSmallScreen, isHighScreen]);
+
 
     return (
         <>
@@ -12,7 +27,7 @@ export function HomePage() {
                 className="home-up-page"
             style={{
                 background: `url(${mandala}) no-repeat center center`,
-                backgroundSize: isSmallScreen ? 'cover' : '150% auto',
+                backgroundSize: imageDimensions,
                 flex: '1'
             }}
             >

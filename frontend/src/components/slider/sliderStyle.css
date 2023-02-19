@@ -51,6 +51,11 @@
   width: 100%;
 }
 
+@media (min-height: 1000px) {
+  .slick-slide img {
+    max-height: unset;
+  }
+}
 .my-slider-image {
   position: relative;
 }

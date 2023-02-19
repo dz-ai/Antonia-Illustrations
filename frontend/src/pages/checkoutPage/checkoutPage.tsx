@@ -2,20 +2,15 @@ import {deliverTrack} from "../../imgs/imagesArray";
 import React, {useRef} from "react";
 import {FaArrowAltCircleUp} from "react-icons/all";
 import {useInterSectionObserver} from "../../Hooks/useInterSectionObserver";
+import {TUseScrollIntoView, useScrollIntoView} from "../../Hooks/useScrollIntoView";
 
 export function CheckoutPage() {
     const ref = useRef<HTMLDivElement>(null);
     const upRef = useRef<HTMLDivElement>(null);
 
+    const scrollIntoView:TUseScrollIntoView = useScrollIntoView();
+
     const isInViewPort:boolean = useInterSectionObserver(ref);
-
-    const handleClick = () => {
-        (ref.current as HTMLDivElement).scrollIntoView({behavior: 'smooth'});
-    };
-
-    const handleBackClick = () => {
-        (upRef.current as HTMLDivElement).scrollIntoView({behavior: 'smooth'});
-    };
 
     return (
         <>
@@ -74,7 +69,7 @@ export function CheckoutPage() {
                     <div className="continue-btn">
 
                         <button
-                            onClick={handleClick}
+                            onClick={() => scrollIntoView(ref)}
                             className="btn"
                         >
                             ↓ Continue ↓
@@ -102,9 +97,11 @@ export function CheckoutPage() {
                 {
                     isInViewPort &&
 
-                    <button className="up-btn" onClick={handleBackClick}>
+                    <button className="up-btn" onClick={() => scrollIntoView(upRef)}>
                     <FaArrowAltCircleUp/>
                     </button>
+
+                    // TODO try to make up btn as a reusable component
                 }
 
                 <h3>Payment Detail</h3>
