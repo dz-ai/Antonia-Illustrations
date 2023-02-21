@@ -1,0 +1,24 @@
+.up-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  height: 45px;
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.23);
+  font-size: 1.2em;
+  border: 1px solid rgba(0, 0, 255, 0.2117647059);
+  border-radius: 25px;
+  box-shadow: 0 0 6px #1b1bb7;
+}
+.up-btn svg {
+  margin-top: 4px;
+  font-size: 1.3em;
+  color: rgba(10, 17, 38, 0.85);
+}
+.up-btn:hover {
+  box-shadow: 0 0 10px #1b1bb7;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=jumpUpbtStyle.css.map */

@@ -11,8 +11,8 @@ export const useInterSectionObserver: InterSectionObserver = (ref) => {
                 setIsInViewPort(entry[0].isIntersecting);
             },
             {
-                threshold: 0,
-                rootMargin: '0px 0px 90% 0px'
+                threshold: 0.05,
+                rootMargin: '0px 0px 90% 0px',
             });
 
         ref.current !== null && observer.observe(ref.current);

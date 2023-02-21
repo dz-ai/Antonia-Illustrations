@@ -1,8 +1,8 @@
 import {deliverTrack} from "../../imgs/imagesArray";
 import React, {useRef} from "react";
-import {FaArrowAltCircleUp} from "react-icons/all";
 import {useInterSectionObserver} from "../../Hooks/useInterSectionObserver";
 import {TUseScrollIntoView, useScrollIntoView} from "../../Hooks/useScrollIntoView";
+import {JumpUpBtn} from "../../components/jumpUpBtn/jumpUpBtn";
 
 export function CheckoutPage() {
     const ref = useRef<HTMLDivElement>(null);
@@ -96,12 +96,7 @@ export function CheckoutPage() {
 
                 {
                     isInViewPort &&
-
-                    <button className="up-btn" onClick={() => scrollIntoView(upRef)}>
-                    <FaArrowAltCircleUp/>
-                    </button>
-
-                    // TODO try to make up btn as a reusable component
+                    <JumpUpBtn upRef={upRef}/>
                 }
 
                 <h3>Payment Detail</h3>
