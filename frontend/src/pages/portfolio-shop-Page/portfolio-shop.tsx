@@ -9,8 +9,7 @@ import {categories} from "../../types/types";
 import {useParams} from "react-router-dom";
 import {useInterSectionObserver} from "../../Hooks/useInterSectionObserver";
 import {useMediaQuery} from "react-responsive";
-import {TUseScrollIntoView, useScrollIntoView} from "../../Hooks/useScrollIntoView";
-import {FaArrowAltCircleUp} from "react-icons/all";
+import {JumpUpBtn} from "../../components/jumpUpBtn/jumpUpBtn";
 
 
 export function PortfolioShop() {
@@ -21,7 +20,6 @@ export function PortfolioShop() {
     // Customise Hooks //
     const isInViewPort:boolean = useInterSectionObserver(ref);
     const isDownInViewPort:boolean = useInterSectionObserver(downRef);
-    const scrollIntoView:TUseScrollIntoView = useScrollIntoView();
 
     const isUnder950pxScreen = useMediaQuery({query: '(max-width: 950px)'});
 
@@ -89,13 +87,7 @@ export function PortfolioShop() {
 
                 {
                     isDownInViewPort &&
-                    <button
-                        id="up-btn"
-                        onClick={() => scrollIntoView(ref)}
-                    >
-                        <FaArrowAltCircleUp/>
-                    </button>
-                    // TODO try to make up btn as a reusable component
+                   <JumpUpBtn upRef={ref} />
                 }
                 <MasonryGrid
                     imageArray={imageArray}

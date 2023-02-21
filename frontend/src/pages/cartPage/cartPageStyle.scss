@@ -24,6 +24,17 @@
   .cart-container {
     @include container(row, space-between, center);
     flex: 1;
+    overflow: hidden;
+    margin: 0 0 20px 0;
+  }
+
+
+
+  @media (max-width: 900px) {
+    .cart-container {
+      @include container(column, unset, center);
+      flex: unset;
+    }
   }
 
   .cart-container-l, .cart-container-r {
@@ -36,6 +47,29 @@
   .cart-container-l {
     border-right: 1px solid #6a80f5;
     flex: 2;
+    overflow: auto;
+    padding: 50px 0;
+    border-bottom: 1px solid #5c51ab;
+  }
+
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: rgb(144 171 227);
+    box-shadow: inset -1px 0 4px #491f70;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(102, 89, 218);
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(71, 59, 178);
   }
 
   ////////////////// CONTAINER RIGHT ///////////////

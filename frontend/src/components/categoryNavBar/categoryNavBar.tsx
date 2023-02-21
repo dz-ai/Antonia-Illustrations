@@ -3,6 +3,7 @@ import {categories} from "../../types/types";
 
 
 export function CategoryNavBar({categories}: { categories:categories }) {
+
     return (
 
         <div className="category-navbar">

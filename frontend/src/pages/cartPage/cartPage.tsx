@@ -1,4 +1,4 @@
-import {cartImage} from "../../imgs/imagesArray";
+import {cartImage, imageArray} from "../../imgs/imagesArray";
 import {Cart} from "../../components/cart/cart";
 import {useNavigate} from "react-router-dom";
 
@@ -24,8 +24,9 @@ export function CartPage() {
                     <div className="cart-container">
 
                         <div className="cart-container-l">
-
-                            <Cart />
+                            {
+                                imageArray.map(image => <Cart image={image} />)
+                            }
 
                         </div>
 

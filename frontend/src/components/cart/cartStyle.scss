@@ -2,6 +2,7 @@
 
 .cart-item {
   @include container(row, space-around, unset);
+  flex-wrap: wrap;
   margin: 20px;
   background: #faebd754;
   padding: 10px;
@@ -10,34 +11,55 @@
   width: unset;
   max-width: 100%;
 
-  .image-cart-wrapper, .description-add-wrapper, .total-wrapper, .cart-rm-btn {
+  .image-cart-wrapper, .total-add-wrapper, .total-wrapper, .cart-rm-btn {
     margin: 0 5px;
   }
 
-  .image-cart-wrapper, .description-add-wrapper {
+  .image-cart-wrapper, .total-add-wrapper {
     border-right: 1px solid #6a80f5;
   }
 
+  ////// Image AND DESCRIPTION SECTION ///////
   .image-cart-wrapper {
     @include container(unset, center, center);
     flex: 1;
-
     img {
       max-width: 100px;
       max-height: 100px;
       margin: 3px;
     }
-  }
-
-  .description-add-wrapper {
-    @include container(column, space-between, center);
-    flex: 1;
 
     p {
-      text-align: center;
-      margin-bottom: 15px;
+      font-size: 0.9em;
+      text-align: start;
+      margin:0 15px;
     }
+  }
 
+  @media (max-width: 435px) {
+    .image-cart-wrapper {
+      border-right: unset;
+    }
+  }
+
+  ////// END Image AND DESCRIPTION ///////
+
+
+
+  .total-add-wrapper {
+    @include container(column, space-between, start);
+    flex: 1;
+    padding-right: 15px;
+  }
+
+  @media (max-width: 361px) {
+    .total-add-wrapper {
+      border-right: unset;
+
+        .add-to-cart-cart {
+          margin-top: 20px;
+        }
+    }
   }
 
   .add-to-cart-cart {
@@ -46,21 +68,25 @@
 
   }
 
-  .total-wrapper {
-    @include container(column, end, start);
-    flex: 1;
-
-  }
-
   .cart-rm-btn {
-    @include container(column, end, end);
+    @include container(column, center, center);
     flex: 1;
+
 
     button {
       @include btn(#a94949, white);
-
+      box-shadow: 0 2px 5px #0000ff82;
+      background: #6974e4;
+      white-space: nowrap;
     }
   }
+
+  @media (max-width: 600px) {
+    .cart-rm-btn {
+      margin-top: 20px;
+    }
+  }
+
 
   .cart-quantity {
     background: blue;
@@ -99,4 +125,10 @@
     }
   }
 
+}
+
+@media (max-width: 280px) {
+  .cart-item {
+    margin: 20px 15px 20px 20px;
+  }
 }
