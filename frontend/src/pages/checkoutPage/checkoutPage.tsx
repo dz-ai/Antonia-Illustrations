@@ -92,7 +92,7 @@ export function CheckoutPage() {
 
             </div>
 
-            <div className="checkout-down-page">
+            <div className="checkout-down-page"  ref={ref}>
 
                 {
                     isInViewPort &&
@@ -101,7 +101,7 @@ export function CheckoutPage() {
 
                 <h3>Payment Detail</h3>
 
-                <div className="payment-card" ref={ref}>
+                <div className="payment-card">
                     <div className="credit-total">
                         <h4>You Got: 0 Items </h4>
                         <h4>Total: 0 ₪</h4>

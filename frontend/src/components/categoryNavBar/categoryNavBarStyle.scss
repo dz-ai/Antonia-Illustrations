@@ -1,24 +1,46 @@
 @import "../src/styles/general";
 
-.category-navbar {
-  @include container(row, center, center);
-  position: sticky;
-  z-index: 8;
+.nav-wrapper {
+  @include container(row, center, unset);
   width: 100%;
+  overflow-x: hidden;
+  position: sticky;
   top: 0;
-  height: 35px;
-  overflow-y: auto;
-  padding-left: 50px;
-
-  button {
-    @include btn(unset, unset);
-    min-height: 35px;
-    margin: 0 2px;
-    padding: 5px 5px;
-    font-size: 15px;
-  }
+  z-index: 8;
 }
 
-.category-navbar::-webkit-scrollbar {
+.nav {
+  @include container(row, unset, center);
+  background: #6a80f59c;
+  width: 100%;
+  height: 35px;
+  overflow-x: auto;
+}
+
+.nav div {
+  @include btn(unset, unset);
+  margin: 5px;
+  display: inline;
+}
+
+.scroll-btn-r, .scroll-btn-l {
+  @include btn(rgb(102, 102, 239), white);
+  @include container(row, center, cneter);
+  background: rgb(124 124 255);
+  color: #cbd6e3;
+  position: absolute;
+  width: 2.5vw;
+  height: 35px;
+}
+
+.scroll-btn-l {
+  right: 0;
+}
+
+.scroll-btn-r {
+  left: 0;
+}
+
+.nav::-webkit-scrollbar {
  display: none;
 }

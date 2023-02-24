@@ -23,7 +23,7 @@ export function PortfolioShop() {
 
     const isUnder950pxScreen = useMediaQuery({query: '(max-width: 950px)'});
 
-    const categories:categories = ['category', 'category', 'category', 'category', 'category', 'category'];
+    const categories:categories = ['first', 'category','category', 'category', 'category', 'category', 'category', 'category', 'category', 'category', 'category', 'last'];
 
     const [fullScreen, setFullScreen] = useState<boolean | string>(false);
     const [remEListener, setRemEListener] = useState<boolean>(false);

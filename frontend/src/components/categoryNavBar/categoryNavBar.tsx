@@ -1,17 +1,70 @@
-import React from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {categories} from "../../types/types";
 
 
-export function CategoryNavBar({categories}: { categories:categories }) {
+export function CategoryNavBar({categories}: { categories: categories }) {
+    const ref = useRef<HTMLDivElement>(null);
+
+    const [isOverFlow, setIsOverFlow] = useState<boolean>(false);
+
+    // set isOverFlow to false or true according to screen size.
+    useEffect(() => {
+        const handleResize = () => {
+            if (ref.current) {
+                const isVisible = ref.current.scrollWidth > ref.current.offsetWidth;
+                setIsOverFlow(isVisible);
+            }
+        };
+
+        handleResize(); /* check screen size at load time */
+
+        /* trigger handleResize(); if we change screen size after load */
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        }
+    }, []);
+
+    // trigger scroll by clicking the arrows.
+    const handleClick = (direction: string) => {
+        if (direction === "left") {
+            (ref.current as HTMLDivElement).scrollBy({
+                left: -150,
+                behavior: 'smooth'
+            });
+        } else if (direction === "right") {
+            (ref.current as HTMLDivElement).scrollBy({
+                left: 150,
+                behavior: 'smooth'
+            });
+        }
+    };
 
     return (
 
-        <div className="category-navbar">
+        <div className="nav-wrapper">
             {
-                categories.map((category, index) =>
-                    <button key={index}>{category}</button>
-                )
+                isOverFlow &&
+                <>
+                    <button className="scroll-btn-l" onClick={() => handleClick('right')}>►</button>
+                    <button className="scroll-btn-r" onClick={() => handleClick('left')}>◄</button>
+                </>
             }
+            <div
+                className="nav"
+                ref={ref}
+                style={{
+                    width: isOverFlow ? '95%' : '100%',
+                    justifyContent: isOverFlow ? 'unset' : 'center',
+                }}
+            >
+                {
+                    categories.map((category, index) =>
+                        <div key={index}>{category}</div>
+                    )
+                }
+            </div>
         </div>
     );
 }
