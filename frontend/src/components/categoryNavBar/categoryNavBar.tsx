@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {categories} from "../../types/types";
+import {MdArrowBackIosNew, MdArrowForwardIos} from "react-icons/md";
 
 
 export function CategoryNavBar({categories}: { categories: categories }) {
@@ -47,8 +48,16 @@ export function CategoryNavBar({categories}: { categories: categories }) {
             {
                 isOverFlow &&
                 <>
-                    <button className="scroll-btn-l" onClick={() => handleClick('right')}>►</button>
-                    <button className="scroll-btn-r" onClick={() => handleClick('left')}>◄</button>
+                    <div
+                        className="scroll-btn-l"
+                        onClick={() => handleClick('right')}>
+                        <MdArrowForwardIos/>
+                    </div>
+                    <button
+                        className="scroll-btn-r"
+                        onClick={() => handleClick('left')}>
+                        <MdArrowBackIosNew/>
+                    </button>
                 </>
             }
             <div

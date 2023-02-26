@@ -1,0 +1,148 @@
+@import "src/styles/general";
+
+
+.checkout-up-page {
+  @include container(row, start, center);
+  background: #9c9cf7;
+  box-shadow: inset 0 2px 8px #3939fe;
+  width: 100%;
+  height: 100%;
+
+
+  .co-up-l, .co-up-r {
+    height: 100%;
+    flex: 1;
+  }
+
+  .co-up-l {
+    padding-left: 50px;
+
+    h2 {
+      border-bottom: 0 solid;
+      background-image: linear-gradient(to right, #3128ff, #9c9cf7);
+      background-position: bottom;
+      background-size: 100% 2px;
+      background-repeat: no-repeat;
+    }
+
+    .input-f-wrapper {
+      @include container(row, space-between, center);
+      width: 350px;
+      margin-bottom: 10px;
+    }
+
+    .continue-btn {
+      @include container(unset, center, center);
+      width: 350px;
+
+      .btn {
+        @include btn(gray, white);
+        margin-top: 20px;
+        background: #a94affb3;
+        font-size: 1.3em;
+      }
+    }
+
+    @media (max-width: 470px) {
+      label {
+        display: none;
+      }
+    }
+
+  }
+
+  @media (max-width: 470px) {
+    .co-up-l {
+      @include container(column, unset, center);
+      width: fit-content;
+      padding: 0;
+
+      .input-f-wrapper {
+        justify-content: center;
+        width: 100%;
+        padding: 0 10px 0 10px;
+
+        * {
+          width: 100%;
+        }
+      }
+
+      .continue-btn {
+        width: fit-content;
+      }
+
+    }
+  }
+
+
+
+  // RIGHT/DOWN //
+
+  .co-up-r {
+    position: relative;
+    background-size: 100% auto !important;
+    flex: 1;
+
+    .blur-checkout-img {
+      @include blurBackGround();
+      background: linear-gradient(272deg, #0332ff7a, transparent);
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+  }
+
+}
+/////////// end of right/down /////////
+
+// Up Page Media Query //
+
+@media (max-width: 600px) {
+  .checkout-up-page {
+    flex-direction: column;
+    background: linear-gradient(272deg, #596dfb, #9c9cf7);
+  }
+
+  .checkout-up-page .co-up-r {
+    width: 0;
+    height: 0;
+
+    .blur-checkout-img {
+      display: none;
+    }
+  }
+}
+
+@media (min-height: 600px) and (max-width: 550px){
+  .checkout-up-page .co-up-r {
+    width: 100%;
+
+    .blur-checkout-img {
+      background: linear-gradient(272deg, rgb(3 50 255 / 0%), transparent);
+    }
+  }
+
+}
+
+@media (max-width: 600px) and (min-height: 600px) {
+  .checkout-up-page {
+    flex-direction: column;
+    background: linear-gradient(272deg, #596dfb, #9c9cf7);
+
+    .co-up-r {
+      width: 100%;
+      background-size: 60% !important;
+
+      .blur-checkout-img {
+        background: linear-gradient(272deg, rgb(3 50 255 / 0%), transparent);
+      }
+    }
+  }
+}
+
+@media (min-height: 1000px) {
+  .checkout-up-page {
+    height: 50%;
+  }
+}

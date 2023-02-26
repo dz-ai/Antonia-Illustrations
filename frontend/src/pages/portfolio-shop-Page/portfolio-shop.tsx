@@ -15,6 +15,7 @@ import {JumpUpBtn} from "../../components/jumpUpBtn/jumpUpBtn";
 export function PortfolioShop() {
     const ref = useRef<HTMLDivElement>(null);
     const downRef = useRef<HTMLDivElement>(null);
+
     const {page} = useParams() as any;
 
     // Customise Hooks //

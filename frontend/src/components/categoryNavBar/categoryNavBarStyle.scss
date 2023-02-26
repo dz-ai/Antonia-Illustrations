@@ -25,11 +25,11 @@
 
 .scroll-btn-r, .scroll-btn-l {
   @include btn(rgb(102, 102, 239), white);
-  @include container(row, center, cneter);
-  background: rgb(124 124 255);
-  color: #cbd6e3;
+  @include container(row, center, center);
+  padding: 0;
+  background: rgb(140 140 167);
   position: absolute;
-  width: 2.5vw;
+  width: 4vw;
   height: 35px;
 }
 
