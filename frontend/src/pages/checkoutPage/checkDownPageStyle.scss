@@ -1,70 +1,10 @@
 @import "src/styles/general";
 
-
-.checkout-up-page {
-  @include container(row, start, center);
-  background: #9c9cf7;
-  box-shadow: inset 0 2px 8px #3939fe;
-  width: 100%;
-  height: 100%;
-
-
-  .co-up-l, .co-up-r {
-    height: 100%;
-    flex: 1;
-  }
-
-  .co-up-l {
-    padding-left: 20px;
-
-    h2 {
-      border-bottom: 0 solid;
-      background-image: linear-gradient(to right, #3128ff, #9c9cf7);
-      background-position: bottom;
-      background-size: 100% 2px;
-      background-repeat: no-repeat;
-    }
-
-    .input-f-wrapper {
-      @include container(row, space-between, center);
-      width: 350px;
-      margin-bottom: 10px;
-    }
-
-    .continue-btn {
-      @include container(unset, center, center);
-
-      .btn {
-        @include btn(gray, white);
-        margin-top: 20px;
-        background: #a94affb3;
-        font-size: 1.3em;
-      }
-    }
-
-  }
-
-  //
-
-  .co-up-r {
-    position: relative;
-
-    .blur-checkout-img {
-      @include blurBackGround();
-      background: linear-gradient(272deg, #0332ff7a, transparent);
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
-
-  }
-
-}
-
 .checkout-down-page {
   @include container(column, start, center);
   height: 100%;
   background: linear-gradient(188deg, #3355ea, transparent);
+  padding-bottom: 70px;
 
   .up-btn {
     color: white;
@@ -101,11 +41,31 @@
 
     .payment-f {
       @include container(row, space-between, center);
+      flex-wrap: wrap;
       width: 350px;
       margin-bottom: 10px;
       border-bottom: 1px solid #fd00ff85;
       padding-bottom: 15px;
     }
+
+    @media (max-width: 650px) {
+      .credit-total, .payment-f {
+        width: 100%;
+      }
+    }
+    
+    @media (max-width: 535px) {
+
+      .payment-f {
+        flex-direction: column;
+        text-align: left;
+      }
+
+      .payment-f * {
+        width: 100%;
+      }
+    }
+
 
     .btn {
       @include btn(gray, white);
@@ -115,5 +75,26 @@
       margin-top: 20px;
     }
 
+  }
+
+  @media (max-width: 350px) {
+    .payment-card {
+      width: 85%;
+      max-width: unset;
+    }
+  }
+}
+
+@media (max-width: 535px) {
+  .checkout-down-page  {
+    height: unset;
+    padding-bottom: 50px;
+}
+
+}
+
+@media (min-height: 1000px) {
+  .checkout-down-page {
+    height: unset;
   }
 }
