@@ -41,12 +41,13 @@ export function SliderComponent({images, numOfImages, auto, scroll, focusOnSelec
                                 key={image}
                                 className="my-slider-image"
                             >
-                                <img
-                                    key={image}
-                                    src={image}
-                                    alt='img'
-                                    loading="lazy"
-                                />
+                                <div style={{
+                                    backgroundImage: `url(${image})`,
+                                    backgroundRepeat: 'no-repeat',
+                                    backgroundSize: 'contain',
+                                    backgroundPosition: 'center',
+                                    height: '400px',
+                                }}></div>
                                 {
                                     addToCart &&
                                    <AddToCart />
@@ -54,7 +55,6 @@ export function SliderComponent({images, numOfImages, auto, scroll, focusOnSelec
                             </div>
                         )
                 }
-
             </Slider>
         </>
     );

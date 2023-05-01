@@ -64,19 +64,6 @@ export function PortfolioShop() {
                         addToCart={page === 'shop'}
                     />
                 </div>
-
-                <div className="portfolio-up-hor-display">
-                    <SliderComponent
-                        images={imageArray}
-                        numOfImages={5}
-                        auto={false}
-                        scroll={3}
-                        focusOnSelect={true}
-                        nav={sliderBig}
-                        setNav={setSliderRow}
-                    />
-
-                </div>
             </div>
 
 

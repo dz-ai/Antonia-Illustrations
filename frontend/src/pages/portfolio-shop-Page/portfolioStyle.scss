@@ -5,9 +5,8 @@
 }
 
 .portfolio-up-page {
-  @include container(column, space-between, center);
-  height: fit-content;
-  min-height: 100%;
+  @include container(column, start, center);
+  height: 100%;
   position: relative;
 
   .portfolio-page-blur {
@@ -18,61 +17,38 @@
   }
 
   .slide-container {
-    width: 300px;
-  }
-
-  @media (max-width: 280px) {
-    .slide-container {
-      width: 222px;
-    }
-
-
-
-
-    .slick-slide.slick-current.slick-active > div {
-      padding: 10px;
-      box-shadow: inset 0 0 13px 1px;
-    }
-
-  }
-
-  .portfolio-up-hor-display {
-    width: 600px;
-    margin-bottom: 50px;
-
-    .slick-slide.slick-active > div {
-      margin: 2px;
-    }
+    @include container(column, center, unset);
+    width: 95%;
+    height: 100%;
   }
 }
 
 .portfolio-down-page {
   @include container(column, center, center);
-  background: linear-gradient(92deg, #4256c4, #7882c8bf);
-
-  }
+  background: linear-gradient(92deg, #cad2ff, rgb(144 158 254 / 75%));
+}
 
 .portfolio-down-page-none {
   display: none;
 }
 
-@media (min-height: 1000px) {
-  .slide-container {
-    min-width: 450px;
-    height: fit-content;
-  }
-}
+//@media (min-height: 1000px) {
+//  .slide-container {
+//    min-width: 450px;
+//    height: fit-content;
+//  }
+//}
+//
+//@media (min-height: 1050px) {
+//   .slide-container {
+//    min-width: 500px;
+//     height: fit-content;
+//  }
+//}
 
-@media (min-height: 1050px) {
-   .slide-container {
-    min-width: 500px;
-     height: fit-content;
-  }
-}
-
-@media (max-height: 750px) {
-  .portfolio-up-page .slide-container {
-    width: 230px;
-  }
-}
+//@media (max-height: 750px) {
+//  .portfolio-up-page .slide-container {
+//    width: 230px;
+//  }
+//}
 
