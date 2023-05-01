@@ -2,8 +2,9 @@
 
 .nav-wrapper {
   @include container(row, center, unset);
+  height: 35px;
   width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
   position: sticky;
   top: 0;
   z-index: 8;

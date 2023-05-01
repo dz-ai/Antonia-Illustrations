@@ -43,14 +43,16 @@
     margin: 10px 10px 65px;
     color: #2c027a;
   }
+}
+@media (max-width: 390px) {
+  .home-down-page {
+    flex-direction: column;
 
-  @media (max-width: 280px) {
     button {
-      margin: 0 0 65px;
+      margin: 0;
     }
   }
 }
-
 
 
 

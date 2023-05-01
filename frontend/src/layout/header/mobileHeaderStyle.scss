@@ -96,6 +96,7 @@
       .select.container {
         @include container(row, center, center);
         padding: 0;
+        color: black;
 
         &:hover {
           background: #2c027a;

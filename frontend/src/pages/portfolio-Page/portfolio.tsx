@@ -1,22 +1,18 @@
 import {SliderComponent} from "../../components/slider/sliderComponent";
 import React, {useRef, useState} from "react";
-import Slider from "react-slick";
 import {imageArray, mandala} from "../../imgs/imagesArray";
 import {FullScreen} from "../../components/fullScreen/fullScreen";
 import {MasonryGrid} from "../../components/masonryGrid/MasonryGrid";
 import {CategoryNavBar} from "../../components/categoryNavBar/categoryNavBar";
 import {categories} from "../../types/types";
-import {useParams} from "react-router-dom";
 import {useInterSectionObserver} from "../../Hooks/useInterSectionObserver";
 import {useMediaQuery} from "react-responsive";
 import {JumpUpBtn} from "../../components/jumpUpBtn/jumpUpBtn";
 
 
-export function PortfolioShop() {
+export function Portfolio() {
     const ref = useRef<HTMLDivElement>(null);
     const downRef = useRef<HTMLDivElement>(null);
-
-    const {page} = useParams() as any;
 
     // Customise Hooks //
     const isInViewPort:boolean = useInterSectionObserver(ref);
@@ -28,10 +24,6 @@ export function PortfolioShop() {
 
     const [fullScreen, setFullScreen] = useState<boolean | string>(false);
     const [remEListener, setRemEListener] = useState<boolean>(false);
-
-    const [sliderBig, setSliderBig] = useState<undefined | Slider>(undefined);
-    const [sliderRow, setSliderRow] = useState<undefined | Slider>(undefined);
-
 
     return (
         <>
@@ -59,9 +51,6 @@ export function PortfolioShop() {
                         auto={false}
                         scroll={1}
                         focusOnSelect={false}
-                        nav={sliderRow}
-                        setNav={setSliderBig}
-                        addToCart={page === 'shop'}
                     />
                 </div>
             </div>
@@ -81,7 +70,6 @@ export function PortfolioShop() {
                     imageArray={imageArray}
                     setRemEListener={setRemEListener}
                     setFullScreen={setFullScreen}
-                    addToCart={page === 'shop'}
                 />
                 {
                     typeof fullScreen === 'string' &&

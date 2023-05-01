@@ -1,7 +1,4 @@
 import Slider from "react-slick";
-import {Dispatch, SetStateAction} from "react";
-import {AddToCart} from "../addToCart/addToCart";
-
 
 interface IMagesRow {
     images: string[];
@@ -9,12 +6,9 @@ interface IMagesRow {
     auto: boolean;
     scroll: number;
     focusOnSelect: boolean;
-    nav: undefined | Slider;
-    setNav: Dispatch<SetStateAction<any>>;
-    addToCart?: boolean;
 }
 
-export function SliderComponent({images, numOfImages, auto, scroll, focusOnSelect, nav, setNav, addToCart}: IMagesRow) {
+export function SliderComponent({images, numOfImages, auto, scroll, focusOnSelect}: IMagesRow) {
 
     const settings = {
         dots: false,
@@ -30,8 +24,6 @@ export function SliderComponent({images, numOfImages, auto, scroll, focusOnSelec
         <>
             <Slider
                 {...settings}
-                ref={slider => setNav(slider)}
-                asNavFor={nav}
                 focusOnSelect={focusOnSelect}
             >
                 {
@@ -48,10 +40,6 @@ export function SliderComponent({images, numOfImages, auto, scroll, focusOnSelec
                                     backgroundPosition: 'center',
                                     height: '400px',
                                 }}></div>
-                                {
-                                    addToCart &&
-                                   <AddToCart />
-                                }
                             </div>
                         )
                 }

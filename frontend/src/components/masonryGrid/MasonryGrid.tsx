@@ -1,15 +1,13 @@
 import Masonry from "react-masonry-css";
 import React, {Dispatch, SetStateAction} from "react";
-import {AddToCart} from "../addToCart/addToCart";
 
 type Props = {
     imageArray: string[];
     setRemEListener: Dispatch<SetStateAction<boolean>>;
     setFullScreen: Dispatch<SetStateAction<string | boolean>>;
-    addToCart?: boolean;
 };
 
-export function MasonryGrid({imageArray, setRemEListener, setFullScreen, addToCart}: Props) {
+export function MasonryGrid({imageArray, setRemEListener, setFullScreen}: Props) {
     const breakpoints = {
         default: 4,
         1100: 3,
@@ -48,11 +46,6 @@ export function MasonryGrid({imageArray, setRemEListener, setFullScreen, addToCa
                                     loading="lazy"
                                 />
                                 <p>description description description description</p>
-                                {
-                                    addToCart &&
-                                    <AddToCart />
-                                }
-
                         </div>
                     )
             }
