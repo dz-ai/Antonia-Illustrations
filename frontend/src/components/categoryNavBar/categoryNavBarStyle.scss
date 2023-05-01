@@ -19,15 +19,19 @@
 
 .nav div {
   @include btn(unset, unset);
-  margin: 5px;
-  display: inline;
+  color: white;
+  padding: 0 10px;
+  margin: 0 5px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .scroll-btn-r, .scroll-btn-l {
-  @include btn(rgb(102, 102, 239), white);
+  @include btn(rgb(140 140 167), unset);
   @include container(row, center, center);
   padding: 0;
-  background: rgb(140 140 167);
+  background: rgb(102, 102, 239);
+  color: white;
   position: absolute;
   width: 4vw;
   height: 35px;
