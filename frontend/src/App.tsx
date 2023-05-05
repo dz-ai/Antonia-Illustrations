@@ -3,7 +3,7 @@ import Header from "./layout/header/header";
 import {Footer} from "./layout/footer/footer";
 import {Outlet, useLocation} from "react-router-dom";
 import React, {useEffect} from "react";
-import store from "../store";
+import store from "./store";
 
 function App() {
     const location = useLocation();

@@ -4,7 +4,7 @@ import {useEffect, useRef, useState} from "react";
 import {useNavigate} from 'react-router-dom';
 import {useMediaQuery} from "react-responsive";
 import {useOutClick} from "../../Hooks/useOutClick";
-import store from "../../../store";
+import store from "../../store";
 import {observer} from "mobx-react";
 
 
