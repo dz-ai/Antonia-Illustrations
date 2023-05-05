@@ -69,3 +69,5 @@ function RegisterPage() {
         </div>
     );
 }
+
+export default observer(RegisterPage);
