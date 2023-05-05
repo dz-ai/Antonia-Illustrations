@@ -13,6 +13,10 @@
     border-radius: 15px;
     box-shadow: 5px 5px 5px 0 #002b7f;
 
+    form {
+      @include container(column, center, center);
+    }
+
     h2 {
       color: #401616;
     }

@@ -1,11 +1,16 @@
 import './styles/app.scss'
-import {Header} from "./layout/header/header";
+import Header from "./layout/header/header";
 import {Footer} from "./layout/footer/footer";
 import {Outlet, useLocation} from "react-router-dom";
-import React from "react";
+import React, {useEffect} from "react";
+import store from "./store";
 
 function App() {
     const location = useLocation();
+
+    useEffect(() => {
+        store.authTokenOnLand();
+    }, []);
 
     return (
         <div className="app">

@@ -7,7 +7,7 @@ import {Portfolio} from "./pages/portfolio-Page/portfolio";
 import {ErrorPage} from "./pages/errorPage/errorPage";
 import {HomePage} from "./pages/homePage/homePage";
 import {AboutMePage} from "./pages/about-mePage/aboutMePage";
-import {RegisterPage} from "./pages/registerPage/registerPage";
+import RegisterPage from "./pages/registerPage/registerPage";
 
 const router = createBrowserRouter(
     createRoutesFromElements(

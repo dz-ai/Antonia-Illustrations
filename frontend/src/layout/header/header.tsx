@@ -4,9 +4,11 @@ import {useEffect, useRef, useState} from "react";
 import {useNavigate} from 'react-router-dom';
 import {useMediaQuery} from "react-responsive";
 import {useOutClick} from "../../Hooks/useOutClick";
+import store from "../../store";
+import {observer} from "mobx-react";
 
 
-export function Header() {
+function Header() {
     const navigate = useNavigate();
     const ref = useRef(null);
 
@@ -18,11 +20,11 @@ export function Header() {
     useOutClick(ref, setShowBurgerMenu, outClickRem);
 
     useEffect(() => {
-      if (showBurgerMenu) {
-          setOutClickRem(false);
-      } else {
-          setOutClickRem(true);
-      }
+        if (showBurgerMenu) {
+            setOutClickRem(false);
+        } else {
+            setOutClickRem(true);
+        }
     }, [showBurgerMenu]);
 
     return (
@@ -43,34 +45,34 @@ export function Header() {
                 <>
                     <div
                         className={isSmallScreen && showBurgerMenu ? "nav-blur-active" : "nav-blur"}
-                            style={{right: isSmallScreen && showBurgerMenu ? '0' : '-100%'}}
+                        style={{right: isSmallScreen && showBurgerMenu ? '0' : '-100%'}}
                     >
                         <nav
                             ref={ref}
                             className={isSmallScreen && showBurgerMenu ? "nav-active" : "nav-manu"}
-                       >
+                        >
 
                             <button
                                 onClick={() => {
-                                showBurgerMenu && setShowBurgerMenu(false);
-                                navigate('/');
-                            }}>
+                                    showBurgerMenu && setShowBurgerMenu(false);
+                                    navigate('/');
+                                }}>
                                 Home
                             </button>
 
                             <button
                                 onClick={() => {
-                                showBurgerMenu && setShowBurgerMenu(false);
-                                navigate('/portfolio');
-                            }}>
+                                    showBurgerMenu && setShowBurgerMenu(false);
+                                    navigate('/portfolio');
+                                }}>
                                 Portfolio
                             </button>
 
                             <div className="dropdown-wrapper" onClick={() => {
-                                    setOutClickRem(true);
-                                    setTimeout(() => {
-                                        setOutClickRem(false);
-                                    }, 500);
+                                setOutClickRem(true);
+                                setTimeout(() => {
+                                    setOutClickRem(false);
+                                }, 500);
                             }
                             }>
                                 {/*TODO make better dropdown ui ux (use library?)*/}
@@ -83,11 +85,15 @@ export function Header() {
 
                             <button
                                 onClick={() => {
-                                showBurgerMenu && setShowBurgerMenu(false);
-                                navigate('/about-me');
-                            }}>
+                                    showBurgerMenu && setShowBurgerMenu(false);
+                                    navigate('/about-me');
+                                }}>
                                 About Me
                             </button>
+                            {
+                                store.isUserLog && localStorage.getItem('token') !== null &&
+                                <button onClick={() => store.logOut()}>Log Out</button>
+                            }
                         </nav>
                     </div>
                 </>
@@ -95,3 +101,5 @@ export function Header() {
         </header>
     );
 }
+
+export default observer(Header);
