@@ -1,5 +1,5 @@
 import Dropdown from "../../components/dropdown/dropdown";
-import {GiHamburgerMenu} from "react-icons/all";
+import {FaUserCircle, GiHamburgerMenu} from "react-icons/all";
 import {useEffect, useRef, useState} from "react";
 import {useNavigate} from 'react-router-dom';
 import {useMediaQuery} from "react-responsive";
@@ -92,7 +92,7 @@ function Header() {
                             </button>
                             {
                                 store.isUserLog && localStorage.getItem('token') !== null &&
-                                <button onClick={() => store.logOut()}>Log Out</button>
+                                <button id="logout-btn" onClick={() => store.logOut()}>Log Out<FaUserCircle/></button>
                             }
                         </nav>
                     </div>

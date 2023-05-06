@@ -77,3 +77,16 @@
     text-align: center;
   }
 }
+
+nav #logout-btn {
+  background: none;
+  color: #020279;
+  display: flex;
+  align-items: center;
+  box-shadow: none;
+  width: fit-content;
+
+  svg {
+    margin-left: 3px;
+  }
+}
