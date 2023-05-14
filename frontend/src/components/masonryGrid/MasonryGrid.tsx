@@ -1,13 +1,15 @@
 import Masonry from "react-masonry-css";
 import React, {Dispatch, SetStateAction} from "react";
+import {IImage} from "../../types/types";
 
 type Props = {
-    imageArray: string[];
+    images: IImage;
     setRemEListener: Dispatch<SetStateAction<boolean>>;
     setFullScreen: Dispatch<SetStateAction<string | boolean>>;
 };
 
-export function MasonryGrid({imageArray, setRemEListener, setFullScreen}: Props) {
+export function MasonryGrid({images, setRemEListener, setFullScreen}: Props) {
+    const url = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
     const breakpoints = {
         default: 4,
         1100: 3,
@@ -23,29 +25,30 @@ export function MasonryGrid({imageArray, setRemEListener, setFullScreen}: Props)
         >
 
             {
-                imageArray
-                    .map((image) =>
+                Array.from(Object.keys(images))
+                    .map((key) =>
 
                         <div
-                            key={image}
+                            key={key}
                             className="image-card-wrapper image-card-wrapper-hover image-card-wrapper-active"
                         >
-                                <img
-                                    src={image}
-                                    height="auto"
-                                    width="200"
-                                    alt='img'
-                                    onClick={() => {
-                                        setRemEListener(true);
-                                        setFullScreen(image);
+                            <img
+                                src={`${url}/imagesUploads/${key}`}
+                                height="auto"
+                                width="200"
+                                alt='img'
+                                onClick={() => {
+                                    setRemEListener(true);
+                                    setFullScreen(`${url}/imagesUploads/${key}`);
 
-                                        setTimeout(() => {
-                                            setRemEListener(false);
-                                        },500);
-                                    }}
-                                    loading="lazy"
-                                />
-                                <p>description description description description</p>
+                                    setTimeout(() => {
+                                        setRemEListener(false);
+                                    }, 500);
+                                }}
+                                loading="lazy"
+                            />
+                            <p>{images[key].category}</p>
+                            <p>{images[key].description}</p>
                         </div>
                     )
             }

@@ -6,19 +6,25 @@ const bcrypt = require('bcryptjs');
 require('dotenv').config();
 module.exports.bcrypt = bcrypt;
 
-// const crypto = require('crypto');
-// console.log(crypto.randomBytes(64).toString('hex'));
+exports.uploadDirectory = path.join(__dirname, 'uploads');
+exports.imageMetadataFile = path.join(__dirname, 'uploadsRefs', 'imageMetadataFile.json');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// const crypto = require('crypto');
+// console.log(crypto.randomBytes(64).toString('hex'));
+
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
+app.use('/imagesUploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
 
-const users = require('./backend/userRouter');
+const users = require('./backend/router').userRouter;
+const uploadImage = require('./backend/router').uploadRouter;
 
 app.use('/api/users', users);
+app.use('/api/uploadImage', uploadImage);
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));

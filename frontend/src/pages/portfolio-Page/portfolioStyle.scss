@@ -21,11 +21,18 @@
     width: 95%;
     height: 100%;
   }
+
+  .no-image-to-show {
+    margin: auto;
+    font-size: xx-large;
+    z-index: 0;
+  }
 }
 
 .portfolio-down-page {
   @include container(column, center, center);
   background: linear-gradient(92deg, #cad2ff, rgb(144 158 254 / 75%));
+  min-height: 100px;
 }
 
 .portfolio-down-page-none {

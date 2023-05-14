@@ -1,5 +1,5 @@
-const User = require('./schems/userSchem');
-const {asyncHandler} = require('./middlwares');
+const User = require('../schems/userSchem');
+const {asyncHandler} = require('../middlwares');
 
 // exports.creatUser = asyncHandler(async (req, res) => {
 //     let user = await User.findOne({email: req.body.email});
