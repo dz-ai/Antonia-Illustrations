@@ -7,6 +7,7 @@ require('dotenv').config();
 module.exports.bcrypt = bcrypt;
 
 exports.uploadDirectory = path.join(__dirname, 'uploads');
+exports.imageUploadRefs = path.join(__dirname, 'uploadsRefs');
 exports.imageMetadataFile = path.join(__dirname, 'uploadsRefs', 'imageMetadataFile.json');
 
 const app = express();

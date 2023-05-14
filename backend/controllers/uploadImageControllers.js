@@ -3,10 +3,14 @@ const multer = require("multer");
 const path = require("path");
 const {asyncHandler} = require("../middlwares");
 const sharp = require("sharp");
-const {uploadDirectory, imageMetadataFile} = require("../../server");
+const {uploadDirectory, imageMetadataFile, imageUploadRefs} = require("../../server");
 
 if (!fs.existsSync(uploadDirectory)) {
     fs.mkdirSync(uploadDirectory);
+}
+
+if (!fs.existsSync(imageUploadRefs)) {
+    fs.mkdirSync(imageUploadRefs);
 }
 
 if (!fs.existsSync(imageMetadataFile)) {
