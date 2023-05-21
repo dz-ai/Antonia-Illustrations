@@ -1,4 +1,5 @@
 const fs = require("fs");
+const fs_extra = require('fs-extra');
 const multer = require("multer");
 const path = require("path");
 const {asyncHandler} = require("../middlwares");
@@ -20,68 +21,72 @@ if (!fs.existsSync(imageMetadataFile)) {
     fs.writeFileSync(imageMetadataFile, JSON.stringify(initialData));
 }
 
-const upload = multer({dest: 'uploads/'});
+const upload = multer({dest: uploadDirectory});
 exports.multerUpload = upload.single('images');
 
 exports.imageUploader = asyncHandler(async (req, res) => {
     const filePath = req.file.path;
-    const fileName = req.file.originalname;
+    const fileName = req.file.originalname.replace(' ', '_').toLowerCase();
     const newPath = path.join(uploadDirectory, fileName);
 
-    fs.rename(filePath, newPath, (err) => {
-        if (err) {
-            console.error(err);
-            res.status(500).send('Failed to upload image');
-        } else {
-            const metadata = {
-                category: req.body.category,
-                description: req.body.description,
-            };
-            saveImageMetadata(fileName, metadata);
-            resizeBufferImage(`uploads/${fileName}`)
-            const imagesMetadata = getImagesMetaData();
+    fs.renameSync(filePath, newPath);
+    const sharpInputImage = `${uploadDirectory}/${fileName}`;
 
-            res.send(imagesMetadata);
-        }
-    });
+    await sharp(sharpInputImage)
+        .resize(800)
+        .toFormat('jpeg')
+        .jpeg({quality: 75})
+        .toBuffer()
+        .then(buffer => {
+            fs.writeFile(sharpInputImage, buffer, err => {
+                if (err) {
+                    console.error('Error writing image file:', err);
+                } else {
+                    console.log('Image file has been rewritten with the buffer image.');
+                }
+            })
+        })
+        .catch(console.error);
+
+    const metadata = {
+        category: req.body.category,
+        description: req.body.description,
+    };
+
+    await saveImageMetadata(fileName, metadata);
+    const imagesMetadata = getImagesMetaData();
+    res.json(imagesMetadata);
+
+
 });
 
 exports.getImages = asyncHandler(async (req, res) => {
     res.send(getImagesMetaData());
 });
 
+exports.clearImages = asyncHandler(async (req, res) => {
+    fs_extra.emptyDir(uploadDirectory)
+        .then(() => {
+            console.log('All files deleted successfully.');
+            const data = JSON.parse(fs.readFileSync(imageMetadataFile));
+            data.images = {};
+            fs.writeFileSync(imageMetadataFile, JSON.stringify(data));
+
+            res.send({});
+        })
+        .catch((err) => {
+            console.error('Error deleting files:', err);
+        });
+});
+
 //////// util upload functions ///////////
 function saveImageMetadata(fileName, metadata) {
-    // read the current contents of the JSON file
     const data = JSON.parse(fs.readFileSync(imageMetadataFile));
 
-    // add the new metadata object to the images array
     data.images[fileName] = metadata;
 
-    // write the updated data back to the JSON file
     fs.writeFileSync(imageMetadataFile, JSON.stringify(data));
 }
-
-function resizeBufferImage(imagPath) {
-    sharp(imagPath)
-        .resize(800)
-        .toBuffer((err, data) => {
-            if (err) {
-                console.error(err);
-            } else {
-                // write the resized image buffer to a file
-                fs.writeFile(imagPath, data, (err) => {
-                    if (err) {
-                        console.error(err);
-                    } else {
-                        console.log('Resized image saved successfully');
-                    }
-                });
-            }
-        });
-
-}
-
 //////// End util upload functions ///////////
 
 /////// util send images functions ///////////

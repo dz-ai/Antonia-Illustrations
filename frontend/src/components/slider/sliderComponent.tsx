@@ -10,7 +10,7 @@ interface IMagesRow {
 }
 
 export function SliderComponent({images, numOfImages, auto, scroll, focusOnSelect}: IMagesRow) {
-
+    const url = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
     const settings = {
         dots: false,
         infinite: true,
@@ -35,7 +35,7 @@ export function SliderComponent({images, numOfImages, auto, scroll, focusOnSelec
                                 className="my-slider-image"
                             >
                                 <div style={{
-                                    backgroundImage: `url(http://localhost:3001/imagesUploads/${image})`,
+                                    backgroundImage: `url(${url}/imagesUploads/${image})`,
                                     backgroundRepeat: 'no-repeat',
                                     backgroundSize: 'contain',
                                     backgroundPosition: 'center',

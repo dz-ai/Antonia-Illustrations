@@ -29,6 +29,8 @@ export function Portfolio() {
     const url = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
 
     const addImage: MouseEventHandler<HTMLButtonElement> = async (event) => {
+        // TODO prevent unsupported end of file uploading.
+        // TODO lazy load.
         event.preventDefault();
         if (upLoadImage) {
             const formData = new FormData();
@@ -49,13 +51,17 @@ export function Portfolio() {
         }
     };
 
-    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = (event: ChangeEvent<HTMLInputElement>): void => {
         if (event.target.files && event.target.files[0]) {
             setUploadImage(event.target.files[0]);
         }
     };
 
-    useEffect(() => {
+    const clearAllIMages = (): void => {
+        fetch(`${url}/api/uploadImage/clearImages`).then(res => res.json()).then(results => setImages(results));
+    }
+
+    useEffect((): void => {
         fetch(`${url}/api/uploadImage/getImages`)
             .then(res => res.json())
             .then(data => {
@@ -120,6 +126,7 @@ export function Portfolio() {
                     <input type="file" onChange={handleFileChange}/>
                     <button onClick={addImage}>+</button>
                 </form>
+                <button onClick={clearAllIMages}>Clear All Images</button>
                 {
                     typeof fullScreen === 'string' &&
                     <FullScreen
