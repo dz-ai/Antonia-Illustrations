@@ -8,6 +8,7 @@ import {categories, IImage} from "../../types/types";
 import {useInterSectionObserver} from "../../Hooks/useInterSectionObserver";
 import {useMediaQuery} from "react-responsive";
 import {JumpUpBtn} from "../../components/jumpUpBtn/jumpUpBtn";
+import {PopupMessage} from "../../components/popupMessage/popupMessage";
 
 export function Portfolio() {
     const ref = useRef<HTMLDivElement>(null);
@@ -23,15 +24,27 @@ export function Portfolio() {
 
     const [fullScreen, setFullScreen] = useState<boolean | string>(false);
     const [remEListener, setRemEListener] = useState<boolean>(false);
+    const [message, setMessage] = useState<string>('');
     const [upLoadImage, setUploadImage] = useState<File | null>(null);
     const [images, setImages] = useState<IImage>({});
 
     const url = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
+    const imageTypes: string[] = ['png', 'jpeg', 'jpg'];
 
     const addImage: MouseEventHandler<HTMLButtonElement> = async (event) => {
-        // TODO prevent unsupported end of file uploading.
         // TODO lazy load.
         event.preventDefault();
+
+        if (Array.from(Object.keys(images)).includes(upLoadImage?.name.replace(' ', '_').toLowerCase() as string)) {
+            setMessage('Image already exist');
+            return;
+        }
+
+        if (upLoadImage && !imageTypes.includes(upLoadImage.name.split('.').pop()?.toLowerCase() as string)) {
+            setMessage('The file end must be ether png, jpeg, jpg');
+            return;
+        }
+
         if (upLoadImage) {
             const formData = new FormData();
             formData.append('images', upLoadImage);
@@ -45,6 +58,7 @@ export function Portfolio() {
                 });
                 const data = await response.json();
                 await setImages(data);
+                setMessage('Upload successfully');
             } catch (error) {
                 console.error(error);
             }
@@ -137,6 +151,10 @@ export function Portfolio() {
                 }
             </section>
 
+            {
+                message !== '' &&
+                <PopupMessage message={message} setMessage={setMessage}/>
+            }
         </>
     );
 }

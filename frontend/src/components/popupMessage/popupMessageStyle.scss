@@ -1,0 +1,15 @@
+@import "../../styles/general";
+
+.popup-message {
+  @include container(row, center, center);
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 400px;
+  height: 50px;
+  z-index: 199999999;
+  background: #d2ffd2;
+  border: 1px solid green;
+  color: green;
+  border-radius: 15px;
+}

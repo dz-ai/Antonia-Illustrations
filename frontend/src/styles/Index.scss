@@ -2,30 +2,32 @@
 
 @import "general";
 
-@import "src/components/dropdown/dropdownStyle";
+@import "../components/dropdown/dropdownStyle";
 
-@import "src/layout/header/header";
+@import "../layout/header/header";
 
-@import "src/layout/header/mobileHeaderStyle";
+@import "../layout/header/mobileHeaderStyle";
 
-@import "src/layout/footer/footerStyle";
+@import "../layout/footer/footerStyle";
 
 @import "../pages/homePage/homeStyle";
 
 @import "../pages/portfolio-Page/portfolioStyle";
 
-@import "src/pages/about-mePage/aboutMeStyle";
+@import "../pages/about-mePage/aboutMeStyle";
 
-@import "src/pages/registerPage/registerPageStyle";
+@import "../pages/registerPage/registerPageStyle";
 
-@import "src/pages/errorPage/errorStyle";
+@import "../pages/errorPage/errorStyle";
 
-@import "src/components/slider/slideTheme";
+@import "../components/slider/slideTheme";
 
-@import "src/components/jumpUpBtn/jumpUpbtStyle";
+@import "../components/jumpUpBtn/jumpUpbtStyle";
 
-@import "src/components/fullScreen/fullScreenStyle";
+@import "../components/fullScreen/fullScreenStyle";
 
-@import "src/components/masonryGrid/masonryGridStyle";
+@import "../components/masonryGrid/masonryGridStyle";
 
-@import "src/components/categoryNavBar/categoryNavBarStyle";
+@import "../components/categoryNavBar/categoryNavBarStyle";
+
+@import "../components/popupMessage/popupMessageStyle";
