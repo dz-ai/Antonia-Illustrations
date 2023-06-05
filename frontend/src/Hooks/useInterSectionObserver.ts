@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 
-type InterSectionObserver =
-    (ref:  React.RefObject<HTMLDivElement>) => boolean;
+type InterSectionObserver = (ref:  React.RefObject<HTMLDivElement>) => boolean;
 
 export const useInterSectionObserver: InterSectionObserver = (ref) => {
     const [isInViewPort, setIsInViewPort] = useState<boolean>(true);

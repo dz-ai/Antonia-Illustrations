@@ -1,4 +1,4 @@
-import Slider from "react-slick";
+import Slider, {Settings} from "react-slick";
 import {IImage} from "../../types/types";
 
 interface IMagesRow {
@@ -11,9 +11,10 @@ interface IMagesRow {
 
 export function SliderComponent({images, numOfImages, auto, scroll, focusOnSelect}: IMagesRow) {
     const url = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
-    const settings = {
+    const settings: Settings = {
         dots: false,
         infinite: true,
+        lazyLoad: 'ondemand',
         speed: 500,
         slidesToShow: numOfImages,
         slidesToScroll: scroll,
@@ -34,13 +35,14 @@ export function SliderComponent({images, numOfImages, auto, scroll, focusOnSelec
                                 key={image}
                                 className="my-slider-image"
                             >
-                                <div style={{
-                                    backgroundImage: `url(${url}/imagesUploads/${image})`,
-                                    backgroundRepeat: 'no-repeat',
-                                    backgroundSize: 'contain',
-                                    backgroundPosition: 'center',
-                                    height: '400px',
-                                }}/>
+                                <div
+                                    style={{
+                                        backgroundImage: `url(${url}/imagesUploads/${image})`,
+                                        backgroundRepeat: 'no-repeat',
+                                        backgroundSize: 'contain',
+                                        backgroundPosition: 'center',
+                                        height: '400px',
+                                    }}/>
                             </div>
                         )
                 }

@@ -32,9 +32,11 @@ export function Portfolio() {
     const imageTypes: string[] = ['png', 'jpeg', 'jpg'];
 
     const addImage: MouseEventHandler<HTMLButtonElement> = async (event) => {
-        // TODO lazy load.
+        // TODO add Loading... when the loading is in process
+        // TODO add Loading... when the page is loading the images from server.
         event.preventDefault();
 
+        // TODO add if (!uploadImage) return;
         if (Array.from(Object.keys(images)).includes(upLoadImage?.name.replace(' ', '_').toLowerCase() as string)) {
             setMessage('Image already exist');
             return;
