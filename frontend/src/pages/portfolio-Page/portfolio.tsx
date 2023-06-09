@@ -9,6 +9,24 @@ import {useInterSectionObserver} from "../../Hooks/useInterSectionObserver";
 import {useMediaQuery} from "react-responsive";
 import {JumpUpBtn} from "../../components/jumpUpBtn/jumpUpBtn";
 import {PopupMessage} from "../../components/popupMessage/popupMessage";
+import {AddImagePopup} from "../../components/addImagePopup/addImagePopup";
+
+function LoadingComponent({loading}: { loading: boolean | string }) {
+    let jsx;
+    if (typeof loading === 'boolean') {
+        loading ?
+            jsx = <div className="images-loader"></div>
+            :
+            jsx = null;
+    } else {
+        jsx = <p className="no-image-to-show">No Images to show</p>;
+    }
+    return (
+        <>
+            {jsx}
+        </>
+    );
+}
 
 export function Portfolio() {
     const ref = useRef<HTMLDivElement>(null);
@@ -27,13 +45,15 @@ export function Portfolio() {
     const [message, setMessage] = useState<string>('');
     const [upLoadImage, setUploadImage] = useState<File | null>(null);
     const [images, setImages] = useState<IImage>({});
+    const [showPopup, setShowPopup] = useState<boolean>(false);
+    const [loadingImageUpload, setLoadingImageUpload] = useState<boolean>(false);
+    const [loadingImages, setLoadingImages] = useState<boolean | string>(false);
 
     const url = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
     const imageTypes: string[] = ['png', 'jpeg', 'jpg'];
 
     const addImage: MouseEventHandler<HTMLButtonElement> = async (event) => {
-        // TODO add Loading... when the loading is in process
-        // TODO add Loading... when the page is loading the images from server.
+        // TODO make edit image (remove image).
         event.preventDefault();
 
         // TODO add if (!uploadImage) return;
@@ -54,13 +74,17 @@ export function Portfolio() {
             formData.append('description', 'description');
 
             try {
+                setLoadingImageUpload(true);
                 const response: any = await fetch(`${url}/api/uploadImage/upload`, {
                     method: 'post',
                     body: formData,
                 });
                 const data = await response.json();
                 await setImages(data);
+                setUploadImage(null);
                 setMessage('Upload successfully');
+                setLoadingImageUpload(false);
+                setShowPopup(false);
             } catch (error) {
                 console.error(error);
             }
@@ -74,14 +98,26 @@ export function Portfolio() {
     };
 
     const clearAllIMages = (): void => {
-        fetch(`${url}/api/uploadImage/clearImages`).then(res => res.json()).then(results => setImages(results));
+        fetch(`${url}/api/uploadImage/clearImages`)
+            .then(res => res.json())
+            .then(results => {
+                setImages(results);
+                setLoadingImages('No Images To Show');
+            });
     }
 
     useEffect((): void => {
+        setLoadingImages(true);
         fetch(`${url}/api/uploadImage/getImages`)
             .then(res => res.json())
             .then(data => {
-                setImages(data);
+                if (Array.from(Object.keys(data)).length === 0) {
+                    setLoadingImages('No Images To Show');
+                    setImages(data);
+                } else {
+                    setImages(data);
+                    setLoadingImages(false);
+                }
             });
     }, []);
 
@@ -114,7 +150,7 @@ export function Portfolio() {
                             />
                         </div>
                         :
-                        <p className="no-image-to-show">No Images to show</p>
+                        <LoadingComponent loading={loadingImages}/>
                 }
             </div>
 
@@ -136,13 +172,20 @@ export function Portfolio() {
                             setFullScreen={setFullScreen}
                         />
                         :
-                        <p className="no-image-to-show">No Images to show</p>
+                        <LoadingComponent loading={loadingImages}/>
                 }
-                <form>
-                    <input type="file" onChange={handleFileChange}/>
-                    <button onClick={addImage}>+</button>
-                </form>
-                <button onClick={clearAllIMages}>Clear All Images</button>
+                <button id="add-image" onClick={() => setShowPopup(true)}>Add Image</button>
+                {
+                    showPopup &&
+                    <AddImagePopup
+                        addImage={addImage}
+                        clearAllIMages={clearAllIMages}
+                        handleFileChange={handleFileChange}
+                        uploadImage={upLoadImage}
+                        setShowPopup={setShowPopup}
+                        loadingImageUpload={loadingImageUpload}
+                    />
+                }
                 {
                     typeof fullScreen === 'string' &&
                     <FullScreen

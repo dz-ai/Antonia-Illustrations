@@ -1,0 +1,70 @@
+@import "../../styles/general";
+
+.add-image-popup-wrapper {
+  @include container(unset, center, center);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+
+
+  .add-image-popup {
+    background: white;
+    padding: 20px;
+    border-radius: 7px;
+    box-shadow: 0 0 6px;
+  }
+
+  .add-image-popup button {
+    margin: 15px 10px 0 10px;
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+
+  #image-upload-indication {
+    @include container(row, center, center);
+    margin-top: 15px;
+  }
+
+  .btn-section {
+    @include container(row, space-between, center);
+  }
+
+  p {
+    padding: 0 10px;
+  }
+
+  button, label {
+    @include btn(#cfc1ff, #727272);
+    background: #d9d0fd;
+    border-radius: 3px;
+    border: none;
+  }
+
+  .upload-btn {
+    min-width: 103px;
+    min-height: 30px;
+  }
+
+  .loader {
+    margin: auto;
+    border: 3px solid #f3f3f3; /* Light grey */
+    border-top: 3px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
