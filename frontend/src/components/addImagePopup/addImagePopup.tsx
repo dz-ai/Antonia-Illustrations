@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useState} from "react";
+import React, {ChangeEvent, useState} from "react";
 import {IKCore} from "imagekitio-react";
 
 interface IProps {
@@ -32,16 +32,12 @@ export function AddImagePopup({
     const [loadingImageUpload, setLoadingImageUpload] = useState<boolean>(false);
     const [showUserPermissionSection, setShowUserPermissionSection] = useState<boolean>(false);
 
-
-    const publicKey: string = "public_mvSjUFM9xBvSh8H9560m37S+jD8=";
-    let urlEndpoint: string = "https://ik.imagekit.io/thfdl6dmv";
-    const authenticationEndpoint: string = `${url}/api/uploadImage/auth`;
     const uploadMetaDataEndpoint: string = `${url}/api/uploadImage/setImageMetaData`;
 
     const imagekit = new IKCore({
-        publicKey,
-        urlEndpoint,
-        authenticationEndpoint
+        publicKey: "public_mvSjUFM9xBvSh8H9560m37S+jD8=",
+        urlEndpoint: "https://ik.imagekit.io/thfdl6dmv",
+        authenticationEndpoint: `${url}/api/uploadImage/auth`,
     });
 
     const addImage = (): void => {
@@ -116,11 +112,6 @@ export function AddImagePopup({
         clearAllIMages();
         setShowPopup(false);
     }
-
-    useEffect(() => {
-        console.log('run')
-        fetch(authenticationEndpoint).then(res => res.json()).then(results => console.log(results));
-    }, []);
 
     return (
         // TODO add out click
