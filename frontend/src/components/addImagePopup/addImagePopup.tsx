@@ -24,7 +24,9 @@ export function AddImagePopup({
                                   setMessage,
                               }: IProps) {
 
-    const url = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
+    const devServer = 'http://localhost:3001';
+    const productServer = 'https://antonia-illustrations.onrender.com';
+    const dev = import.meta.env.VITE_DEV;
 
     const [uploadImage, setUploadImage] = useState<File | null>(null);
     const [imageCategory, setImageCategory] = useState<string>('');
@@ -32,12 +34,12 @@ export function AddImagePopup({
     const [loadingImageUpload, setLoadingImageUpload] = useState<boolean>(false);
     const [showUserPermissionSection, setShowUserPermissionSection] = useState<boolean>(false);
 
-    const uploadMetaDataEndpoint: string = `${url}/api/uploadImage/setImageMetaData`;
+    const uploadMetaDataEndpoint: string = `${dev === 'true' ? devServer : productServer}/api/uploadImage/setImageMetaData`;
 
     const imagekit = new IKCore({
         publicKey: "public_mvSjUFM9xBvSh8H9560m37S+jD8=",
         urlEndpoint: "https://ik.imagekit.io/thfdl6dmv",
-        authenticationEndpoint: `${url}/api/uploadImage/auth`,
+        authenticationEndpoint: `${dev === 'true' ? devServer : productServer}/api/uploadImage/auth`,
     });
 
     const addImage = (): void => {
@@ -68,7 +70,6 @@ export function AddImagePopup({
             useUniqueFileName: false,
         })
             .then(_ => {
-                console.log('hear', uploadMetaDataEndpoint);
                 fetch(uploadMetaDataEndpoint,
                     {
                         method: 'post',
