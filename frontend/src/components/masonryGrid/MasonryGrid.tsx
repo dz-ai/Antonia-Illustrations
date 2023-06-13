@@ -32,7 +32,7 @@ export function MasonryGrid({images, setRemEListener, setFullScreen}: Props) {
                             className="image-card-wrapper image-card-wrapper-hover image-card-wrapper-active"
                         >
                             <img
-                                src={`https://ik.imagekit.io/thfdl6dmv/antonia-illustrations/${key}`}
+                                src={`https://ik.imagekit.io/thfdl6dmv/tr:w-200/antonia-illustrations/${key}`}
                                 height="auto"
                                 width="200"
                                 alt='img'

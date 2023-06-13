@@ -17,6 +17,11 @@ function checkFileExtension(fileName: string): boolean {
     return imageTypes.includes(fileName.split('.')[1].toLowerCase());
 }
 
+function limitImageSize(file: File): boolean {
+    const fileSizeInBytes = file.size;
+    return (fileSizeInBytes / 1024 / 1024) < 7;
+}
+
 //
 export function AddImagePopup({
                                   clearAllIMages,
@@ -62,7 +67,6 @@ export function AddImagePopup({
         }
 
         setLoadingImageUpload(true);
-        console.log('hear', imagekit);
         imagekit.upload({
             file: uploadImage as File,
             fileName,
@@ -99,12 +103,21 @@ export function AddImagePopup({
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>): void => {
         if (!event.target.files || !event.target.files[0]) return;
 
-        if (event.target.files && !checkFileExtension(event.target.files[0].name)) {
-            setMessage(`${event.target.files[0].name.split('.')[1]} format not supported`);
+        const file: File = event.target.files[0];
+
+        if (!limitImageSize(file)) {
+            setMessage('Image size exceeds the 7 MB limit');
+            setUploadImage(null);
+            return;
+        }
+
+
+        if (!checkFileExtension(file.name)) {
+            setMessage(`${file.name.split('.')[1]} format not supported`);
             setUploadImage(null);
             return
         } else {
-            setUploadImage(event.target.files[0]);
+            setUploadImage(file);
         }
     };
 
