@@ -1,5 +1,5 @@
 import {SliderComponent} from "../../components/slider/sliderComponent";
-import React, {ChangeEvent, MouseEventHandler, useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {mandala} from "../../imgs/imagesArray";
 import {FullScreen} from "../../components/fullScreen/fullScreen";
 import {MasonryGrid} from "../../components/masonryGrid/MasonryGrid";
@@ -11,6 +11,7 @@ import {JumpUpBtn} from "../../components/jumpUpBtn/jumpUpBtn";
 import {PopupMessage} from "../../components/popupMessage/popupMessage";
 import {AddImagePopup} from "../../components/addImagePopup/addImagePopup";
 
+// TODO make it in separate file.
 function LoadingComponent({loading}: { loading: boolean | string }) {
     let jsx;
     if (typeof loading === 'boolean') {
@@ -40,62 +41,14 @@ export function Portfolio() {
 
     const categories: categories = ['first', 'category', 'category', 'category', 'category', 'category', 'category', 'category', 'category', 'category', 'category', 'last'];
 
-    const [fullScreen, setFullScreen] = useState<boolean | string>(false);
+    const [fullScreen, setFullScreen] = useState<string | boolean>(false);
     const [remEListener, setRemEListener] = useState<boolean>(false);
-    const [message, setMessage] = useState<string>('');
-    const [upLoadImage, setUploadImage] = useState<File | null>(null);
     const [images, setImages] = useState<IImage>({});
     const [showPopup, setShowPopup] = useState<boolean>(false);
-    const [loadingImageUpload, setLoadingImageUpload] = useState<boolean>(false);
+    const [message, setMessage] = useState<string>('');
     const [loadingImages, setLoadingImages] = useState<boolean | string>(false);
 
     const url = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
-    const imageTypes: string[] = ['png', 'jpeg', 'jpg'];
-
-    const addImage: MouseEventHandler<HTMLButtonElement> = async (event) => {
-        // TODO make edit image (remove image).
-        event.preventDefault();
-
-        // TODO add if (!uploadImage) return;
-        if (Array.from(Object.keys(images)).includes(upLoadImage?.name.replace(' ', '_').toLowerCase() as string)) {
-            setMessage('Image already exist');
-            return;
-        }
-
-        if (upLoadImage && !imageTypes.includes(upLoadImage.name.split('.').pop()?.toLowerCase() as string)) {
-            setMessage('The file end must be ether png, jpeg, jpg');
-            return;
-        }
-
-        if (upLoadImage) {
-            const formData = new FormData();
-            formData.append('images', upLoadImage);
-            formData.append('category', 'category');
-            formData.append('description', 'description');
-
-            try {
-                setLoadingImageUpload(true);
-                const response: any = await fetch(`${url}/api/uploadImage/upload`, {
-                    method: 'post',
-                    body: formData,
-                });
-                const data = await response.json();
-                await setImages(data);
-                setUploadImage(null);
-                setMessage('Upload successfully');
-                setLoadingImageUpload(false);
-                setShowPopup(false);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-    };
-
-    const handleFileChange = (event: ChangeEvent<HTMLInputElement>): void => {
-        if (event.target.files && event.target.files[0]) {
-            setUploadImage(event.target.files[0]);
-        }
-    };
 
     const clearAllIMages = (): void => {
         fetch(`${url}/api/uploadImage/clearImages`)
@@ -119,10 +72,13 @@ export function Portfolio() {
                     setLoadingImages(false);
                 }
             });
-    }, []);
+    }, [!showPopup]);
 
     return (
         <>
+            {
+                // TODO make loading image place holder (check for built in slick-slide feature).
+            }
             <div
                 className="portfolio-up-page"
                 ref={ref}
@@ -178,12 +134,9 @@ export function Portfolio() {
                 {
                     showPopup &&
                     <AddImagePopup
-                        addImage={addImage}
                         clearAllIMages={clearAllIMages}
-                        handleFileChange={handleFileChange}
-                        uploadImage={upLoadImage}
                         setShowPopup={setShowPopup}
-                        loadingImageUpload={loadingImageUpload}
+                        setMessage={setMessage}
                     />
                 }
                 {
@@ -192,10 +145,10 @@ export function Portfolio() {
                         fullScreen={fullScreen}
                         setFullScreen={setFullScreen}
                         removeEListener={remEListener}
+                        description={images[fullScreen.split('/')[fullScreen.split('/').length - 1]].imageDescription}
                     />
                 }
             </section>
-
             {
                 message !== '' &&
                 <PopupMessage message={message} setMessage={setMessage}/>

@@ -1,8 +1,8 @@
 export type categories = string[];
 
 interface ImageData {
-    category: string;
-    description: string;
+    imageCategory: string;
+    imageDescription: string;
 }
 
 export interface IImage {

@@ -1,23 +1,107 @@
-import React, {ChangeEvent, MouseEventHandler, useState} from "react";
+import React, {ChangeEvent, useState} from "react";
+import {IKCore} from "imagekitio-react";
 
 interface IProps {
-    handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
-    addImage: MouseEventHandler<HTMLButtonElement>
     clearAllIMages: () => void;
-    uploadImage: File | null;
     setShowPopup: React.Dispatch<React.SetStateAction<boolean>>;
-    loadingImageUpload: boolean;
+    setMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
+// util functions
+function standardFileName(fileName: string) {
+    return fileName.toLowerCase().replace(' ', '_');
+}
+
+function checkFileExtension(fileName: string): boolean {
+    const imageTypes: string[] = ['png', 'jpeg', 'jpg'];
+    return imageTypes.includes(fileName.split('.')[1].toLowerCase());
+}
+
+//
 export function AddImagePopup({
-                                  handleFileChange,
-                                  addImage,
                                   clearAllIMages,
-                                  uploadImage,
                                   setShowPopup,
-                                  loadingImageUpload
+                                  setMessage,
                               }: IProps) {
+
+    const url = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
+
+    const [uploadImage, setUploadImage] = useState<File | null>(null);
+    const [imageCategory, setImageCategory] = useState<string>('');
+    const [imageDescription, setImageDescription] = useState<string>('');
+    const [loadingImageUpload, setLoadingImageUpload] = useState<boolean>(false);
     const [showUserPermissionSection, setShowUserPermissionSection] = useState<boolean>(false);
+
+
+    const publicKey: string = "public_mvSjUFM9xBvSh8H9560m37S+jD8=";
+    let urlEndpoint: string = "https://ik.imagekit.io/thfdl6dmv";
+    const authenticationEndpoint = `${url}/api/uploadImage/getImagekitSignature`;
+    const setUploadMetaDataEndpoint = `${url}/api/uploadImage/setImageMetaData`;
+
+    const imagekit = new IKCore({
+        publicKey,
+        urlEndpoint,
+        authenticationEndpoint
+    });
+
+    const addImage = (): void => {
+
+        if (!uploadImage) {
+            setMessage('Please chose an Image file')
+            return
+        }
+        if (!imageCategory || !imageDescription) {
+            setMessage('Please fill in require fields');
+            return;
+        }
+
+        const fileName: string = uploadImage.name.toLowerCase();
+
+        if (!checkFileExtension(fileName)) {
+            setMessage('PDF format not supported');
+            setUploadImage(null);
+            return;
+        }
+
+        setLoadingImageUpload(true);
+
+        imagekit.upload({
+            file: uploadImage as File,
+            fileName,
+            folder: "/antonia-illustrations",
+            useUniqueFileName: false,
+        }).then(_ => {
+            fetch(setUploadMetaDataEndpoint,
+                {
+                    method: 'post',
+                    headers: {'content-type': 'application/json'},
+                    body: JSON.stringify({
+                        fileName: standardFileName(uploadImage.name),
+                        imageCategory,
+                        imageDescription
+                    })
+                })
+                .then(res => res.json())
+                .then(results => {
+                    setLoadingImageUpload(false);
+                    setUploadImage(null);
+                    setMessage(results);
+                    setShowPopup(false);
+                })
+        });
+    }
+
+    const handleFileChange = (event: ChangeEvent<HTMLInputElement>): void => {
+        if (!event.target.files || !event.target.files[0]) return;
+
+        if (event.target.files && !checkFileExtension(event.target.files[0].name)) {
+            setMessage(`${event.target.files[0].name.split('.')[1]} format not supported`);
+            setUploadImage(null);
+            return
+        } else {
+            setUploadImage(event.target.files[0]);
+        }
+    };
 
     const checkPasswordBeforeClearAll = (): void => {
         // TODO send req to the server to check password
@@ -45,15 +129,22 @@ export function AddImagePopup({
                         }
                     </div>
                     <br/>
-                    {/*
-                    TODO add category and description
-                    */}
+                    <div id="image-upload-preview">
+                        <input type="text" placeholder="Image Category"
+                               onChange={e => setImageCategory(e.target.value)}/>
+                        <input type="text" placeholder="Image Description"
+                               onChange={e => setImageDescription(e.target.value)}/>
+                    </div>
                     <section className="btn-section">
-                        <button className="upload-btn" onClick={addImage}>
+                        <button className="upload-btn" onClick={(e) => {
+                            e.preventDefault();
+                            addImage();
+                        }}>
                             {loadingImageUpload ? <div className="loader"></div> : 'Add Image'}
                         </button>
-                        <button onClick={() => setShowPopup(false)}>Cansel</button>
+                        <button onClick={() => setShowPopup(false)}>Close</button>
                         <button
+                            disabled={true}
                             onClick={(event) => {
                                 event.preventDefault();
                                 setShowUserPermissionSection(true)

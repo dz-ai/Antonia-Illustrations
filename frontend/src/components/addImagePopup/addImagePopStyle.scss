@@ -3,6 +3,7 @@
 .add-image-popup-wrapper {
   @include container(unset, center, center);
   position: fixed;
+  z-index: 4;
   top: 0;
   bottom: 0;
   right: 0;
@@ -27,6 +28,14 @@
   #image-upload-indication {
     @include container(row, center, center);
     margin-top: 15px;
+  }
+
+  #image-upload-preview {
+    @include container(row, center, center);
+
+    input:first-child {
+      margin-right: 10px;
+    }
   }
 
   .btn-section {
@@ -56,7 +65,7 @@
     border-radius: 50%;
     width: 16px;
     height: 16px;
-    animation: spin 2s linear infinite;
+    animation: spin 1s linear infinite;
   }
 
   @keyframes spin {

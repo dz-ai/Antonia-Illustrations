@@ -37,7 +37,7 @@ export function SliderComponent({images, numOfImages, auto, scroll, focusOnSelec
                             >
                                 <div
                                     style={{
-                                        backgroundImage: `url(${url}/imagesUploads/${image})`,
+                                        backgroundImage: `url(https://ik.imagekit.io/thfdl6dmv/antonia-illustrations/${image})`,
                                         backgroundRepeat: 'no-repeat',
                                         backgroundSize: 'contain',
                                         backgroundPosition: 'center',

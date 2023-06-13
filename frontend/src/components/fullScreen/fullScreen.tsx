@@ -2,12 +2,13 @@ import React, {Dispatch, SetStateAction, useRef} from "react";
 import {useOutClick} from "../../Hooks/useOutClick";
 
 type Props = {
-    fullScreen: boolean | string;
+    fullScreen: string | boolean;
     setFullScreen: Dispatch<SetStateAction<string | boolean>>;
     removeEListener: boolean;
+    description: string;
 };
 
-export function FullScreen({fullScreen, setFullScreen, removeEListener}:Props) {
+export function FullScreen({fullScreen, setFullScreen, removeEListener, description}:Props) {
     const refFullScreen = useRef<HTMLDivElement>(null);
 
     useOutClick(refFullScreen, setFullScreen, removeEListener);
@@ -24,7 +25,7 @@ export function FullScreen({fullScreen, setFullScreen, removeEListener}:Props) {
             </button>
                 <div className="image-card-wrapper" ref={refFullScreen}>
                     <img src={typeof fullScreen === 'string' ? fullScreen : ''} alt=""/>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
+                    <p>{description}</p>
                 </div>
             </div>
         </div>

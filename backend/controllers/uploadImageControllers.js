@@ -1,19 +1,13 @@
 const fs = require("fs");
-const fs_extra = require('fs-extra');
-const multer = require("multer");
-const path = require("path");
+const ImageKit = require("imagekit");
 const {asyncHandler} = require("../middlwares");
-const sharp = require("sharp");
-const {uploadDirectory, imageMetadataFile, imageUploadRefs} = require("../../server");
-
-if (!fs.existsSync(uploadDirectory)) {
-    fs.mkdirSync(uploadDirectory);
-}
+const {imageMetadataFile, imageUploadRefs} = require("../../server");
 
 if (!fs.existsSync(imageUploadRefs)) {
     fs.mkdirSync(imageUploadRefs);
 }
 
+// TODO make database backup for 'imageMetadataFile' so the images will not los when redeploy.
 if (!fs.existsSync(imageMetadataFile)) {
     const initialData = {
         images: {}
@@ -21,75 +15,48 @@ if (!fs.existsSync(imageMetadataFile)) {
     fs.writeFileSync(imageMetadataFile, JSON.stringify(initialData));
 }
 
-const upload = multer({dest: uploadDirectory});
-exports.multerUpload = upload.single('images');
-
-exports.imageUploader = asyncHandler(async (req, res) => {
-    const filePath = req.file.path;
-    const fileName = req.file.originalname.replace(' ', '_').toLowerCase();
-    const newPath = path.join(uploadDirectory, fileName);
-
-    fs.renameSync(filePath, newPath);
-    const sharpInputImage = `${uploadDirectory}/${fileName}`;
-
-    await sharp(sharpInputImage)
-        .resize(800)
-        .toFormat('jpeg')
-        .jpeg({quality: 75})
-        .toBuffer()
-        .then(buffer => {
-            fs.writeFile(sharpInputImage, buffer, err => {
-                if (err) {
-                    console.error('Error writing image file:', err);
-                } else {
-                    console.log('Image file has been rewritten with the buffer image.');
-                }
-            })
-        })
-        .catch(console.error);
-
-    const metadata = {
-        category: req.body.category,
-        description: req.body.description,
-    };
-
-    await saveImageMetadata(fileName, metadata);
-    const imagesMetadata = getImagesMetaData();
-    res.json(imagesMetadata);
-
-
+const imagekit = new ImageKit({
+    publicKey: process.env.IMAGEKIT_PUBLIC_API_KEY,
+    privateKey: process.env.IMAGEKIT_PRIVATE_API_KEY,
+    urlEndpoint: "https://ik.imagekit.io/thfdl6dmv",
 });
 
 exports.getImages = asyncHandler(async (req, res) => {
     res.send(getImagesMetaData());
 });
 
-exports.clearImages = asyncHandler(async (req, res) => {
-    fs_extra.emptyDir(uploadDirectory)
-        .then(() => {
-            console.log('All files deleted successfully.');
-            const data = JSON.parse(fs.readFileSync(imageMetadataFile));
-            data.images = {};
-            fs.writeFileSync(imageMetadataFile, JSON.stringify(data));
-
-            res.send({});
-        })
-        .catch((err) => {
-            console.error('Error deleting files:', err);
-        });
+exports.getSignature = asyncHandler(async (req, res) => {
+    const authenticationParameters = imagekit.getAuthenticationParameters();
+    res.json(authenticationParameters);
 });
 
-//////// util upload functions ///////////
-function saveImageMetadata(fileName, metadata) {
-    const data = JSON.parse(fs.readFileSync(imageMetadataFile));
+exports.setImageMetaData = asyncHandler(async (req, res) => {
+    const {fileName, imageCategory, imageDescription} = req.body;
 
-    data.images[fileName] = metadata;
+    if (fileName && imageCategory && imageDescription) {
 
-    fs.writeFileSync(imageMetadataFile, JSON.stringify(data));
-}
-//////// End util upload functions ///////////
+        const data = JSON.parse(fs.readFileSync(imageMetadataFile));
 
-/////// util send images functions ///////////
+        if (!data.images[fileName]) {
+            data.images[fileName] = {imageCategory, imageDescription};
+
+            fs.writeFileSync(imageMetadataFile, JSON.stringify(data));
+
+            res.json('Upload Successfully');
+        } else {
+            res.json('Image already exist');
+        }
+
+    } else {
+        const missing = [];
+        if (!fileName) missing.push('Upload Image Name');
+        if (!imageCategory) missing.push('Image Category');
+        if (!imageDescription) missing.push('Image Description');
+        res.json(`Missing ${missing.map(miss => miss + ' ')}`);
+    }
+
+});
+// util function
 function getImagesMetaData() {
     return JSON.parse(fs.readFileSync(imageMetadataFile)).images;
 }

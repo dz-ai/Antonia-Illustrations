@@ -9,7 +9,6 @@ type Props = {
 };
 
 export function MasonryGrid({images, setRemEListener, setFullScreen}: Props) {
-    const url = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
     const breakpoints = {
         default: 4,
         1100: 3,
@@ -33,13 +32,13 @@ export function MasonryGrid({images, setRemEListener, setFullScreen}: Props) {
                             className="image-card-wrapper image-card-wrapper-hover image-card-wrapper-active"
                         >
                             <img
-                                src={`${url}/imagesUploads/${key}`}
+                                src={`https://ik.imagekit.io/thfdl6dmv/antonia-illustrations/${key}`}
                                 height="auto"
                                 width="200"
                                 alt='img'
                                 onClick={() => {
                                     setRemEListener(true);
-                                    setFullScreen(`${url}/imagesUploads/${key}`);
+                                    setFullScreen(`https://ik.imagekit.io/thfdl6dmv/antonia-illustrations/${key}`);
 
                                     setTimeout(() => {
                                         setRemEListener(false);
@@ -47,8 +46,8 @@ export function MasonryGrid({images, setRemEListener, setFullScreen}: Props) {
                                 }}
                                 loading="lazy"
                             />
-                            <p>{images[key].category}</p>
-                            <p>{images[key].description}</p>
+                            <p>{images[key].imageCategory}</p>
+                            <p>{images[key].imageDescription}</p>
                         </div>
                     )
             }
