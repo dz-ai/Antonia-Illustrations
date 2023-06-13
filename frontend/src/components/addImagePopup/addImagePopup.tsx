@@ -43,7 +43,7 @@ export function AddImagePopup({
     const addImage = (): void => {
 
         if (!uploadImage) {
-            setMessage('Please chose an Image file')
+            setMessage('Please chose an Image file');
             return
         }
         if (!imageCategory || !imageDescription) {
@@ -60,7 +60,7 @@ export function AddImagePopup({
         }
 
         setLoadingImageUpload(true);
-
+        console.log('hear', imagekit);
         imagekit.upload({
             file: uploadImage as File,
             fileName,
@@ -68,6 +68,7 @@ export function AddImagePopup({
             useUniqueFileName: false,
         })
             .then(_ => {
+                console.log('hear', uploadMetaDataEndpoint);
                 fetch(uploadMetaDataEndpoint,
                     {
                         method: 'post',
