@@ -105,20 +105,20 @@ export function AddImagePopup({
 
         const file: File = event.target.files[0];
 
+        if (!checkFileExtension(file.name)) {
+            setMessage(`${file.name.split('.')[1]} format not supported`);
+            setUploadImage(null);
+            return
+        }
+
         if (!limitImageSize(file)) {
             setMessage('Image size exceeds the 7 MB limit');
             setUploadImage(null);
             return;
         }
 
+        setUploadImage(file);
 
-        if (!checkFileExtension(file.name)) {
-            setMessage(`${file.name.split('.')[1]} format not supported`);
-            setUploadImage(null);
-            return
-        } else {
-            setUploadImage(file);
-        }
     };
 
     const checkPasswordBeforeClearAll = (): void => {
