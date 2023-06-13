@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import {IKCore} from "imagekitio-react";
 
 interface IProps {
@@ -35,8 +35,8 @@ export function AddImagePopup({
 
     const publicKey: string = "public_mvSjUFM9xBvSh8H9560m37S+jD8=";
     let urlEndpoint: string = "https://ik.imagekit.io/thfdl6dmv";
-    const authenticationEndpoint = `${url}/api/uploadImage/getImagekitSignature`;
-    const setUploadMetaDataEndpoint = `${url}/api/uploadImage/setImageMetaData`;
+    const authenticationEndpoint: string = `${url}/api/uploadImage/auth`;
+    const uploadMetaDataEndpoint: string = `${url}/api/uploadImage/setImageMetaData`;
 
     const imagekit = new IKCore({
         publicKey,
@@ -70,25 +70,32 @@ export function AddImagePopup({
             fileName,
             folder: "/antonia-illustrations",
             useUniqueFileName: false,
-        }).then(_ => {
-            fetch(setUploadMetaDataEndpoint,
-                {
-                    method: 'post',
-                    headers: {'content-type': 'application/json'},
-                    body: JSON.stringify({
-                        fileName: standardFileName(uploadImage.name),
-                        imageCategory,
-                        imageDescription
+        })
+            .then(_ => {
+                fetch(uploadMetaDataEndpoint,
+                    {
+                        method: 'post',
+                        headers: {'content-type': 'application/json'},
+                        body: JSON.stringify({
+                            fileName: standardFileName(uploadImage.name),
+                            imageCategory,
+                            imageDescription
+                        })
                     })
-                })
-                .then(res => res.json())
-                .then(results => {
-                    setLoadingImageUpload(false);
-                    setUploadImage(null);
-                    setMessage(results);
-                    setShowPopup(false);
-                })
-        });
+                    .then(res => res.json())
+                    .then(results => {
+                        setLoadingImageUpload(false);
+                        setUploadImage(null);
+                        setMessage(results);
+                        setShowPopup(false);
+                    })
+            })
+            .catch(error => {
+                console.log(error);
+                setLoadingImageUpload(false);
+                setUploadImage(null);
+                setMessage('upload error');
+            });
     }
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -109,6 +116,11 @@ export function AddImagePopup({
         clearAllIMages();
         setShowPopup(false);
     }
+
+    useEffect(() => {
+        console.log('run')
+        fetch(authenticationEndpoint).then(res => res.json()).then(results => console.log(results));
+    }, []);
 
     return (
         // TODO add out click

@@ -12,5 +12,5 @@ this.userRouter.get('/authToken', protect, authenticateToken);
 
 // TODO add protect MW to uploadRout
 this.uploadRouter.get('/getImages', getImages);
-this.uploadRouter.get('/getImagekitSignature', getSignature);
+this.uploadRouter.get('/auth', getSignature);
 this.uploadRouter.post('/setImageMetaData', setImageMetaData);
