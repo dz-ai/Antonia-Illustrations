@@ -25,10 +25,11 @@
 
     .close-button {
       @include btn(unset, gray);
+      z-index: 1;
       font-size: 25px;
       position: absolute;
-      right: 15px;
-      top: 0;
+      right: 10px;
+      top: 15px;
       color: #171717;
       text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px 1px 0 #ffffff;
     }

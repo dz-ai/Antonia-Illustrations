@@ -20,6 +20,7 @@
 }
 
 .image-card-wrapper {
+  position: relative;
   margin: 10px 0;
   text-align: center;
   background: #f9eccc;
@@ -49,6 +50,17 @@
 
 .image-card-wrapper-active:active {
   box-shadow: 0 0 4px;
+}
+
+.edit-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #ff000075;
+  border-radius: 5px;
+  height: 40px;
+  width: 40px;
+  padding: 5px;
 }
 
 

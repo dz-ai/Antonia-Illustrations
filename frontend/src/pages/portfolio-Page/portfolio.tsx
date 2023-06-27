@@ -10,6 +10,8 @@ import {useMediaQuery} from "react-responsive";
 import {JumpUpBtn} from "../../components/jumpUpBtn/jumpUpBtn";
 import {PopupMessage} from "../../components/popupMessage/popupMessage";
 import {AddImagePopup} from "../../components/addImagePopup/addImagePopup";
+import store from "../../store";
+import {observer} from "mobx-react";
 
 // TODO make it in separate file.
 function LoadingComponent({loading}: { loading: boolean | string }) {
@@ -29,7 +31,7 @@ function LoadingComponent({loading}: { loading: boolean | string }) {
     );
 }
 
-export function Portfolio() {
+function Portfolio() {
     const ref = useRef<HTMLDivElement>(null);
     const downRef = useRef<HTMLDivElement>(null);
 
@@ -72,7 +74,7 @@ export function Portfolio() {
                     setLoadingImages(false);
                 }
             });
-    }, [!showPopup]);
+    }, [!showPopup, store.rerender]);
 
     return (
         <>
@@ -149,10 +151,8 @@ export function Portfolio() {
                     />
                 }
             </section>
-            {
-                message !== '' &&
-                <PopupMessage message={message} setMessage={setMessage}/>
-            }
         </>
     );
 }
+
+export default observer(Portfolio)

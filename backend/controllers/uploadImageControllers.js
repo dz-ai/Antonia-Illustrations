@@ -31,20 +31,49 @@ exports.getSignature = asyncHandler(async (req, res) => {
 });
 
 exports.setImageMetaData = asyncHandler(async (req, res) => {
-    const {fileName, imageCategory, imageDescription} = req.body;
+    const {fileName, imageCategory, imageDescription, replaceImageWith} = req.body;
 
     if (fileName && imageCategory && imageDescription) {
 
         const data = JSON.parse(fs.readFileSync(imageMetadataFile));
 
+        // new image upload
         if (!data.images[fileName]) {
             data.images[fileName] = {imageCategory, imageDescription};
 
             fs.writeFileSync(imageMetadataFile, JSON.stringify(data));
 
             res.json('Upload Successfully');
-        } else {
-            res.json('Image already exist');
+            return;
+        }
+        // image exist
+        if (data.images[fileName]) {
+            const imageMD = data.images[fileName];
+            const changeImageWith = replaceImageWith && !Object.keys(data.images).includes(replaceImageWith) && fileName !== replaceImageWith;
+            const imageAlreadyExist = replaceImageWith && Object.keys(data.images).includes(replaceImageWith) && fileName !== replaceImageWith;
+
+            // change the image with new image
+            if (changeImageWith) {
+                delete data.images[fileName];
+                data.images[replaceImageWith] = {imageCategory, imageDescription};
+
+                fs.writeFileSync(imageMetadataFile, JSON.stringify(data));
+
+                res.json('Image Change Successfully');
+                return
+            }
+            if (imageAlreadyExist) {
+                res.json('Image exist');
+                return
+            }
+            // change image Category or/and Description
+            if (imageMD.imageCategory !== imageCategory || imageMD.imageDescription !== imageDescription) {
+                data.images[fileName] = {imageCategory, imageDescription};
+
+                fs.writeFileSync(imageMetadataFile, JSON.stringify(data));
+
+                res.json('Image Details change Successfully');
+            }
         }
 
     } else {
@@ -55,6 +84,18 @@ exports.setImageMetaData = asyncHandler(async (req, res) => {
         res.json(`Missing ${missing.map(miss => miss + ' ')}`);
     }
 
+});
+
+exports.deleteImageMetaData = asyncHandler(async  (req, res) => {
+    const {fileName} = req.body
+
+    const data = JSON.parse(fs.readFileSync(imageMetadataFile));
+
+    delete data.images[fileName];
+
+    fs.writeFileSync(imageMetadataFile, JSON.stringify(data));
+
+    res.json('Image Deleted');
 });
 // util function
 function getImagesMetaData() {

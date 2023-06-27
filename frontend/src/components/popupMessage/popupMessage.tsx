@@ -1,21 +1,34 @@
-import React, {useEffect} from "react";
+import React, {useState, createContext} from "react";
 
-interface props {
-    message: string;
-    setMessage: React.Dispatch<React.SetStateAction<string>>
-}
-
-export function PopupMessage({message, setMessage}: props) {
+export function PopupMessage({message}: {message: string}) {
     // TODO add animation
-    useEffect(() => {
-        setTimeout(() => {
-            setMessage('');
-        }, 7000);
-    }, []);
-
     return (
         <div className="popup-message">
             <p>{message}</p>
         </div>
     );
 }
+
+const PopupContext: React.Context<any> = createContext(null);
+
+const PopupProvider = ({ children }:{children: any}) => {
+    const [popupMessage, setPopupMessage] = useState('');
+
+    const showPopup = (message: string) => {
+        setPopupMessage(message);
+
+            setTimeout(() => {
+                setPopupMessage('');
+            }, 7000);
+
+    };
+
+    return (
+        <PopupContext.Provider value={{ showPopup }}>
+            {children}
+            {popupMessage && <PopupMessage message={popupMessage} />}
+        </PopupContext.Provider>
+    );
+};
+
+export { PopupContext, PopupProvider };

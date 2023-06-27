@@ -1,0 +1,119 @@
+@import "../../styles/general";
+
+#popup-edit-wrapper {
+  @include container(unset, center, center);
+  background: rgb(255 255 255 / 51%);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  #popup-edit-image {
+    width: 350px;
+    background: white;
+    padding: 20px;
+    border-radius: 7px;
+    box-shadow: 0 0 6px;
+
+    .cansel-save-btn {
+      button {
+        @include btn(blue, white);
+        background: #1b1bb7;
+        color: white;
+        border-radius: 3px;
+      }
+    }
+
+    .cansel-save-btn button:first-child {
+      margin-right: 5px;
+    }
+  }
+
+  .image-details {
+    @include container(row, space-between, start);
+    margin-bottom: 10px;
+  }
+
+  .cat-des-edit {
+    @include container(column, start, start);
+    margin-right: 15px;
+
+    section {
+      @include container(row, space-between, center);
+
+      p, input {
+        border: none;
+        border-bottom: 1px solid black;
+        flex: 1;
+        margin-right: 10px;
+      }
+
+      input:focus-visible {
+        outline: none;
+      }
+
+      button {
+        @include btn(blue, white);
+      }
+    }
+  }
+
+  .edit-image-section {
+    @include container(column, center, center);
+
+    input {
+      margin-bottom: 10px;
+    }
+  }
+
+  .image-edit-section {
+    position: relative;
+
+    svg {
+      font-size: 30px;
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      background: rgb(255 254 254 / 74%);
+      border-radius: 50%;
+    }
+
+    svg:hover {
+      background: rgba(255, 254, 254, 0.61);
+    }
+
+    .edit-image-btns {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      right: 15px;
+      top: 40px;
+      border-radius: 7px;
+      background: white;
+      box-shadow: 0 0 6px;
+
+      button, label {
+        @include btn(rgba(128, 128, 128, 0.27), black);
+        @include container(unset, center, center);
+        width: 150px;
+      }
+    }
+
+    .loader {
+      width: 100px;
+      height: 100px;
+    }
+  }
+
+  .delete-warning {
+    p:first-child{
+      color: red;
+      margin-bottom: 15px;
+    }
+    p:last-child {
+      margin: 15px 0;
+    }
+
+  }
+}

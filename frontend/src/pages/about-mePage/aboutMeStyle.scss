@@ -1,8 +1,8 @@
-@import "src/styles/general";
+@import "../../styles/general";
 
 .about-me {
   @include container(row, center, centeer);
-  min-height: 100%;
+  height: 100%;
 
   .blur-about-img {
     @include blurBackGround();

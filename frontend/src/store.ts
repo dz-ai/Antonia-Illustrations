@@ -5,6 +5,8 @@ class Store {
     url:string = import.meta.env.VITE_DEV_SERVER;
     isUserLog: boolean = false;
 
+    rerender: boolean = false;
+
     constructor() {
         makeAutoObservable(this);
     }
@@ -32,6 +34,9 @@ class Store {
     logOut():void {
         this.isUserLog = false;
         localStorage.clear();
+    }
+    triggerRerender(): void {
+        this.rerender = !this.rerender;
     }
 }
 

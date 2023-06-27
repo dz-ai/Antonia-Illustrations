@@ -1,5 +1,6 @@
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, useContext, useState} from "react";
 import {IKCore} from "imagekitio-react";
+import {PopupContext} from "../popupMessage/popupMessage";
 
 interface IProps {
     clearAllIMages: () => void;
@@ -7,8 +8,28 @@ interface IProps {
     setMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
+export interface IImageMetaData  {
+    fileName: string;
+    imageCategory: string;
+    imageDescription: string;
+    replaceImageWith?: string;
+}
+// util ver
+const devServer = 'http://localhost:3001';
+const productServer = 'https://antonia-illustrations.onrender.com';
+const dev = import.meta.env.VITE_DEV;
+
+const uploadMetaDataEndpoint: string = `${dev === 'true' ? devServer : productServer}/api/uploadImage/setImageMetaData`;
+
+const imagekit = new IKCore({
+    publicKey: "public_mvSjUFM9xBvSh8H9560m37S+jD8=",
+    urlEndpoint: "https://ik.imagekit.io/thfdl6dmv",
+    authenticationEndpoint: `${dev === 'true' ? devServer : productServer}/api/uploadImage/auth`,
+});
+// end util ver //
+
 // util functions
-function standardFileName(fileName: string) {
+export function standardFileName(fileName: string) {
     return fileName.toLowerCase().replace(' ', '_');
 }
 
@@ -22,16 +43,64 @@ function limitImageSize(file: File): boolean {
     return (fileSizeInBytes / 1024 / 1024) < 7;
 }
 
-//
+export const handleFileChange = (event: ChangeEvent<HTMLInputElement>, cbSuccess: (file: File) => void, cbFail: (errorMessage: string) => void): void => {
+
+    if (!event.target.files || !event.target.files[0]) return;
+
+    const file: File = event.target.files[0];
+
+    if (!checkFileExtension(file.name)) {
+        cbFail(`${file.name.split('.')[1]} format not supported`);
+        return;
+    }
+
+    if (!limitImageSize(file)) {
+        cbFail('Image size exceeds the 7 MB limit');
+        return;
+    }
+
+    cbSuccess(file);
+
+};
+
+export function uploadImageFun(uploadImage: File) {
+    return imagekit.upload({
+        file: uploadImage as File,
+        fileName: uploadImage.name.toLowerCase(),
+        folder: "/antonia-illustrations",
+        useUniqueFileName: false,
+    })
+}
+
+export function setImageMetaData(cbRes: (res: any) => void, cbErr: (error: any) => void, image: IImageMetaData): void {
+    const {fileName, imageCategory, imageDescription, replaceImageWith} = image;
+
+    if (fileName) {
+        fetch(uploadMetaDataEndpoint,
+            {
+                method: 'post',
+                headers: {'content-type': 'application/json'},
+                body: JSON.stringify({
+                    fileName: standardFileName(fileName),
+                    imageCategory,
+                    imageDescription,
+                    replaceImageWith,
+                })
+            })
+            .then(res => res.json())
+            .then(cbRes)
+            .catch(cbErr);
+    }
+}
+
+// end util functions
 export function AddImagePopup({
                                   clearAllIMages,
                                   setShowPopup,
                                   setMessage,
                               }: IProps) {
 
-    const devServer = 'http://localhost:3001';
-    const productServer = 'https://antonia-illustrations.onrender.com';
-    const dev = import.meta.env.VITE_DEV;
+    const popupContext = useContext(PopupContext);
 
     const [uploadImage, setUploadImage] = useState<File | null>(null);
     const [imageCategory, setImageCategory] = useState<string>('');
@@ -39,87 +108,51 @@ export function AddImagePopup({
     const [loadingImageUpload, setLoadingImageUpload] = useState<boolean>(false);
     const [showUserPermissionSection, setShowUserPermissionSection] = useState<boolean>(false);
 
-    const uploadMetaDataEndpoint: string = `${dev === 'true' ? devServer : productServer}/api/uploadImage/setImageMetaData`;
-
-    const imagekit = new IKCore({
-        publicKey: "public_mvSjUFM9xBvSh8H9560m37S+jD8=",
-        urlEndpoint: "https://ik.imagekit.io/thfdl6dmv",
-        authenticationEndpoint: `${dev === 'true' ? devServer : productServer}/api/uploadImage/auth`,
-    });
-
     const addImage = (): void => {
 
         if (!uploadImage) {
-            setMessage('Please chose an Image file');
+            popupContext.showPopup('Please chose an Image file');
             return
         }
         if (!imageCategory || !imageDescription) {
-            setMessage('Please fill in require fields');
+            popupContext.showPopup('Please fill in require fields');
             return;
         }
 
         const fileName: string = uploadImage.name.toLowerCase();
 
         if (!checkFileExtension(fileName)) {
-            setMessage('PDF format not supported');
+            popupContext.showPopup('PDF format not supported');
             setUploadImage(null);
             return;
         }
 
         setLoadingImageUpload(true);
-        imagekit.upload({
-            file: uploadImage as File,
-            fileName,
-            folder: "/antonia-illustrations",
-            useUniqueFileName: false,
-        })
+
+            uploadImageFun(uploadImage)
             .then(_ => {
-                fetch(uploadMetaDataEndpoint,
-                    {
-                        method: 'post',
-                        headers: {'content-type': 'application/json'},
-                        body: JSON.stringify({
-                            fileName: standardFileName(uploadImage.name),
-                            imageCategory,
-                            imageDescription
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(results => {
-                        setLoadingImageUpload(false);
-                        setUploadImage(null);
-                        setMessage(results);
-                        setShowPopup(false);
-                    })
-            })
-            .catch(error => {
-                console.log(error);
-                setLoadingImageUpload(false);
-                setUploadImage(null);
-                setMessage('upload error');
+                setImageMetaData(results => {
+                    setLoadingImageUpload(false);
+                    setUploadImage(null);
+                    popupContext.showPopup(results);
+                    setShowPopup(false);
+                }, error => {
+                    console.log(error);
+                    setLoadingImageUpload(false);
+                    setUploadImage(null);
+                    popupContext.showPopup('upload error');
+                }, {fileName, imageCategory, imageDescription});
             });
     }
 
-    const handleFileChange = (event: ChangeEvent<HTMLInputElement>): void => {
-        if (!event.target.files || !event.target.files[0]) return;
-
-        const file: File = event.target.files[0];
-
-        if (!checkFileExtension(file.name)) {
-            setMessage(`${file.name.split('.')[1]} format not supported`);
+    const onFileChange = (event: ChangeEvent<HTMLInputElement>): void => {
+        handleFileChange(event, (file) => {
+            setUploadImage(file);
+        }, (errorMessage) => {
+            popupContext.showPopup(errorMessage);
             setUploadImage(null);
-            return
-        }
-
-        if (!limitImageSize(file)) {
-            setMessage('Image size exceeds the 7 MB limit');
-            setUploadImage(null);
-            return;
-        }
-
-        setUploadImage(file);
-
-    };
+        });
+    }
 
     const checkPasswordBeforeClearAll = (): void => {
         // TODO send req to the server to check password
@@ -134,7 +167,7 @@ export function AddImagePopup({
             <div className="add-image-popup">
                 <form>
                     <label>
-                        <input type="file" onChange={handleFileChange}/>
+                        <input type="file" onChange={onFileChange}/>
                         Upload Image
                     </label><br/>
                     <div id="image-upload-indication">
