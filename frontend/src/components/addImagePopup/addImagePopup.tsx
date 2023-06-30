@@ -1,14 +1,14 @@
 import React, {ChangeEvent, useContext, useState} from "react";
 import {IKCore} from "imagekitio-react";
 import {PopupContext} from "../popupMessage/popupMessage";
+import store from "../../store";
 
 interface IProps {
     clearAllIMages: () => void;
     setShowPopup: React.Dispatch<React.SetStateAction<boolean>>;
-    setMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export interface IImageMetaData  {
+export interface IImageMetaData {
     fileName: string;
     imageCategory: string;
     imageDescription: string;
@@ -64,12 +64,16 @@ export const handleFileChange = (event: ChangeEvent<HTMLInputElement>, cbSuccess
 };
 
 export function uploadImageFun(uploadImage: File) {
-    return imagekit.upload({
-        file: uploadImage as File,
-        fileName: uploadImage.name.toLowerCase(),
-        folder: "/antonia-illustrations",
-        useUniqueFileName: false,
+    return store.verifyToken()
+        .then(() => {
+        return imagekit.upload({
+            file: uploadImage as File,
+            fileName: uploadImage.name.toLowerCase(),
+            folder: "/antonia-illustrations",
+            useUniqueFileName: false,
+        });
     })
+        .catch(error => Promise.reject(error));
 }
 
 export function setImageMetaData(cbRes: (res: any) => void, cbErr: (error: any) => void, image: IImageMetaData): void {
@@ -79,7 +83,10 @@ export function setImageMetaData(cbRes: (res: any) => void, cbErr: (error: any) 
         fetch(uploadMetaDataEndpoint,
             {
                 method: 'post',
-                headers: {'content-type': 'application/json'},
+                headers: {
+                    'content-type': 'application/json',
+                    'auth': `Bearer ${localStorage.getItem('token')}`
+                },
                 body: JSON.stringify({
                     fileName: standardFileName(fileName),
                     imageCategory,
@@ -87,17 +94,20 @@ export function setImageMetaData(cbRes: (res: any) => void, cbErr: (error: any) 
                     replaceImageWith,
                 })
             })
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(res.statusText);
+                }
+                return res.json();
+            })
             .then(cbRes)
             .catch(cbErr);
     }
 }
-
 // end util functions
 export function AddImagePopup({
                                   clearAllIMages,
                                   setShowPopup,
-                                  setMessage,
                               }: IProps) {
 
     const popupContext = useContext(PopupContext);
@@ -129,8 +139,8 @@ export function AddImagePopup({
 
         setLoadingImageUpload(true);
 
-            uploadImageFun(uploadImage)
-            .then(_ => {
+        uploadImageFun(uploadImage)
+            .then(() => {
                 setImageMetaData(results => {
                     setLoadingImageUpload(false);
                     setUploadImage(null);
@@ -140,8 +150,17 @@ export function AddImagePopup({
                     console.log(error);
                     setLoadingImageUpload(false);
                     setUploadImage(null);
-                    popupContext.showPopup('upload error');
+                    popupContext.showPopup('upload error ' + error.message);
                 }, {fileName, imageCategory, imageDescription});
+            })
+            .catch(error => {
+                console.log(error);
+                setLoadingImageUpload(false);
+                setUploadImage(null);
+                store.logOut((message) => {
+                    popupContext.showPopup(error);
+                });
+                setShowPopup(false);
             });
     }
 

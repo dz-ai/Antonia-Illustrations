@@ -1,4 +1,4 @@
-@import "src/styles/general";
+@import "../../styles/general";
 
 .register-page {
   @include container(unset, center, center);
@@ -13,7 +13,7 @@
     border-radius: 15px;
     box-shadow: 5px 5px 5px 0 #002b7f;
 
-    form {
+    .form {
       @include container(column, center, center);
     }
 
@@ -23,11 +23,13 @@
 
     input {
       margin: 3px;
+      width: 250px;
     }
 
     p {
       color: #11046b;
       font-size: 0.8em;
+
       &:hover {
         cursor: pointer;
       }
@@ -42,5 +44,15 @@
 
   }
 
+  .loader {
+    height: 16px;
+    width: 16px;
+  }
 
+  @media (max-width: 380px) {
+    .register-card {
+      padding: 10px;
+    }
+  }
 }
+

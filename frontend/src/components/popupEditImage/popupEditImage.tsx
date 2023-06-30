@@ -31,11 +31,17 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
             fetch(`${url}/api/uploadImage/deleteImage`, {
                 method: 'delete',
                 headers: {
-                    'content-type': 'application/json'
+                    'content-type': 'application/json',
+                    'auth': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify({fileName: editImage})
             })
-                .then(res => res.json())
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error(res.statusText);
+                    }
+                    return res.json();
+                })
                 .then(results => {
                     popupContext.showPopup(results);
                     store.triggerRerender(); /* update the rendered images on the portfolio page */
@@ -43,7 +49,7 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
                 })
                 .catch(error => {
                     console.log(error);
-                    popupContext.showPopup(error);
+                    store.logOut(() => popupContext.showPopup(error.message + ' login first'));
                     setShowPopupEditImage(false);
                 });
         }
@@ -62,7 +68,7 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
             },
             error => {
                 console.log(error);
-                popupContext.showPopup('Fail to edit');
+                store.logOut(() => popupContext.showPopup(`Fail to edit - ${error} - login first`));
             },
             {
                 fileName: imageFileName,

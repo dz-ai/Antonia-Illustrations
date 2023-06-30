@@ -9,8 +9,8 @@ function App() {
     const location = useLocation();
 
     useEffect(() => {
-        store.authTokenOnLand();
-    }, []);
+        store.verifyToken();
+    }, [store.logOut]);
 
     return (
         <div className="app">

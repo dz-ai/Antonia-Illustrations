@@ -23,9 +23,7 @@ const protect = asyncHandler((req, res, next) => {
         req.decodeUserId = id
         next();
     } catch (error) {
-        res.json({
-            isSign: false, message: 'Not authorized',
-        });
+        res.status(403).send({isSign: false, error});
         return next(new Error('not authorized'));
     }
 });

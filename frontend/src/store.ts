@@ -1,8 +1,7 @@
 import {makeAutoObservable} from "mobx";
 
 class Store {
-    token: string | null = localStorage.getItem('token');
-    url:string = import.meta.env.VITE_DEV_SERVER;
+    url: string = import.meta.env.VITE_DEV_SERVER;
     isUserLog: boolean = false;
 
     rerender: boolean = false;
@@ -14,27 +13,43 @@ class Store {
     userLogToggle(isLog: boolean): void {
         this.isUserLog = isLog;
     }
-    authTokenOnLand():void {
-        if (this.token !== null) {
-            fetch(`${this.url}/api/users/authToken`, {
-                headers: { 'auth': `Bearer ${this.token}` },
+
+    verifyToken(): Promise<boolean | undefined> {
+        const token: string | null = localStorage.getItem('token');
+
+        if (token !== null) {
+            return fetch(`${this.url}/api/users/authToken`, {
+                headers: {'auth': `Bearer ${token}`},
             })
-                .then(res => res.json())
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error(res.statusText);
+                    }
+                    return res.json();
+                })
                 .then(results => {
                     if (results.isSign) {
                         this.isUserLog = true;
-                    } else {
-                        localStorage.clear();
-                        this.isUserLog = false;
+                        return true;
                     }
                 })
-                .catch(error => console.error(error))
+                .catch(error => {
+                    console.error(error);
+                    localStorage.clear();
+                    this.isUserLog = false;
+                    return Promise.reject(`Not authorized - ${error} - log in first`);
+                });
+        } else {
+            return Promise.reject('User not log in (token is messing');
         }
     }
-    logOut():void {
+
+    logOut(messageCB: (message: string) => void): void {
         this.isUserLog = false;
         localStorage.clear();
+        messageCB('You have logged out');
     }
+
     triggerRerender(): void {
         this.rerender = !this.rerender;
     }

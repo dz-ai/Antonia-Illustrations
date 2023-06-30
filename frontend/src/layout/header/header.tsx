@@ -1,16 +1,18 @@
 import Dropdown from "../../components/dropdown/dropdown";
 import {FaUserCircle, GiHamburgerMenu} from "react-icons/all";
-import {useEffect, useRef, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import {useNavigate} from 'react-router-dom';
 import {useMediaQuery} from "react-responsive";
 import {useOutClick} from "../../Hooks/useOutClick";
 import store from "../../store";
 import {observer} from "mobx-react";
+import {PopupContext} from "../../components/popupMessage/popupMessage";
 
 
 function Header() {
     const navigate = useNavigate();
     const ref = useRef(null);
+    const popupContext = useContext(PopupContext);
 
     const isSmallScreen = useMediaQuery({query: '(max-width: 800px)'});
 
@@ -92,7 +94,9 @@ function Header() {
                             </button>
                             {
                                 store.isUserLog && localStorage.getItem('token') !== null &&
-                                <button id="logout-btn" onClick={() => store.logOut()}>Log Out<FaUserCircle/></button>
+                                <button id="logout-btn"
+                                        onClick={() => store.logOut((message) => popupContext.showPopup(message))}>Log
+                                    Out<FaUserCircle/></button>
                             }
                         </nav>
                     </div>

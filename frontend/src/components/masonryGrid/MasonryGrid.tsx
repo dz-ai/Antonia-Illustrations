@@ -3,6 +3,7 @@ import React, {Dispatch, SetStateAction, useState} from "react";
 import {IImage} from "../../types/types";
 import {FiEdit2} from "react-icons/all";
 import {PopupEditImage} from "../popupEditImage/popupEditImage";
+import store from "../../store";
 
 type Props = {
     images: IImage;
@@ -40,17 +41,20 @@ export function MasonryGrid({images, setRemEListener, setFullScreen}: Props) {
                                 {
                                     // TODO add tooltip to Edit button
                                 }
-                                <FiEdit2 className="edit-btn"
-                                         title="Edit Image"
-                                         onClick={() => {
-                                             setImageDetails({
-                                                 [`${key}`]: {
-                                                     imageCategory: images[key].imageCategory,
-                                                     imageDescription: images[key].imageDescription
-                                                 }
-                                             });
-                                             setShowPopupEditImage(true);
-                                         }}/>
+                                {
+                                    store.isUserLog &&
+                                    <FiEdit2 className="edit-btn"
+                                             title="Edit Image"
+                                             onClick={() => {
+                                                 setImageDetails({
+                                                     [`${key}`]: {
+                                                         imageCategory: images[key].imageCategory,
+                                                         imageDescription: images[key].imageDescription
+                                                     }
+                                                 });
+                                                 setShowPopupEditImage(true);
+                                             }}/>
+                                }
                                 <img
                                     src={`https://ik.imagekit.io/thfdl6dmv/tr:w-200/antonia-illustrations/${key}`}
                                     height="auto"
@@ -73,7 +77,7 @@ export function MasonryGrid({images, setRemEListener, setFullScreen}: Props) {
                 }
             </Masonry>
             {
-                showPopupEditImage &&
+                showPopupEditImage && store.isUserLog &&
                 <PopupEditImage
                     imageDetails={imageDetails}
                     setShowPopupEditImage={setShowPopupEditImage}/>

@@ -8,7 +8,6 @@ import {categories, IImage} from "../../types/types";
 import {useInterSectionObserver} from "../../Hooks/useInterSectionObserver";
 import {useMediaQuery} from "react-responsive";
 import {JumpUpBtn} from "../../components/jumpUpBtn/jumpUpBtn";
-import {PopupMessage} from "../../components/popupMessage/popupMessage";
 import {AddImagePopup} from "../../components/addImagePopup/addImagePopup";
 import store from "../../store";
 import {observer} from "mobx-react";
@@ -47,7 +46,6 @@ function Portfolio() {
     const [remEListener, setRemEListener] = useState<boolean>(false);
     const [images, setImages] = useState<IImage>({});
     const [showPopup, setShowPopup] = useState<boolean>(false);
-    const [message, setMessage] = useState<string>('');
     const [loadingImages, setLoadingImages] = useState<boolean | string>(false);
 
     const url = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
@@ -132,13 +130,15 @@ function Portfolio() {
                         :
                         <LoadingComponent loading={loadingImages}/>
                 }
-                <button id="add-image" onClick={() => setShowPopup(true)}>Add Image</button>
                 {
-                    showPopup &&
+                    store.isUserLog &&
+                    <button id="add-image" onClick={() => setShowPopup(true)}>Add Image</button>
+                }
+                {
+                    showPopup && store.isUserLog &&
                     <AddImagePopup
                         clearAllIMages={clearAllIMages}
                         setShowPopup={setShowPopup}
-                        setMessage={setMessage}
                     />
                 }
                 {
