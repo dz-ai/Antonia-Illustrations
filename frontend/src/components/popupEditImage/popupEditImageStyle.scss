@@ -17,11 +17,19 @@
     box-shadow: 0 0 6px;
 
     .cansel-save-btn {
+      display: flex;
+
       button {
         @include btn(blue, white);
         background: #1b1bb7;
         color: white;
         border-radius: 3px;
+        min-width: 57.77px;
+
+        .loader {
+          height: 20px;
+          width: 20px;
+        }
       }
     }
 
@@ -107,10 +115,11 @@
   }
 
   .delete-warning {
-    p:first-child{
+    p:first-child {
       color: red;
       margin-bottom: 15px;
     }
+
     p:last-child {
       margin: 15px 0;
     }

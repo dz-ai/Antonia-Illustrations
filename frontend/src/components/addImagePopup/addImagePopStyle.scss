@@ -28,6 +28,11 @@
   #image-upload-indication {
     @include container(row, center, center);
     margin-top: 15px;
+
+    img {
+      height: 100px;
+      width: auto;
+    }
   }
 
   #image-upload-preview {

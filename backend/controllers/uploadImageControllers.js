@@ -31,7 +31,7 @@ exports.getSignature = asyncHandler(async (req, res) => {
 });
 
 exports.setImageMetaData = asyncHandler(async (req, res) => {
-    const {fileName, imageCategory, imageDescription, replaceImageWith} = req.body;
+    const {fileName, imageCategory, imageDescription, replaceImageWith, imageID} = req.body;
 
     if (fileName && imageCategory && imageDescription) {
 
@@ -39,7 +39,7 @@ exports.setImageMetaData = asyncHandler(async (req, res) => {
 
         // new image upload
         if (!data.images[fileName]) {
-            data.images[fileName] = {imageCategory, imageDescription};
+            data.images[fileName] = {imageCategory, imageDescription, imageID};
 
             fs.writeFileSync(imageMetadataFile, JSON.stringify(data));
 
@@ -53,9 +53,19 @@ exports.setImageMetaData = asyncHandler(async (req, res) => {
             const imageAlreadyExist = replaceImageWith && Object.keys(data.images).includes(replaceImageWith) && fileName !== replaceImageWith;
 
             // change the image with new image
+            // TODO add error handling to those 2 imagekit functions
             if (changeImageWith) {
+                await imagekit.deleteFile(data.images[fileName].imageID)
+                    .then(results => console.log(results))
+                    .catch(error => console.log(error));
+
+                await imagekit.purgeCache(`https://ik.imagekit.io/thfdl6dmv/${fileName}`)
+                    .then(results => console.log(results))
+                    .catch(error => console.log(error));
+
+
                 delete data.images[fileName];
-                data.images[replaceImageWith] = {imageCategory, imageDescription};
+                data.images[replaceImageWith] = {imageCategory, imageDescription, imageID};
 
                 fs.writeFileSync(imageMetadataFile, JSON.stringify(data));
 
@@ -68,7 +78,11 @@ exports.setImageMetaData = asyncHandler(async (req, res) => {
             }
             // change image Category or/and Description
             if (imageMD.imageCategory !== imageCategory || imageMD.imageDescription !== imageDescription) {
-                data.images[fileName] = {imageCategory, imageDescription};
+                data.images[fileName] = {
+                    imageCategory,
+                    imageDescription,
+                    imageID: imageID || data.images[fileName].imageID
+                };
 
                 fs.writeFileSync(imageMetadataFile, JSON.stringify(data));
 
@@ -86,10 +100,20 @@ exports.setImageMetaData = asyncHandler(async (req, res) => {
 
 });
 
-exports.deleteImageMetaData = asyncHandler(async  (req, res) => {
+exports.deleteImageMetaData = asyncHandler(async (req, res) => {
     const {fileName} = req.body
 
     const data = JSON.parse(fs.readFileSync(imageMetadataFile));
+
+    // delete from imagekit.io service
+    // TODO add proper error handling
+    await imagekit.deleteFile(data.images[fileName].imageID)
+        .then(results => console.log('del file?: ', results))
+        .catch(error => console.log(error));
+
+    await imagekit.purgeCache(`https://ik.imagekit.io/thfdl6dmv/${fileName}`)
+        .then(results => console.log('results: ', results))
+        .catch(error => console.log(error));
 
     delete data.images[fileName];
 
@@ -97,6 +121,7 @@ exports.deleteImageMetaData = asyncHandler(async  (req, res) => {
 
     res.json('Image Deleted');
 });
+
 // util function
 function getImagesMetaData() {
     return JSON.parse(fs.readFileSync(imageMetadataFile)).images;

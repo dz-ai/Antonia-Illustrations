@@ -43,7 +43,7 @@ function limitImageSize(file: File): boolean {
     return (fileSizeInBytes / 1024 / 1024) < 7;
 }
 
-export const handleFileChange = (event: ChangeEvent<HTMLInputElement>, cbSuccess: (file: File) => void, cbFail: (errorMessage: string) => void): void => {
+export const handleFileChange = (event: ChangeEvent<HTMLInputElement>, cbSuccess: (file: File, imagePreview: string | ArrayBuffer | null) => void, cbFail: (errorMessage: string) => void): void => {
 
     if (!event.target.files || !event.target.files[0]) return;
 
@@ -59,24 +59,49 @@ export const handleFileChange = (event: ChangeEvent<HTMLInputElement>, cbSuccess
         return;
     }
 
-    cbSuccess(file);
-
+    const reader = new FileReader();
+    reader.onload = () => {
+        const imagePreview = reader.result;
+        cbSuccess(file, imagePreview);
+    };
+    reader.readAsDataURL(file);
 };
 
 export function uploadImageFun(uploadImage: File) {
     return store.verifyToken()
         .then(() => {
-        return imagekit.upload({
-            file: uploadImage as File,
-            fileName: uploadImage.name.toLowerCase(),
-            folder: "/antonia-illustrations",
-            useUniqueFileName: false,
-        });
-    })
+            return imagekit.upload({
+                file: uploadImage as File,
+                fileName: uploadImage.name.toLowerCase(),
+                folder: "/antonia-illustrations",
+                useUniqueFileName: false,
+            });
+        })
         .catch(error => Promise.reject(error));
 }
 
-export function setImageMetaData(cbRes: (res: any) => void, cbErr: (error: any) => void, image: IImageMetaData): void {
+export function deleteImage(fileName: string, cbSuccess: (results: any) => void, cbFail: (error: any) => void): void {
+    const url = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
+
+    fetch(`${url}/api/uploadImage/deleteImage`, {
+        method: 'delete',
+        headers: {
+            'content-type': 'application/json',
+            'auth': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({fileName})
+    })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error(res.statusText);
+            }
+            return res.json();
+        })
+        .then(cbSuccess)
+        .catch(cbFail);
+}
+
+export function setImageMetaData(imageID: string | undefined, cbRes: (res: any) => void, cbErr: (error: any) => void, image: IImageMetaData): void {
     const {fileName, imageCategory, imageDescription, replaceImageWith} = image;
 
     if (fileName) {
@@ -92,6 +117,7 @@ export function setImageMetaData(cbRes: (res: any) => void, cbErr: (error: any) 
                     imageCategory,
                     imageDescription,
                     replaceImageWith,
+                    imageID,
                 })
             })
             .then(res => {
@@ -105,6 +131,7 @@ export function setImageMetaData(cbRes: (res: any) => void, cbErr: (error: any) 
     }
 }
 // end util functions
+
 export function AddImagePopup({
                                   clearAllIMages,
                                   setShowPopup,
@@ -113,6 +140,7 @@ export function AddImagePopup({
     const popupContext = useContext(PopupContext);
 
     const [uploadImage, setUploadImage] = useState<File | null>(null);
+    const [uploadImagePreview, setUploadImagePreview] = useState<string | ArrayBuffer | null>(null);
     const [imageCategory, setImageCategory] = useState<string>('');
     const [imageDescription, setImageDescription] = useState<string>('');
     const [loadingImageUpload, setLoadingImageUpload] = useState<boolean>(false);
@@ -140,8 +168,9 @@ export function AddImagePopup({
         setLoadingImageUpload(true);
 
         uploadImageFun(uploadImage)
-            .then(() => {
-                setImageMetaData(results => {
+            .then((results) => {
+
+                setImageMetaData(results.fileId, results => {
                     setLoadingImageUpload(false);
                     setUploadImage(null);
                     popupContext.showPopup(results);
@@ -157,7 +186,7 @@ export function AddImagePopup({
                 console.log(error);
                 setLoadingImageUpload(false);
                 setUploadImage(null);
-                store.logOut((message) => {
+                store.logOut(() => {
                     popupContext.showPopup(error);
                 });
                 setShowPopup(false);
@@ -165,8 +194,9 @@ export function AddImagePopup({
     }
 
     const onFileChange = (event: ChangeEvent<HTMLInputElement>): void => {
-        handleFileChange(event, (file) => {
+        handleFileChange(event, (file, imagePreview) => {
             setUploadImage(file);
+            setUploadImagePreview(imagePreview);
         }, (errorMessage) => {
             popupContext.showPopup(errorMessage);
             setUploadImage(null);
@@ -190,12 +220,11 @@ export function AddImagePopup({
                         Upload Image
                     </label><br/>
                     <div id="image-upload-indication">
-                        <p>Image:</p>
                         {
                             uploadImage === null ?
                                 <p>No Image Chosen</p>
                                 :
-                                <p>{uploadImage.name}</p>
+                                <img src={uploadImagePreview as string} alt="image preview"/>
                         }
                     </div>
                     <br/>

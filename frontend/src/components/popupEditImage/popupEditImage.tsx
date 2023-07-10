@@ -1,7 +1,13 @@
 import React, {ChangeEvent, useContext, useState} from "react";
 import {BiDotsVerticalRounded, FiEdit2} from "react-icons/all";
 import {IImage} from "../../types/types";
-import {handleFileChange, setImageMetaData, standardFileName, uploadImageFun} from "../addImagePopup/addImagePopup";
+import {
+    deleteImage,
+    handleFileChange,
+    setImageMetaData,
+    standardFileName,
+    uploadImageFun
+} from "../addImagePopup/addImagePopup";
 import {PopupContext} from "../popupMessage/popupMessage";
 import store from "../../store";
 
@@ -10,86 +16,114 @@ interface IProp {
     setShowPopupEditImage: React.Dispatch<boolean>;
 }
 
+interface IEditImageState {
+    imageFileName: string,
+    fileID?: string,
+    imageFile?: File
+}
+
 export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
     const imageFileName: string = Object.keys(imageDetails)[0];
     const {imageCategory, imageDescription} = imageDetails[imageFileName];
-    const url = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
 
     const popupContext = useContext(PopupContext);
 
     const [showEditCat, setShowEditCat] = useState<boolean>(false);
     const [showEditDes, setShowEditDes] = useState<boolean>(false);
     const [showEditImage, setShowEditImage] = useState<boolean>(false);
-    const [editImage, setEditImage] = useState<string>(imageFileName);
+    const [editImage, setEditImage] = useState<IEditImageState>({imageFileName});
     const [editCategory, setEditCategory] = useState<string>(imageCategory);
     const [editDescription, setEditDescription] = useState<string>(imageDescription);
     const [loadingImageUpload, setLoadingImageUpload] = useState<boolean>(false);
+    const [loadingSave, setLoadingSave] = useState<boolean>(false);
+    const [previewImage, setPreviewImage] = useState<null | string | ArrayBuffer>(null);
     const [deleteImageQuestion, setDeleteImageQuestion] = useState<boolean>(false);
 
     const onSave = (): void => {
+        setLoadingSave(true);
+        // delete image case
         if (deleteImageQuestion) {
-            fetch(`${url}/api/uploadImage/deleteImage`, {
-                method: 'delete',
-                headers: {
-                    'content-type': 'application/json',
-                    'auth': `Bearer ${localStorage.getItem('token')}`
-                },
-                body: JSON.stringify({fileName: editImage})
-            })
-                .then(res => {
-                    if (!res.ok) {
-                        throw new Error(res.statusText);
-                    }
-                    return res.json();
-                })
-                .then(results => {
+            deleteImage(editImage.imageFileName, (results) => {
+                    setLoadingSave(false);
                     popupContext.showPopup(results);
                     store.triggerRerender(); /* update the rendered images on the portfolio page */
                     setShowPopupEditImage(false);
-                })
-                .catch(error => {
+                },
+                (error) => {
                     console.log(error);
                     store.logOut(() => popupContext.showPopup(error.message + ' login first'));
                     setShowPopupEditImage(false);
                 });
+            return;
         }
         if (editCategory === '' || editDescription === '') {
             popupContext.showPopup('Please fill the require fields');
             return;
         }
-        if (imageCategory === editCategory && imageDescription === editDescription && imageFileName === editImage) {
+        if (imageCategory === editCategory && imageDescription === editDescription && imageFileName === editImage.imageFileName) {
             popupContext.showPopup('No Data has been change');
             setShowPopupEditImage(false);
             return;
         }
-        setImageMetaData(results => {
-                store.triggerRerender();
-                popupContext.showPopup(results);
-            },
-            error => {
-                console.log(error);
-                store.logOut(() => popupContext.showPopup(`Fail to edit - ${error} - login first`));
-            },
-            {
-                fileName: imageFileName,
-                imageCategory: editCategory,
-                imageDescription: editDescription,
-                replaceImageWith: editImage
-            });
-        setShowPopupEditImage(false);
-    };
+
+        if (editImage.imageFile) {
+            uploadImageFun(editImage.imageFile)
+                .then(results => {
+                    setEditImage({imageFileName: standardFileName(editImage.imageFileName), fileID: results.fileId});
+
+                    setImageMetaData(results.fileId,
+                        results => {
+                            store.triggerRerender();
+                            popupContext.showPopup(results);
+                            setLoadingSave(false);
+                            setShowPopupEditImage(false);
+                        },
+                        error => {
+                            console.log(error);
+                            store.logOut(() => popupContext.showPopup(`Fail to edit - ${error} - login first`));
+                            setLoadingSave(false);
+                            setShowPopupEditImage(false);
+                        },
+                        {
+                            fileName: imageFileName,
+                            imageCategory: editCategory,
+                            imageDescription: editDescription,
+                            replaceImageWith: editImage.imageFileName,
+                        });
+                });
+        } else {
+            setImageMetaData(undefined,
+                results => {
+                    store.triggerRerender();
+                    popupContext.showPopup(results);
+                    setLoadingSave(false);
+                    setShowPopupEditImage(false);
+                },
+                error => {
+                    console.log(error);
+                    store.logOut(() => popupContext.showPopup(`Fail to edit - ${error} - login first`));
+                    setLoadingSave(false);
+                    setShowPopupEditImage(false);
+                },
+                {
+                    fileName: imageFileName,
+                    imageCategory: editCategory,
+                    imageDescription: editDescription,
+                    replaceImageWith: editImage.imageFileName,
+                });
+        }
+    }
 
     const replaceImage = (event: ChangeEvent<HTMLInputElement>): void => {
-        handleFileChange(event, (file) => {
+        handleFileChange(event, (file, imagePreview) => {
 
                 setShowEditImage(false);
                 setLoadingImageUpload(true);
 
-                uploadImageFun(file)
-                    .then(async _ => {
-                        setEditImage(standardFileName(file.name));
-                        setLoadingImageUpload(false);
-                    });
+                setPreviewImage(imagePreview);
+
+                setEditImage({imageFileName: standardFileName(file.name), imageFile: file});
+                setLoadingImageUpload(false);
             },
             (errorMessage) => {
                 popupContext.showPopup(errorMessage);
@@ -144,10 +178,11 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
                                         loadingImageUpload ?
                                             <div className="loader"></div>
                                             :
-                                            <img src={`${import.meta.env.VITE_IMAGEKIT}/tr:w-100/${editImage}`}
-                                                 width={100}
-                                                 height={'auto'}
-                                                 alt="image to edit"/>
+                                            <img
+                                                src={!previewImage ? `${import.meta.env.VITE_IMAGEKIT}/tr:w-100/${editImage.imageFileName}` : previewImage as string}
+                                                width={100}
+                                                height={'auto'}
+                                                alt="image to edit"/>
                                     }
                                     {
                                         // TODO add out click
@@ -173,13 +208,15 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
                     {
                         deleteImageQuestion &&
                         <section className="delete-warning">
-                            <p>You Are About To Delete The Image - {editImage}!</p>
-                            <img src={`${import.meta.env.VITE_IMAGEKIT}/tr:w-100/${editImage}`} alt="image to delete"/>
+                            <p>You Are About To Delete The Image - {editImage.imageFileName}!</p>
+                            <img src={`${import.meta.env.VITE_IMAGEKIT}/tr:w-100/${editImage.imageFileName}`}
+                                 alt="image to delete"/>
                             <p>Press "Save" to Continue Or "Cansel" to Quit</p>
                         </section>
                     }
                     <div className="cansel-save-btn">
-                        <button onClick={onSave}>Save
+                        <button onClick={onSave} disabled={loadingImageUpload || loadingSave}>
+                            {!loadingImageUpload && !loadingSave ? 'Save' : <div className="loader"></div>}
                         </button>
                         <button onClick={() => setShowPopupEditImage(false)}>Cansel</button>
                     </div>
