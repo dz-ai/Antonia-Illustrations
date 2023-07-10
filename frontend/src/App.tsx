@@ -9,7 +9,8 @@ function App() {
     const location = useLocation();
 
     useEffect(() => {
-        store.verifyToken();
+        store.verifyToken()
+            .then().catch(e => console.log(e));
     }, [store.logOut]);
 
     return (

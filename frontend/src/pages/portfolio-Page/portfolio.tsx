@@ -46,7 +46,7 @@ function Portfolio() {
     const [remEListener, setRemEListener] = useState<boolean>(false);
     const [images, setImages] = useState<IImage>({});
     const [showPopup, setShowPopup] = useState<boolean>(false);
-    const [loadingImages, setLoadingImages] = useState<boolean | string>(false);
+    const [loadingImages, setLoadingImages] = useState<boolean | string>(store.isUserLog);
 
     const url = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
 

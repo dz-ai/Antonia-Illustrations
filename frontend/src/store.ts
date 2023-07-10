@@ -1,7 +1,7 @@
 import {makeAutoObservable} from "mobx";
 
 class Store {
-    url: string = import.meta.env.VITE_DEV_SERVER;
+    url: string = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
     isUserLog: boolean = false;
 
     rerender: boolean = false;

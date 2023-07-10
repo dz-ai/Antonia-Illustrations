@@ -24,7 +24,7 @@ function RegisterPage() {
         store.verifyToken()
             .then(() => {
                 popupContext.showPopup('You are already log');
-                navigate(-1);
+                navigate('/');
             }).catch(async () => {
             localStorage.clear()
             const url = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
@@ -44,7 +44,7 @@ function RegisterPage() {
                 popupContext.showPopup('Hello And Welcome!!!');
                 localStorage.setItem('token', results.token);
                 store.userLogToggle(results.isSign);
-                navigate(-1);
+                navigate('/');
             }
         });
     }
@@ -58,11 +58,13 @@ function RegisterPage() {
                     <input type="email"
                            value={email}
                            onChange={(e) => setEmail(e.target.value)}
-                           placeholder="Email"/>
+                           placeholder="Email"
+                           autoComplete="username"/>
 
                     <input type="password" value={password}
                            onChange={(e) => setPassword(e.target.value)}
-                           placeholder="password"/>
+                           placeholder="password"
+                           autoComplete="current-password"/>
                 </div>
                 {/*<p>forget/change password</p>*/}
 
