@@ -2,17 +2,32 @@ const fs = require("fs");
 const ImageKit = require("imagekit");
 const {asyncHandler} = require("../middlwares");
 const {imageMetadataFile, imageUploadRefs} = require("../../server");
+const Image = require('../schems/imagesSchem');
 
 if (!fs.existsSync(imageUploadRefs)) {
     fs.mkdirSync(imageUploadRefs);
 }
 
-// TODO make database backup for 'imageMetadataFile' so the images will not los when redeploy.
 if (!fs.existsSync(imageMetadataFile)) {
-    const initialData = {
-        images: {}
-    };
-    fs.writeFileSync(imageMetadataFile, JSON.stringify(initialData));
+
+    Image.find().exec()
+        .then(res => {
+            const data = {
+                images: {}
+            };
+
+            if (res.length > 0) {
+                res.forEach(image => {
+                    data.images[image.fileName] = {
+                        imageCategory: image.imageCategory,
+                        imageDescription: image.imageDescription,
+                        imageID: image.imageID,
+                    }
+                });
+            }
+
+            fs.writeFileSync(imageMetadataFile, JSON.stringify(data));
+        });
 }
 
 const imagekit = new ImageKit({
@@ -39,6 +54,21 @@ exports.setImageMetaData = asyncHandler(async (req, res) => {
 
         // new image upload
         if (!data.images[fileName]) {
+
+            const image = new Image({
+                fileName,
+                imageCategory,
+                imageDescription,
+                imageID
+            });
+            image.save()
+                .then(savedImage => {
+                    console.log('Image saved:', savedImage);
+                })
+                .catch(error => {
+                    console.error('Error saving image:', error);
+                });
+
             data.images[fileName] = {imageCategory, imageDescription, imageID};
 
             fs.writeFileSync(imageMetadataFile, JSON.stringify(data));
@@ -114,6 +144,8 @@ exports.deleteImageMetaData = asyncHandler(async (req, res) => {
     await imagekit.purgeCache(`https://ik.imagekit.io/thfdl6dmv/${fileName}`)
         .then(results => console.log('results: ', results))
         .catch(error => console.log(error));
+
+    await Image.findOneAndDelete({fileName});
 
     delete data.images[fileName];
 
