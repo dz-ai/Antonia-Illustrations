@@ -1,44 +1,114 @@
+@import "../../styles/general";
+
 .select {
   width: 100%;
   height: 30px;
   background: white;
   position: relative;
   color: black;
+
+
+  .hover:hover {
+    background: bisque;
+    cursor: pointer;
+  }
+
+  .options-hide {
+    display: none;
+  }
+
+  .options-show {
+    display: block;
+    position: absolute;
+    bottom: -30px;
+    width: 100%;
+    height: 30px;
+    background: white;
+  }
+
+  .option {
+    @include container(row, space-between, center);
+    background: white;
+    border: 1px solid orange;
+    height: 30px;
+    color: black;
+    padding-left: 5px;
+  }
+
+  .option-rem-button {
+    background: #1b1bb7;
+    min-height: unset;
+    padding: 0 3px;
+    height: unset;
+    box-shadow: unset;
+    width: unset;
+    color: white;
+    border-radius: 2px;
+  }
+
+  .ellipsis-container {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .option:hover {
+    background: bisque;
+    cursor: pointer;
+  }
+
+  .icon {
+    position: absolute;
+    top: 7px;
+    right: 10px;
+    width: 18px;
+    height: 18px;
+  }
 }
 
-.hover:hover {
-  background: bisque;
-  cursor: pointer;
-}
+#popup-category {
+  @include container(unset, center, center);
+  background: rgb(255 255 255 / 51%);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
 
-.options-hide {
-  display: none;
-}
+  color: black;
 
-.options-show {
-  display: block;
-  position: absolute;
-  bottom: -30px;
-  width: 100%;
-  height: 30px;
-  background: white;
-}
+  .add-category {
+    background: white;
+    padding: 20px;
+    border-radius: 7px;
+    box-shadow: 0 0 6px;
 
-.option {
-  background: white;
-  border: 1px solid orange;
-  height: 30px;
-}
 
-.option:hover {
-  background: bisque;
-  cursor: pointer;
-}
+    input {
+      border: none;
+      border-bottom: 1px solid black;
+      flex: 1;
+      margin-right: 10px;
+    }
 
-.icon {
-  position: absolute;
-  top: 7px;
-  right: 10px;
-  width: 18px;
-  height: 18px;
+    input:focus-visible {
+      outline: none;
+    }
+
+    button {
+      background: #1b1bb7;
+      border-radius: 4px;
+      color: white;
+    }
+
+    @media (max-width: 800px) {
+      button {
+        color: white;
+        margin-top: 15px;
+        box-shadow: unset;
+
+      }
+    }
+  }
 }

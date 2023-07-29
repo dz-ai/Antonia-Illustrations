@@ -23,9 +23,11 @@ app.use(express.json());
 
 const users = require('./backend/router').userRouter;
 const uploadImage = require('./backend/router').uploadRouter;
+const categories = require('./backend/router').categoryRouter;
 
 app.use('/api/users', users);
 app.use('/api/uploadImage', uploadImage);
+app.use('/api/categories', categories);
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));

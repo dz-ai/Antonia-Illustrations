@@ -79,7 +79,7 @@ function Header() {
                             }>
                                 {/*TODO make better dropdown ui ux (use library?)*/}
                                 <Dropdown
-                                    options={['Category', 'Category1', 'Category2', 'Category3', 'Category4']}
+                                    options={store.categories}
                                     categoryValue={'Categories'}
                                     setCategoryValue={(arg) => null}
                                 />

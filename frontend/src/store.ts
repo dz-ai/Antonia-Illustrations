@@ -3,6 +3,7 @@ import {makeAutoObservable} from "mobx";
 class Store {
     url: string = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
     isUserLog: boolean = false;
+    categories: string[] = [];
 
     rerender: boolean = false;
 
@@ -52,6 +53,26 @@ class Store {
 
     triggerRerender(): void {
         this.rerender = !this.rerender;
+    }
+
+    getCategories(): void {
+        fetch(`${this.url}/api/categories/getCategories`)
+            .then(res => res.json())
+            .then(results => this.categories = results)
+            .catch(error => console.log(error));
+    }
+
+    addCategory(categoryToAdd: string): void {
+        fetch(`${this.url}/api/categories/addCategory`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({val: categoryToAdd})
+        })
+            .then(res => res.json())
+            .then(results => this.categories = results)
+            .catch(error => console.log(error));
     }
 }
 

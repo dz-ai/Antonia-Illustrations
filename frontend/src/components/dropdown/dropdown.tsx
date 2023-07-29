@@ -1,5 +1,7 @@
 import React, {useState} from "react";
 import {IoIosArrowDropdown, IoIosArrowDropup} from "react-icons/all";
+import {observer} from "mobx-react";
+import store from "../../store";
 
 interface IDropdown {
     options: string[];
@@ -8,67 +10,93 @@ interface IDropdown {
 }
 
 function Dropdown(
-    {options, categoryValue, setCategoryValue}:IDropdown) {
+    {options, categoryValue, setCategoryValue}: IDropdown) {
 
-    const optionShow = 'options-show';
-    const optionHide = 'options-hide';
-
-    const [optionsShowState, setOptionShowState] = useState<string>(optionHide);
+    const [optionsShowState, setOptionShowState] = useState<boolean>(false);
+    const [showCatPopup, setShowCatPopup] = useState<boolean>(false);
+    const [catToAdd, setCatToAdd] = useState<string>('');
 
     const handleDropdown = () => {
-        if (optionsShowState === optionHide) {
-            setOptionShowState(optionShow);
-
-        } else {
-            setOptionShowState(optionHide);
-
-            setTimeout(() => {
-            }, 100);
-        }
+        setOptionShowState(!optionsShowState);
+        setTimeout(() => {
+        }, 100);
     };
 
-    const handleOption = (currentCategory:string) => {
+    const handleOption = (currentCategory: string) => {
         setCategoryValue(currentCategory);
-        setOptionShowState(optionHide);
+        setOptionShowState(false);
     };
 
+    const handleAddCat = (): void => {
+        store.addCategory(catToAdd);
+        setShowCatPopup(false);
+    }
+    // TODO make out click
     return (
 
-        <div
-            className={optionsShowState !== optionShow ? "hover select container" : "select container"}
-            onClick={handleDropdown}
-            onMouseLeave={() => optionsShowState === optionShow && handleDropdown() }
-        >
-            {
-                optionsShowState === optionHide &&
-                <IoIosArrowDropdown
-                    className="icon"
-                    onClick={() => setOptionShowState(optionShow)}
-                />
-            }
-            {
-                optionsShowState === optionShow &&
-                <IoIosArrowDropup
-                    className="icon"
-                    onClick={() => setOptionShowState(optionHide)}
-                />
-            }
+        <>
+            <div
+                className={!optionsShowState ? "hover select container" : "select container"}
+                onClick={handleDropdown}
+            >
+                {
+                    !optionsShowState &&
+                    <IoIosArrowDropdown
+                        className="icon"
+                        onClick={() => setOptionShowState(true)}
+                    />
+                }
+                {
+                    optionsShowState &&
+                    <IoIosArrowDropup
+                        className="icon"
+                        onClick={() => setOptionShowState(false)}
+                    />
+                }
 
-            {categoryValue}
+                {categoryValue}
 
-            <section className={optionsShowState}>
-                {options.map((category) =>
-                    <div
-                        key={category}
-                        className="option container"
-                        onClick={() => handleOption(category)}
-                    >
-                        {category}
-                    </div>)}
-            </section>
-        </div>
+                <section className={optionsShowState ? "options-show" : "options-hide"}>
+                    {
+                        options.map((category) =>
+                            <div
+                                key={category}
+                                className="option"
+                                onClick={() => handleOption(category)}
+                            >
+                                <div className="ellipsis-container">{category}</div>
+                                {
+                                    store.isUserLog &&
+                                    <button className="option-rem-button">X</button>
+                                }
+                            </div>)
+                    }
+                    {
+                        store.isUserLog && optionsShowState &&
+                        <div className="option container"
+                             onClick={() => setShowCatPopup(true)}>
+                            Add +
+                        </div>
+                    }
+                </section>
+
+            </div>
+            {
+                showCatPopup &&
+                <div id="popup-category">
+                    <div className="add-category">
+                        <label>
+                            Category:
+                        </label>
+                        <input onChange={(e) => setCatToAdd(e.target.value)}/>
+                        <button onClick={handleAddCat} disabled={catToAdd === ''}>Add</button>
+                        <button onClick={() => setShowCatPopup(false)}>Cansel</button>
+                    </div>
+                </div>
+            }
+        </>
 
     );
 }
 
-export default Dropdown;
+export default observer(Dropdown);

@@ -11,6 +11,7 @@ function App() {
     useEffect(() => {
         store.verifyToken()
             .then().catch(e => console.log(e));
+        store.getCategories();
     }, [store.logOut]);
 
     return (
