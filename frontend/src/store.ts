@@ -66,7 +66,8 @@ class Store {
         fetch(`${this.url}/api/categories/addCategory`, {
             method: 'post',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'auth': `Bearer ${localStorage.getItem('token')}`,
             },
             body: JSON.stringify({val: categoryToAdd})
         })
@@ -79,7 +80,8 @@ class Store {
         fetch(`${this.url}/api/categories/removeCategory`, {
             method: 'post',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'auth': `Bearer ${localStorage.getItem('token')}`,
             },
             body: JSON.stringify({val: categoryToRemove})
         })

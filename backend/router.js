@@ -13,15 +13,18 @@ exports.userRouter = express.Router({mergeParams: true});
 exports.uploadRouter = express.Router({mergeParams: true});
 exports.categoryRouter = express.Router({mergeParams: true});
 
-// userRouter.get('/signIn', creatUser);
+// ---- User Routes ---- //
+// userRouter.get('/signIn', creatUser); there is only one Admin user so this is not in use.
 this.userRouter.post('/logIn', loginUser);
 this.userRouter.get('/authToken', protect, authenticateToken);
 
+// ---- Image Routes ---- //
 this.uploadRouter.get('/getImages', getImages);
 this.uploadRouter.get('/auth', getSignature);
 this.uploadRouter.post('/setImageMetaData', protect, setImageMetaData);
 this.uploadRouter.delete('/deleteImage', protect, deleteImageMetaData);
-// TODO add protect middle ware
+
+// ---- Category Routes ---- //
 this.categoryRouter.get('/getCategories', getCategories);
-this.categoryRouter.post('/addCategory', addCategory);
-this.categoryRouter.post('/removeCategory', removeCategory);
+this.categoryRouter.post('/addCategory', protect, addCategory);
+this.categoryRouter.post('/removeCategory', protect, removeCategory);
