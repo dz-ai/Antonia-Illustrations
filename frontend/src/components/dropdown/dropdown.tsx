@@ -1,7 +1,8 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {IoIosArrowDropdown, IoIosArrowDropup} from "react-icons/all";
 import {observer} from "mobx-react";
 import store from "../../store";
+import {PopupContext} from "../popupMessage/popupMessage";
 
 interface IDropdown {
     options: string[];
@@ -11,9 +12,11 @@ interface IDropdown {
 
 function Dropdown(
     {options, categoryValue, setCategoryValue}: IDropdown) {
+    const popupContext = useContext(PopupContext);
 
     const [optionsShowState, setOptionShowState] = useState<boolean>(false);
     const [showCatPopup, setShowCatPopup] = useState<boolean>(false);
+    const [showRemCatPopup, setShowRemCatPopup] = useState<boolean | string>(false);
     const [catToAdd, setCatToAdd] = useState<string>('');
 
     const handleDropdown = () => {
@@ -29,7 +32,16 @@ function Dropdown(
 
     const handleAddCat = (): void => {
         store.addCategory(catToAdd);
+        popupContext.showPopup(`${catToAdd} has added`);
         setShowCatPopup(false);
+    }
+
+    const removeCategory = (): void => {
+        if (typeof showRemCatPopup === 'string') {
+            store.removeCategory(showRemCatPopup);
+        }
+        popupContext.showPopup(`${showRemCatPopup} has removed`);
+        setShowRemCatPopup(false);
     }
     // TODO make out click
     return (
@@ -67,7 +79,8 @@ function Dropdown(
                                 <div className="ellipsis-container">{category}</div>
                                 {
                                     store.isUserLog &&
-                                    <button className="option-rem-button">X</button>
+                                    <button className="option-rem-button"
+                                            onClick={() => setShowRemCatPopup(category)}>X</button>
                                 }
                             </div>)
                     }
@@ -88,9 +101,20 @@ function Dropdown(
                         <label>
                             Category:
                         </label>
-                        <input onChange={(e) => setCatToAdd(e.target.value)}/>
+                        <input onChange={(e) => setCatToAdd(e.target.value)} autoFocus={true}/>
                         <button onClick={handleAddCat} disabled={catToAdd === ''}>Add</button>
                         <button onClick={() => setShowCatPopup(false)}>Cansel</button>
+                    </div>
+                </div>
+            }
+            {
+                showRemCatPopup &&
+                <div id="popup-category">
+                    <div className="add-category">
+                        <label>
+                            Would You Like To Remove: {showRemCatPopup}? </label>
+                        <button onClick={removeCategory}>Remove</button>
+                        <button onClick={() => setShowRemCatPopup(false)}>Cansel</button>
                     </div>
                 </div>
             }

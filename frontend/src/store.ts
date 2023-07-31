@@ -74,6 +74,19 @@ class Store {
             .then(results => this.categories = results)
             .catch(error => console.log(error));
     }
+
+    removeCategory(categoryToRemove: string): void {
+        fetch(`${this.url}/api/categories/removeCategory`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({val: categoryToRemove})
+        })
+            .then(res => res.json())
+            .then(results => this.categories = results)
+            .catch(error => console.log(error));
+    }
 }
 
 const store = new Store();

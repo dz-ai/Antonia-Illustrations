@@ -26,3 +26,15 @@ exports.addCategory = asyncHandler(async (req, res) => {
 
     res.json(updatedCategories[0].categoriesArray);
 });
+
+exports.removeCategory = asyncHandler(async (req, res) => {
+
+    await Categories.updateMany(
+        {categoriesArray: {$exists: true}},
+        {$pull: {categoriesArray: req.body.val}}
+    );
+
+    const updatedCategories = await Categories.find({categoriesArray: {$exists: true}});
+
+    res.json(updatedCategories[0].categoriesArray);
+});

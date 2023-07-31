@@ -7,7 +7,7 @@ const {
     setImageMetaData,
     deleteImageMetaData
 } = require("./controllers/uploadImageControllers");
-const {addCategory, getCategories} = require("./controllers/categoriesController");
+const {getCategories, addCategory, removeCategory} = require("./controllers/categoriesController");
 
 exports.userRouter = express.Router({mergeParams: true});
 exports.uploadRouter = express.Router({mergeParams: true});
@@ -22,5 +22,6 @@ this.uploadRouter.get('/auth', getSignature);
 this.uploadRouter.post('/setImageMetaData', protect, setImageMetaData);
 this.uploadRouter.delete('/deleteImage', protect, deleteImageMetaData);
 // TODO add protect middle ware
-this.categoryRouter.post('/addCategory', addCategory);
 this.categoryRouter.get('/getCategories', getCategories);
+this.categoryRouter.post('/addCategory', addCategory);
+this.categoryRouter.post('/removeCategory', removeCategory);
