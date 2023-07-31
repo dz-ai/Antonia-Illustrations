@@ -78,11 +78,7 @@ function Header() {
                             }
                             }>
                                 {/*TODO make better dropdown ui ux (use library?)*/}
-                                <Dropdown
-                                    options={store.categories}
-                                    categoryValue={'Categories'}
-                                    setCategoryValue={(arg) => null}
-                                />
+                                <Dropdown options={store.categories} noInfluence={false}/>
                             </div>
 
                             <button

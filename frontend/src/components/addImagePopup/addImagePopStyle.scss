@@ -17,8 +17,8 @@
     box-shadow: 0 0 6px;
   }
 
-  .add-image-popup button {
-    margin: 15px 10px 0 10px;
+  form {
+    @include container(column, unset, center);
   }
 
   input[type="file"] {
@@ -36,15 +36,44 @@
   }
 
   #image-upload-preview {
-    @include container(row, center, center);
+    @include container(column, center, center);
+    width: 150px;
+    margin-bottom: 15px;
 
-    input:first-child {
-      margin-right: 10px;
+    input {
+      border: none;
+      border-bottom: 1px solid black;
+      flex: 1;
+      margin-bottom: 15px;
+    }
+
+    input:focus-visible {
+      outline: none;
+    }
+
+    // dropdown style //
+    .current-category {
+      width: 120px;
+    }
+
+    .select {
+      border: 1px solid #d9d0fd;
+      border-radius: 10px;
+      padding: 5px;
+
+      .option {
+        padding: 0 5px;
+      }
+
+    }
+
+    .popup-category .add-category button {
+      margin: 0 3px;
     }
   }
 
-  .btn-section {
-    @include container(row, space-between, center);
+  .btn-section button {
+    margin: 3px;
   }
 
   p {

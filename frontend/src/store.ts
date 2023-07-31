@@ -1,9 +1,12 @@
 import {makeAutoObservable} from "mobx";
+import {IImage} from "./types/types";
 
 class Store {
     url: string = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
     isUserLog: boolean = false;
     categories: string[] = [];
+    images: IImage = {};
+    imagesArray: string[] = [];
 
     rerender: boolean = false;
 
@@ -15,7 +18,7 @@ class Store {
         this.isUserLog = isLog;
     }
 
-    verifyToken(): Promise<boolean | undefined> {
+    async verifyToken(): Promise<boolean | undefined> {
         const token: string | null = localStorage.getItem('token');
 
         if (token !== null) {
@@ -55,6 +58,24 @@ class Store {
         this.rerender = !this.rerender;
     }
 
+    async getImages(): Promise<boolean> {
+        return fetch(`${this.url}/api/uploadImage/getImages`)
+            .then(res => res.json())
+            .then(data => {
+                this.images = data;
+                this.imagesArray = Array.from(Object.keys(data));
+                return Array.from(Object.keys(data)).length > 0;
+            });
+    }
+
+    filterCategory(category: string): void {
+        if (category === 'All Categories') {
+            this.imagesArray = Array.from(Object.keys(this.images));
+            return
+        }
+        this.imagesArray = Array.from(Object.keys(this.images)).filter(image => this.images[image].imageCategory === category);
+    }
+
     getCategories(): void {
         fetch(`${this.url}/api/categories/getCategories`)
             .then(res => res.json())
@@ -76,6 +97,7 @@ class Store {
             .catch(error => console.log(error));
     }
 
+    // TODO check if categoryToRemove is still in use in existing images before remove.
     removeCategory(categoryToRemove: string): void {
         fetch(`${this.url}/api/categories/removeCategory`, {
             method: 'post',

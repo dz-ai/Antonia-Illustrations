@@ -1,14 +1,14 @@
-import {SliderComponent} from "../../components/slider/sliderComponent";
+import SliderComponent from "../../components/slider/sliderComponent";
 import React, {useEffect, useRef, useState} from "react";
 import {mandala} from "../../imgs/imagesArray";
 import {FullScreen} from "../../components/fullScreen/fullScreen";
 import {MasonryGrid} from "../../components/masonryGrid/MasonryGrid";
 import {CategoryNavBar} from "../../components/categoryNavBar/categoryNavBar";
-import {categories, IImage} from "../../types/types";
+import {categories} from "../../types/types";
 import {useInterSectionObserver} from "../../Hooks/useInterSectionObserver";
 import {useMediaQuery} from "react-responsive";
 import {JumpUpBtn} from "../../components/jumpUpBtn/jumpUpBtn";
-import {AddImagePopup} from "../../components/addImagePopup/addImagePopup";
+import AddImagePopup from "../../components/addImagePopup/addImagePopup";
 import store from "../../store";
 import {observer} from "mobx-react";
 
@@ -44,32 +44,17 @@ function Portfolio() {
 
     const [fullScreen, setFullScreen] = useState<string | boolean>(false);
     const [remEListener, setRemEListener] = useState<boolean>(false);
-    const [images, setImages] = useState<IImage>({});
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [loadingImages, setLoadingImages] = useState<boolean | string>(store.isUserLog);
 
-    const url = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
-
-    const clearAllIMages = (): void => {
-        fetch(`${url}/api/uploadImage/clearImages`)
-            .then(res => res.json())
-            .then(results => {
-                setImages(results);
-                setLoadingImages('No Images To Show');
-            });
-    }
-
     useEffect((): void => {
         setLoadingImages(true);
-        fetch(`${url}/api/uploadImage/getImages`)
-            .then(res => res.json())
-            .then(data => {
-                if (Array.from(Object.keys(data)).length === 0) {
-                    setLoadingImages('No Images To Show');
-                    setImages(data);
-                } else {
-                    setImages(data);
+        store.getImages()
+            .then(isThereAnyImage => {
+                if (isThereAnyImage) {
                     setLoadingImages(false);
+                } else {
+                    setLoadingImages('No Images To Show');
                 }
             });
     }, [!showPopup, store.rerender]);
@@ -95,10 +80,9 @@ function Portfolio() {
                 }
                 <div className="portfolio-page-blur"/>
                 {
-                    Array.from(Object.keys(images)).length > 0 ?
+                    store.imagesArray.length > 0 ?
                         <div className="slide-container">
                             <SliderComponent
-                                images={images}
                                 numOfImages={1}
                                 auto={false}
                                 scroll={1}
@@ -121,9 +105,8 @@ function Portfolio() {
                     <JumpUpBtn upRef={ref}/>
                 }
                 {
-                    Array.from(Object.keys(images)).length > 0 ?
+                    store.imagesArray.length > 0 ?
                         <MasonryGrid
-                            images={images}
                             setRemEListener={setRemEListener}
                             setFullScreen={setFullScreen}
                         />
@@ -136,10 +119,7 @@ function Portfolio() {
                 }
                 {
                     showPopup && store.isUserLog &&
-                    <AddImagePopup
-                        clearAllIMages={clearAllIMages}
-                        setShowPopup={setShowPopup}
-                    />
+                    <AddImagePopup setShowPopup={setShowPopup}/>
                 }
                 {
                     typeof fullScreen === 'string' &&
@@ -147,7 +127,7 @@ function Portfolio() {
                         fullScreen={fullScreen}
                         setFullScreen={setFullScreen}
                         removeEListener={remEListener}
-                        description={images[fullScreen.split('/')[fullScreen.split('/').length - 1]].imageDescription}
+                        description={store.images[fullScreen.split('/')[fullScreen.split('/').length - 1]].imageDescription}
                     />
                 }
             </section>

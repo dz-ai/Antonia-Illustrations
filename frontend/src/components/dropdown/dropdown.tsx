@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {IoIosArrowDropdown, IoIosArrowDropup} from "react-icons/all";
 import {observer} from "mobx-react";
 import store from "../../store";
@@ -6,14 +6,15 @@ import {PopupContext} from "../popupMessage/popupMessage";
 
 interface IDropdown {
     options: string[];
-    categoryValue: string;
-    setCategoryValue: (arg: string) => void;
+    noInfluence: boolean;
+    onValChange?: (val: string) => void;
 }
 
 function Dropdown(
-    {options, categoryValue, setCategoryValue}: IDropdown) {
+    {options, noInfluence, onValChange}: IDropdown) {
     const popupContext = useContext(PopupContext);
 
+    const [categoryValue, setCategoryValue] = useState<string>('All Categories')
     const [optionsShowState, setOptionShowState] = useState<boolean>(false);
     const [showCatPopup, setShowCatPopup] = useState<boolean>(false);
     const [showRemCatPopup, setShowRemCatPopup] = useState<boolean | string>(false);
@@ -27,6 +28,7 @@ function Dropdown(
 
     const handleOption = (currentCategory: string) => {
         setCategoryValue(currentCategory);
+        if (!noInfluence) store.filterCategory(currentCategory);
         setOptionShowState(false);
     };
 
@@ -41,14 +43,20 @@ function Dropdown(
             store.removeCategory(showRemCatPopup);
         }
         popupContext.showPopup(`${showRemCatPopup} has removed`);
+        setCategoryValue('All Categories');
+        store.filterCategory('All Categories');
         setShowRemCatPopup(false);
     }
+
+    useEffect(() => {
+        onValChange && onValChange(categoryValue);
+    }, [categoryValue]);
     // TODO make out click
     return (
 
         <>
             <div
-                className={!optionsShowState ? "hover select container" : "select container"}
+                className={!optionsShowState ? "hover select" : "select"}
                 onClick={handleDropdown}
             >
                 {
@@ -66,9 +74,18 @@ function Dropdown(
                     />
                 }
 
-                {categoryValue}
+                <div className="ellipsis-container current-category">{categoryValue}</div>
 
                 <section className={optionsShowState ? "options-show" : "options-hide"}>
+                    {
+                        categoryValue !== 'All Categories' &&
+                        <div
+                            className="option"
+                            onClick={() => handleOption('All Categories')}
+                        >
+                            <div className="ellipsis-container">All Categories</div>
+                        </div>
+                    }
                     {
                         options.map((category) =>
                             <div
@@ -79,8 +96,8 @@ function Dropdown(
                                 <div className="ellipsis-container">{category}</div>
                                 {
                                     store.isUserLog &&
-                                    <button className="option-rem-button"
-                                            onClick={() => setShowRemCatPopup(category)}>X</button>
+                                    <div className="option-rem-button"
+                                         onClick={() => setShowRemCatPopup(category)}>X</div>
                                 }
                             </div>)
                     }
@@ -96,11 +113,11 @@ function Dropdown(
             </div>
             {
                 showCatPopup &&
-                <div id="popup-category">
+                <div className="popup-category">
                     <div className="add-category">
-                        <label>
+                        <span>
                             Category:
-                        </label>
+                        </span>
                         <input onChange={(e) => setCatToAdd(e.target.value)} autoFocus={true}/>
                         <button onClick={handleAddCat} disabled={catToAdd === ''}>Add</button>
                         <button onClick={() => setShowCatPopup(false)}>Cansel</button>
@@ -109,10 +126,9 @@ function Dropdown(
             }
             {
                 showRemCatPopup &&
-                <div id="popup-category">
+                <div className="popup-category">
                     <div className="add-category">
-                        <label>
-                            Would You Like To Remove: {showRemCatPopup}? </label>
+                        <span>Would You Like To Remove: {showRemCatPopup}? </span>
                         <button onClick={removeCategory}>Remove</button>
                         <button onClick={() => setShowRemCatPopup(false)}>Cansel</button>
                     </div>

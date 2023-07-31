@@ -2,9 +2,10 @@ import React, {ChangeEvent, useContext, useState} from "react";
 import {IKCore} from "imagekitio-react";
 import {PopupContext} from "../popupMessage/popupMessage";
 import store from "../../store";
+import {observer} from "mobx-react";
+import Dropdown from "../dropdown/dropdown";
 
 interface IProps {
-    clearAllIMages: () => void;
     setShowPopup: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -14,6 +15,7 @@ export interface IImageMetaData {
     imageDescription: string;
     replaceImageWith?: string;
 }
+
 // util ver
 const devServer = 'http://localhost:3001';
 const productServer = 'https://antonia-illustrations.onrender.com';
@@ -67,7 +69,7 @@ export const handleFileChange = (event: ChangeEvent<HTMLInputElement>, cbSuccess
     reader.readAsDataURL(file);
 };
 
-export function uploadImageFun(uploadImage: File) {
+export async function uploadImageFun(uploadImage: File) {
     return store.verifyToken()
         .then(() => {
             return imagekit.upload({
@@ -130,12 +132,10 @@ export function setImageMetaData(imageID: string | undefined, cbRes: (res: any) 
             .catch(cbErr);
     }
 }
+
 // end util functions
 
-export function AddImagePopup({
-                                  clearAllIMages,
-                                  setShowPopup,
-                              }: IProps) {
+function AddImagePopup({setShowPopup}: IProps) {
 
     const popupContext = useContext(PopupContext);
 
@@ -144,7 +144,6 @@ export function AddImagePopup({
     const [imageCategory, setImageCategory] = useState<string>('');
     const [imageDescription, setImageDescription] = useState<string>('');
     const [loadingImageUpload, setLoadingImageUpload] = useState<boolean>(false);
-    const [showUserPermissionSection, setShowUserPermissionSection] = useState<boolean>(false);
 
     const addImage = (): void => {
 
@@ -153,6 +152,10 @@ export function AddImagePopup({
             return
         }
         if (!imageCategory || !imageDescription) {
+            popupContext.showPopup('Please fill in require fields');
+            return;
+        }
+        if (imageCategory === 'Categories') {
             popupContext.showPopup('Please fill in require fields');
             return;
         }
@@ -203,13 +206,6 @@ export function AddImagePopup({
         });
     }
 
-    const checkPasswordBeforeClearAll = (): void => {
-        // TODO send req to the server to check password
-        // if correct then...
-        clearAllIMages();
-        setShowPopup(false);
-    }
-
     return (
         // TODO add out click
         <div className="add-image-popup-wrapper">
@@ -229,10 +225,13 @@ export function AddImagePopup({
                     </div>
                     <br/>
                     <div id="image-upload-preview">
-                        <input type="text" placeholder="Image Category"
-                               onChange={e => setImageCategory(e.target.value)}/>
-                        <input type="text" placeholder="Image Description"
+                        <input type="text"
+                               placeholder="Image Description"
+                               autoFocus={true}
                                onChange={e => setImageDescription(e.target.value)}/>
+                        <Dropdown options={store.categories}
+                                  noInfluence={true}
+                                  onValChange={(val) => setImageCategory(val)}/>
                     </div>
                     <section className="btn-section">
                         <button className="upload-btn" onClick={(e) => {
@@ -242,25 +241,11 @@ export function AddImagePopup({
                             {loadingImageUpload ? <div className="loader"></div> : 'Add Image'}
                         </button>
                         <button onClick={() => setShowPopup(false)}>Close</button>
-                        <button
-                            disabled={true}
-                            onClick={(event) => {
-                                event.preventDefault();
-                                setShowUserPermissionSection(true)
-                            }}>
-                            Clear All Images
-                        </button>
                     </section>
                 </form>
-                {
-                    showUserPermissionSection &&
-                    <div>
-                        <p>Do you want to clear all images?!</p>
-                        <input type="text" placeholder="Enter password to continue"/>
-                        <button onClick={() => checkPasswordBeforeClearAll()}>Clear</button>
-                    </div>
-                }
             </div>
         </div>
     );
 }
+
+export default observer(AddImagePopup);

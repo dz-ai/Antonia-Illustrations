@@ -6,12 +6,11 @@ import {PopupEditImage} from "../popupEditImage/popupEditImage";
 import store from "../../store";
 
 type Props = {
-    images: IImage;
     setRemEListener: Dispatch<SetStateAction<boolean>>;
     setFullScreen: Dispatch<SetStateAction<string | boolean>>;
 };
 
-export function MasonryGrid({images, setRemEListener, setFullScreen}: Props) {
+export function MasonryGrid({setRemEListener, setFullScreen}: Props) {
     const [showPopupEditImage, setShowPopupEditImage] = useState<boolean>(false);
     const [imageDetails, setImageDetails] = useState<IImage>({});
 
@@ -31,7 +30,7 @@ export function MasonryGrid({images, setRemEListener, setFullScreen}: Props) {
             >
 
                 {
-                    Array.from(Object.keys(images))
+                    store.imagesArray
                         .map((key) =>
 
                             <div
@@ -48,8 +47,8 @@ export function MasonryGrid({images, setRemEListener, setFullScreen}: Props) {
                                              onClick={() => {
                                                  setImageDetails({
                                                      [`${key}`]: {
-                                                         imageCategory: images[key].imageCategory,
-                                                         imageDescription: images[key].imageDescription
+                                                         imageCategory: store.images[key].imageCategory,
+                                                         imageDescription: store.images[key].imageDescription
                                                      }
                                                  });
                                                  setShowPopupEditImage(true);
@@ -70,8 +69,8 @@ export function MasonryGrid({images, setRemEListener, setFullScreen}: Props) {
                                     }}
                                     loading="lazy"
                                 />
-                                <p>{images[key].imageCategory}</p>
-                                <p>{images[key].imageDescription}</p>
+                                <p>{store.images[key].imageCategory}</p>
+                                <p>{store.images[key].imageDescription}</p>
                             </div>
                         )
                 }

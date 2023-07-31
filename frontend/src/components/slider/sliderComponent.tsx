@@ -1,16 +1,15 @@
 import Slider, {Settings} from "react-slick";
-import {IImage} from "../../types/types";
+import {observer} from "mobx-react";
+import store from "../../store";
 
 interface IMagesRow {
-    images: IImage;
     numOfImages: number;
     auto: boolean;
     scroll: number;
     focusOnSelect: boolean;
 }
 
-export function SliderComponent({images, numOfImages, auto, scroll, focusOnSelect}: IMagesRow) {
-    const url = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
+function SliderComponent({numOfImages, auto, scroll, focusOnSelect}: IMagesRow) {
     const settings: Settings = {
         dots: false,
         infinite: true,
@@ -29,7 +28,7 @@ export function SliderComponent({images, numOfImages, auto, scroll, focusOnSelec
                 focusOnSelect={focusOnSelect}
             >
                 {
-                    Array.from(Object.keys(images))
+                    store.imagesArray
                         .map((image) =>
                             <div
                                 key={image}
@@ -50,3 +49,5 @@ export function SliderComponent({images, numOfImages, auto, scroll, focusOnSelec
         </>
     );
 }
+
+export default observer(SliderComponent);

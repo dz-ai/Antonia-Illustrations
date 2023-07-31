@@ -75,6 +75,7 @@
       margin: 3px;
       background: white;
       box-shadow: 0 0 5px #2626b9;
+      border-radius: unset;
 
       .icon {
         top: 7px;
@@ -93,7 +94,7 @@
         color: white;
       }
 
-      .select.container {
+      .select {
         @include container(row, center, center);
         padding: 0;
         color: black;
