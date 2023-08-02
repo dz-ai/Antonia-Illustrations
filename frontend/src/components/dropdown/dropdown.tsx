@@ -10,10 +10,11 @@ interface IDropdown {
     noInfluence: boolean;
     onValChange?: (val: string) => void;
     navigateTo?: string | null;
+    initCategory?: string;
 }
 
 function Dropdown(
-    {options, noInfluence, onValChange, navigateTo}: IDropdown) {
+    {options, noInfluence, onValChange, navigateTo, initCategory}: IDropdown) {
     const popupContext = useContext(PopupContext);
     const navigate = useNavigate();
 
@@ -58,6 +59,7 @@ function Dropdown(
 
     useEffect(() => {
         onValChange && onValChange(categoryValue);
+        initCategory && setCategoryValue(initCategory);
     }, [categoryValue]);
     // TODO make out click
     return (

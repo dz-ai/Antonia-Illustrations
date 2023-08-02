@@ -41,13 +41,36 @@
   .image-details {
     @include container(row, space-between, start);
     margin-bottom: 10px;
+
+    .edit-section {
+      width: 100%;
+    }
+  }
+  // dropdown style //
+  .current-category {
+    width: 120px;
   }
 
-  .cat-des-edit {
-    @include container(column, start, start);
-    margin-right: 15px;
+  .select {
+    border: 1px solid #d9d0fd;
+    border-radius: 10px;
+    padding: 5px;
 
-    section {
+    .option {
+      padding: 0 5px;
+    }
+  }
+
+  .popup-category .add-category button {
+    margin: 0 3px;
+  }
+
+  .ellipsis-container {
+    width: 145px;
+  }
+  // end of dropdown style //
+
+    .section {
       @include container(row, space-between, center);
 
       p, input {
@@ -55,6 +78,7 @@
         border-bottom: 1px solid black;
         flex: 1;
         margin-right: 10px;
+        width: 150px;
       }
 
       input:focus-visible {
@@ -65,7 +89,7 @@
         @include btn(blue, white);
       }
     }
-  }
+
 
   .edit-image-section {
     @include container(column, center, center);
@@ -77,6 +101,8 @@
 
   .image-edit-section {
     position: relative;
+    display: flex;
+    justify-content: end;
 
     svg {
       font-size: 30px;
@@ -124,5 +150,16 @@
       margin: 15px 0;
     }
 
+  }
+}
+@media (max-width: 300px) {
+  #popup-edit-wrapper {
+    #popup-edit-image {
+      width: 265px;
+    }
+
+    .image-details {
+      flex-direction: column;
+    }
   }
 }

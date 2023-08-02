@@ -10,6 +10,7 @@ import {
 } from "../addImagePopup/addImagePopup";
 import {PopupContext} from "../popupMessage/popupMessage";
 import store from "../../store";
+import Dropdown from "../dropdown/dropdown";
 
 interface IProp {
     imageDetails: IImage;
@@ -28,7 +29,6 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
 
     const popupContext = useContext(PopupContext);
 
-    const [showEditCat, setShowEditCat] = useState<boolean>(false);
     const [showEditDes, setShowEditDes] = useState<boolean>(false);
     const [showEditImage, setShowEditImage] = useState<boolean>(false);
     const [editImage, setEditImage] = useState<IEditImageState>({imageFileName});
@@ -140,25 +140,46 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
                         <>
                             <h2>Edit</h2>
                             <div className="image-details">
-                                <div className="cat-des-edit">
-                                    <h4>Category:</h4>
-                                    <section>
+                                <div className="edit-section">
+                                    <section className="image-edit-section">
                                         {
-                                            // TODO change to categories dropdown.
-                                            !showEditCat &&
-                                            <p>{editCategory}</p>
+                                            loadingImageUpload ?
+                                                <div className="loader"></div>
+                                                :
+                                                <img
+                                                    src={!previewImage ? `${import.meta.env.VITE_IMAGEKIT}/tr:w-100/${editImage.imageFileName}` : previewImage as string}
+                                                    width={100}
+                                                    height={'auto'}
+                                                    alt="image to edit"/>
                                         }
                                         {
-                                            showEditCat &&
-                                            <input value={editCategory}
-                                                   type="text"
-                                                   autoFocus={true}
-                                                   onChange={e => setEditCategory(e.target.value)}/>
+                                            // TODO add out click
+                                            !loadingImageUpload &&
+                                            <BiDotsVerticalRounded onClick={() => setShowEditImage(!showEditImage)}/>
                                         }
-                                        <button onClick={() => setShowEditCat(!showEditCat)}><FiEdit2/></button>
+                                        {
+                                            showEditImage &&
+                                            <div className="edit-image-btns">
+                                                <label>
+                                                    <input onChange={(e) => replaceImage(e)}
+                                                           type="file"
+                                                           style={{display: 'none'}}/>
+                                                    Replace Image
+                                                </label>
+                                                <button onClick={() => setDeleteImageQuestion(true)}>Delete Image
+                                                </button>
+                                            </div>
+                                        }
                                     </section>
+                                    <h4>Category:</h4>
+                                    <Dropdown options={store.categories}
+                                              noInfluence={true}
+                                              onValChange={(val) => setEditCategory(val)}
+                                              initCategory={imageCategory}
+                                    />
+
                                     <h4>Description:</h4>
-                                    <section>
+                                    <section className="section">
                                         {
                                             !showEditDes &&
                                             <p>{editDescription}</p>
@@ -173,35 +194,6 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
                                         <button onClick={() => setShowEditDes(!showEditDes)}><FiEdit2/></button>
                                     </section>
                                 </div>
-                                <section className="image-edit-section">
-                                    {
-                                        loadingImageUpload ?
-                                            <div className="loader"></div>
-                                            :
-                                            <img
-                                                src={!previewImage ? `${import.meta.env.VITE_IMAGEKIT}/tr:w-100/${editImage.imageFileName}` : previewImage as string}
-                                                width={100}
-                                                height={'auto'}
-                                                alt="image to edit"/>
-                                    }
-                                    {
-                                        // TODO add out click
-                                        !loadingImageUpload &&
-                                        <BiDotsVerticalRounded onClick={() => setShowEditImage(!showEditImage)}/>
-                                    }
-                                    {
-                                        showEditImage &&
-                                        <div className="edit-image-btns">
-                                            <label>
-                                                <input onChange={(e) => replaceImage(e)}
-                                                       type="file"
-                                                       style={{display: 'none'}}/>
-                                                Replace Image
-                                            </label>
-                                            <button onClick={() => setDeleteImageQuestion(true)}>Delete Image</button>
-                                        </div>
-                                    }
-                                </section>
                             </div>
                         </>
                     }
