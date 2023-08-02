@@ -3,16 +3,19 @@ import {IoIosArrowDropdown, IoIosArrowDropup} from "react-icons/all";
 import {observer} from "mobx-react";
 import store from "../../store";
 import {PopupContext} from "../popupMessage/popupMessage";
+import {useNavigate} from "react-router-dom";
 
 interface IDropdown {
     options: string[];
     noInfluence: boolean;
     onValChange?: (val: string) => void;
+    navigateTo?: string | null;
 }
 
 function Dropdown(
-    {options, noInfluence, onValChange}: IDropdown) {
+    {options, noInfluence, onValChange, navigateTo}: IDropdown) {
     const popupContext = useContext(PopupContext);
+    const navigate = useNavigate();
 
     const [categoryValue, setCategoryValue] = useState<string>('All Categories')
     const [optionsShowState, setOptionShowState] = useState<boolean>(false);
@@ -28,8 +31,13 @@ function Dropdown(
 
     const handleOption = (currentCategory: string) => {
         setCategoryValue(currentCategory);
-        if (!noInfluence) store.filterCategory(currentCategory);
-        setOptionShowState(false);
+        if (navigateTo) {
+            if (!noInfluence) store.filterCategory(currentCategory);
+            navigate(navigateTo, {state: {currentCategory}});
+        } else {
+            if (!noInfluence) store.filterCategory(currentCategory);
+            setOptionShowState(false);
+        }
     };
 
     const handleAddCat = (): void => {

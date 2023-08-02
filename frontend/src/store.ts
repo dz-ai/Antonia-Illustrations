@@ -69,7 +69,7 @@ class Store {
     }
 
     filterCategory(category: string): void {
-        if (category === 'All Categories') {
+        if (category === 'All Categories' || !category) {
             this.imagesArray = Array.from(Object.keys(this.images));
             return
         }

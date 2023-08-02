@@ -1,7 +1,7 @@
 import Dropdown from "../../components/dropdown/dropdown";
 import {FaUserCircle, GiHamburgerMenu} from "react-icons/all";
 import {useContext, useEffect, useRef, useState} from "react";
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {useMediaQuery} from "react-responsive";
 import {useOutClick} from "../../Hooks/useOutClick";
 import store from "../../store";
@@ -11,6 +11,7 @@ import {PopupContext} from "../../components/popupMessage/popupMessage";
 
 function Header() {
     const navigate = useNavigate();
+    const location = useLocation();
     const ref = useRef(null);
     const popupContext = useContext(PopupContext);
 
@@ -18,6 +19,7 @@ function Header() {
 
     const [showBurgerMenu, setShowBurgerMenu] = useState<string | boolean>(false);
     const [outClickRem, setOutClickRem] = useState<boolean>(!showBurgerMenu);
+    const [categoriesVal, setCategoriesVal] = useState<string>('');
 
     useOutClick(ref, setShowBurgerMenu, outClickRem);
 
@@ -28,6 +30,12 @@ function Header() {
             setOutClickRem(true);
         }
     }, [showBurgerMenu]);
+
+    useEffect(() => {
+        if (location.pathname !== 'portfolio') {
+            navigate('/portfolio', {state: {categoriesVal}});
+        }
+    }, []);
 
     return (
         <header className={!isSmallScreen ? "main-header" : "mobile-header"}>
@@ -77,8 +85,10 @@ function Header() {
                                 }, 500);
                             }
                             }>
-                                {/*TODO make better dropdown ui ux (use library?)*/}
-                                <Dropdown options={store.categories} noInfluence={false}/>
+                                <Dropdown options={store.categories} noInfluence={false}
+                                          onValChange={(val) => setCategoriesVal(val)}
+                                          navigateTo={location.pathname !== 'portfolio' ? '/portfolio' : null}
+                                />
                             </div>
 
                             <button

@@ -144,7 +144,7 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
                                     <h4>Category:</h4>
                                     <section>
                                         {
-
+                                            // TODO change to categories dropdown.
                                             !showEditCat &&
                                             <p>{editCategory}</p>
                                         }

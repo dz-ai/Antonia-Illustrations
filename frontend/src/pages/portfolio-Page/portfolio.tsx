@@ -11,6 +11,7 @@ import {JumpUpBtn} from "../../components/jumpUpBtn/jumpUpBtn";
 import AddImagePopup from "../../components/addImagePopup/addImagePopup";
 import store from "../../store";
 import {observer} from "mobx-react";
+import {useLocation} from "react-router-dom";
 
 // TODO make it in separate file.
 function LoadingComponent({loading}: { loading: boolean | string }) {
@@ -33,6 +34,7 @@ function LoadingComponent({loading}: { loading: boolean | string }) {
 function Portfolio() {
     const ref = useRef<HTMLDivElement>(null);
     const downRef = useRef<HTMLDivElement>(null);
+    const location = useLocation();
 
     // Customise Hooks //
     const isInViewPort: boolean = useInterSectionObserver(ref);
@@ -52,6 +54,8 @@ function Portfolio() {
         store.getImages()
             .then(isThereAnyImage => {
                 if (isThereAnyImage) {
+                    const categoriesVal = location.state.currentCategory;
+                    if (categoriesVal !== 'All Categories') store.filterCategory(categoriesVal);
                     setLoadingImages(false);
                 } else {
                     setLoadingImages('No Images To Show');
