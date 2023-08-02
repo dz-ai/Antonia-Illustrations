@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {categories} from "../../types/types";
 import {MdArrowBackIosNew, MdArrowForwardIos} from "react-icons/md";
+import store from "../../store";
 
 
 export function CategoryNavBar({categories}: { categories: categories }) {
@@ -70,7 +71,7 @@ export function CategoryNavBar({categories}: { categories: categories }) {
             >
                 {
                     categories.map((category, index) =>
-                        <div key={index}>{category}</div>
+                        <div key={index} onClick={() => store.filterCategory(category)}>{category}</div>
                     )
                 }
             </div>

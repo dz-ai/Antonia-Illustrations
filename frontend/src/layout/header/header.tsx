@@ -37,6 +37,12 @@ function Header() {
         }
     }, []);
 
+    useEffect(() => {
+        if (isSmallScreen && showBurgerMenu) {
+            setShowBurgerMenu(false);
+        }
+    }, [categoriesVal]);
+
     return (
         <header className={!isSmallScreen ? "main-header" : "mobile-header"}>
 

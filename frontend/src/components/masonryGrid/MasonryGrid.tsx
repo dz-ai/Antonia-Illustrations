@@ -1,5 +1,5 @@
 import Masonry from "react-masonry-css";
-import React, {Dispatch, SetStateAction, useState} from "react";
+import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {IImage} from "../../types/types";
 import {FiEdit2} from "react-icons/all";
 import {PopupEditImage} from "../popupEditImage/popupEditImage";
@@ -13,13 +13,25 @@ type Props = {
 export function MasonryGrid({setRemEListener, setFullScreen}: Props) {
     const [showPopupEditImage, setShowPopupEditImage] = useState<boolean>(false);
     const [imageDetails, setImageDetails] = useState<IImage>({});
+    const [defaultBreakPoint, setDefaultBreakPoint] = useState<number>(4);
+    const [secondBreakPoint, setSecondBreakPoint] = useState<number>(3);
 
     const breakpoints = {
-        default: 4,
-        1100: 3,
+        default: defaultBreakPoint,
+        1100: secondBreakPoint,
         850: 2,
         600: 1,
     };
+
+    useEffect(() => {
+        if (store.imagesArray.length < 4) {
+            setDefaultBreakPoint(store.imagesArray.length);
+            setSecondBreakPoint(store.imagesArray.length);
+        } else {
+            setDefaultBreakPoint(4);
+            setSecondBreakPoint(3);
+        }
+    }, [store.imagesArray, store.filterCategory]);
 
     return (
         <>

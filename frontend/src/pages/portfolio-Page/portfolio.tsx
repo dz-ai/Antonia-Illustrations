@@ -4,7 +4,6 @@ import {mandala} from "../../imgs/imagesArray";
 import {FullScreen} from "../../components/fullScreen/fullScreen";
 import {MasonryGrid} from "../../components/masonryGrid/MasonryGrid";
 import {CategoryNavBar} from "../../components/categoryNavBar/categoryNavBar";
-import {categories} from "../../types/types";
 import {useInterSectionObserver} from "../../Hooks/useInterSectionObserver";
 import {useMediaQuery} from "react-responsive";
 import {JumpUpBtn} from "../../components/jumpUpBtn/jumpUpBtn";
@@ -13,7 +12,6 @@ import store from "../../store";
 import {observer} from "mobx-react";
 import {useLocation} from "react-router-dom";
 
-// TODO make it in separate file.
 function LoadingComponent({loading}: { loading: boolean | string }) {
     let jsx;
     if (typeof loading === 'boolean') {
@@ -41,8 +39,6 @@ function Portfolio() {
     const isDownInViewPort: boolean = useInterSectionObserver(downRef);
 
     const isUnder950pxScreen = useMediaQuery({query: '(max-width: 950px)'});
-
-    const categories: categories = ['first', 'category', 'category', 'category', 'category', 'category', 'category', 'category', 'category', 'category', 'category', 'last'];
 
     const [fullScreen, setFullScreen] = useState<string | boolean>(false);
     const [remEListener, setRemEListener] = useState<boolean>(false);
@@ -80,7 +76,7 @@ function Portfolio() {
 
                 {
                     isInViewPort &&
-                    <CategoryNavBar categories={categories}/>
+                    <CategoryNavBar categories={store.categories}/>
                 }
                 <div className="portfolio-page-blur"/>
                 {
@@ -101,7 +97,7 @@ function Portfolio() {
             <section className="portfolio-down-page" ref={downRef}>
                 {
                     !isInViewPort &&
-                    <CategoryNavBar categories={categories}/>
+                    <CategoryNavBar categories={store.categories}/>
                 }
 
                 {

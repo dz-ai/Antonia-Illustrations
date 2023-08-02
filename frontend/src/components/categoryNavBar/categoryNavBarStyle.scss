@@ -8,44 +8,46 @@
   position: sticky;
   top: 0;
   z-index: 4;
-}
 
-.nav {
-  @include container(row, unset, center);
-  background: #6a80f59c;
-  width: 100%;
-  height: 35px;
-  overflow-x: auto;
-}
 
-.nav div {
-  @include btn(unset, unset);
-  color: white;
-  padding: 0 10px;
-  margin: 0 5px;
-  display: inline-flex;
-  align-items: center;
-}
+  .nav {
+    @include container(row, unset, center);
+    background: #6a80f59c;
+    width: 100%;
+    height: 35px;
+    overflow-x: auto;
+  }
 
-.scroll-btn-r, .scroll-btn-l {
-  @include btn(rgb(140 140 167), unset);
-  @include container(row, center, center);
-  padding: 0;
-  background: rgb(102, 102, 239);
-  color: white;
-  position: absolute;
-  width: 4vw;
-  height: 35px;
-}
+  .nav div {
+    @include btn(unset, unset);
+    color: white;
+    padding: 0 10px;
+    margin: 0 5px;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+  }
 
-.scroll-btn-l {
-  right: 0;
-}
+  .scroll-btn-r, .scroll-btn-l {
+    @include btn(rgb(140 140 167), unset);
+    @include container(row, center, center);
+    padding: 0;
+    background: rgb(102, 102, 239);
+    color: white;
+    position: absolute;
+    width: 4vw;
+    height: 35px;
+  }
 
-.scroll-btn-r {
-  left: 0;
-}
+  .scroll-btn-l {
+    right: 0;
+  }
 
-.nav::-webkit-scrollbar {
- display: none;
+  .scroll-btn-r {
+    left: 0;
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
 }
