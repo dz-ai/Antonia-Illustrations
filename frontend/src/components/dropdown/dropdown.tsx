@@ -59,8 +59,11 @@ function Dropdown(
 
     useEffect(() => {
         onValChange && onValChange(categoryValue);
-        initCategory && setCategoryValue(initCategory);
     }, [categoryValue]);
+
+    useEffect(() => {
+        initCategory && setCategoryValue(initCategory);
+    }, []);
     // TODO make out click
     return (
 
