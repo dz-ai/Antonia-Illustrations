@@ -19,7 +19,7 @@ const PopupProvider = ({children}: { children: any }) => {
 
         setTimeout(() => {
             setPopupMessage('');
-        }, 2000);
+        }, 5000);
 
     };
 

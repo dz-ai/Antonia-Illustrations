@@ -108,15 +108,23 @@ exports.setImageMetaData = asyncHandler(async (req, res) => {
             }
             // change image Category or/and Description
             if (imageMD.imageCategory !== imageCategory || imageMD.imageDescription !== imageDescription) {
-                data.images[fileName] = {
+                const updateImage = {
                     imageCategory,
                     imageDescription,
                     imageID: imageID || data.images[fileName].imageID
                 };
+                data.images[fileName] = updateImage;
 
-                fs.writeFileSync(imageMetadataFile, JSON.stringify(data));
+                await Image.findOneAndUpdate({fileName}, updateImage, {new: true})
+                    .then(() => {
+                        fs.writeFileSync(imageMetadataFile, JSON.stringify(data));
 
-                res.json('Image Details change Successfully');
+                        res.json('Image Details change Successfully');
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        res.json(error.message);
+                    });
             }
         }
 

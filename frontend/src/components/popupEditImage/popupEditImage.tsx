@@ -60,6 +60,11 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
             popupContext.showPopup('Please fill the require fields');
             return;
         }
+        if (editCategory === 'All Categories') {
+            popupContext.showPopup('Please choose Category');
+            setLoadingSave(false);
+            return;
+        }
         if (imageCategory === editCategory && imageDescription === editDescription && imageFileName === editImage.imageFileName) {
             popupContext.showPopup('No Data has been change');
             setShowPopupEditImage(false);
