@@ -1,4 +1,3 @@
-import {mandala} from "../../imgs/imagesArray";
 import {useNavigate} from 'react-router-dom';
 import {useMediaQuery} from "react-responsive";
 import {useEffect, useState} from "react";
@@ -26,7 +25,7 @@ export function HomePage() {
             <div
                 className="home-up-page"
             style={{
-                background: `url(${mandala}) no-repeat center center`,
+                background: `url(https://ik.imagekit.io/thfdl6dmv/antonia-illustrations/mandala_horizontal.jpg) no-repeat center center`,
                 backgroundSize: imageDimensions,
                 flex: '1'
             }}

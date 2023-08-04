@@ -1,6 +1,5 @@
 import SliderComponent from "../../components/slider/sliderComponent";
 import React, {useEffect, useRef, useState} from "react";
-import {mandala} from "../../imgs/imagesArray";
 import {FullScreen} from "../../components/fullScreen/fullScreen";
 import {MasonryGrid} from "../../components/masonryGrid/MasonryGrid";
 import {CategoryNavBar} from "../../components/categoryNavBar/categoryNavBar";
@@ -68,7 +67,7 @@ function Portfolio() {
                 className="portfolio-up-page"
                 ref={ref}
                 style={{
-                    background: `url(${mandala}) no-repeat center center`,
+                    background: `url(https://ik.imagekit.io/thfdl6dmv/antonia-illustrations/mandala_horizontal.jpg) no-repeat center center`,
                     backgroundSize: isUnder950pxScreen ? 'auto 120%' : '150% auto',
                     flex: '1'
                 }}

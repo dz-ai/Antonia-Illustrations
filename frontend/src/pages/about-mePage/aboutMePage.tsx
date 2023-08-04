@@ -1,4 +1,3 @@
-import {blueLPlant, meWithBook} from "../../imgs/imagesArray";
 import {useNavigate} from "react-router-dom";
 
 
@@ -9,7 +8,7 @@ export function AboutMePage() {
         <div
             className="about-me"
             style={{
-                background: `url(${blueLPlant}) no-repeat center center`,
+                background: `url(https://ik.imagekit.io/thfdl6dmv/antonia-illustrations/purple-plant.jpg) no-repeat center center`,
                 backgroundSize: 'cover',
                 flex: '1'
             }}
@@ -21,7 +20,7 @@ export function AboutMePage() {
 
                 <div className="text-container">
                     <div>
-                        <img src={meWithBook} alt=""/>
+                        <img src={'https://ik.imagekit.io/thfdl6dmv/antonia-illustrations/antonia.png'} alt=""/>
                     </div>
 
                     <p>
