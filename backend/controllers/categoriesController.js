@@ -1,5 +1,6 @@
 const {asyncHandler} = require("../middlwares");
 const Categories = require("../schems/categoriesSchem");
+const Image = require("../schems/imagesSchem");
 
 // Use to init an "categoriesArray"
 
@@ -28,10 +29,20 @@ exports.addCategory = asyncHandler(async (req, res) => {
 });
 
 exports.removeCategory = asyncHandler(async (req, res) => {
+    const categoryToRemove = req.body.val;
+
+    const allImages = await Image.find({});
+
+    const categoryIsInUse = allImages.some(image => image.imageCategory === categoryToRemove);
+
+    if (categoryIsInUse) {
+        res.json('This Category is still in use, Remove Images that use this Category before remove the category');
+        return
+    }
 
     await Categories.updateMany(
         {categoriesArray: {$exists: true}},
-        {$pull: {categoriesArray: req.body.val}}
+        {$pull: {categoriesArray: categoryToRemove}}
     );
 
     const updatedCategories = await Categories.find({categoriesArray: {$exists: true}});

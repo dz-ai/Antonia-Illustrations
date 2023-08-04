@@ -102,9 +102,8 @@ class Store {
             .catch(error => console.log(error));
     }
 
-    // TODO check if categoryToRemove is still in use in existing images before remove.
-    removeCategory(categoryToRemove: string): void {
-        fetch(`${this.url}/api/categories/removeCategory`, {
+    async removeCategory(categoryToRemove: string): Promise<string> {
+        return fetch(`${this.url}/api/categories/removeCategory`, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
@@ -113,8 +112,18 @@ class Store {
             body: JSON.stringify({val: categoryToRemove})
         })
             .then(res => res.json())
-            .then(results => this.categories = results)
-            .catch(error => console.log(error));
+            .then(results => {
+                if (typeof results === 'string') {
+                    return results;
+                } else {
+                    this.categories = results;
+                    return `${categoryToRemove} has removed`;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                return 'Error';
+            });
     }
 }
 
