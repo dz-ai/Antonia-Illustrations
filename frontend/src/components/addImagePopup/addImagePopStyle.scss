@@ -44,7 +44,6 @@
       border: none;
       border-bottom: 1px solid black;
       flex: 1;
-      margin-bottom: 15px;
     }
 
     input:focus-visible {
@@ -60,6 +59,7 @@
       border: 1px solid #d9d0fd;
       border-radius: 10px;
       padding: 5px;
+      margin-top: 15px;
 
       .options-show {
         width: 94%;

@@ -138,8 +138,10 @@ function Dropdown(
                             Category:
                         </span>
                         <input onChange={(e) => setCatToAdd(e.target.value)} autoFocus={true}/>
-                        <button onClick={handleAddCat} disabled={catToAdd === ''}>Add</button>
-                        <button onClick={() => setShowCatPopup(false)}>Cansel</button>
+                        <div className="btn-section">
+                            <button onClick={handleAddCat} disabled={catToAdd === ''}>Add</button>
+                            <button onClick={() => setShowCatPopup(false)}>Cansel</button>
+                        </div>
                     </div>
                 </div>
             }
@@ -148,10 +150,12 @@ function Dropdown(
                 <div className="popup-category">
                     <div className="add-category">
                         <span className="rem-warning-message">Would You Like To Remove: {categoryToRemove}? </span>
-                        <button className="rem-btn" onClick={removeCategory}>
-                            {loading ? <div className="loader"></div> : 'Remove'}
-                        </button>
-                        <button onClick={() => setShowRemCatPopup(false)}>Cansel</button>
+                        <div className="btn-section">
+                            <div className="rem-btn btn" onClick={removeCategory}>
+                                {loading ? <div className="loader"></div> : 'Remove'}
+                            </div>
+                            <button className="btn" onClick={() => setShowRemCatPopup(false)}>Cansel</button>
+                        </div>
                     </div>
                 </div>
             }
