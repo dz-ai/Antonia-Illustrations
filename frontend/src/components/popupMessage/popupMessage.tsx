@@ -15,11 +15,15 @@ const PopupProvider = ({children}: { children: any }) => {
     const [popupMessage, setPopupMessage] = useState('');
 
     const showPopup = (message: string) => {
+        let timeToShowMessage: number = 5;
+        if (message.length > 40) {
+            timeToShowMessage = 8;
+        }
         setPopupMessage(message);
 
         setTimeout(() => {
             setPopupMessage('');
-        }, 5000);
+        }, timeToShowMessage * 1000);
 
     };
 

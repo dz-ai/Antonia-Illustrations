@@ -20,8 +20,10 @@ function Dropdown(
 
     const [optionsShowState, setOptionShowState] = useState<boolean>(false);
     const [showCatPopup, setShowCatPopup] = useState<boolean>(false);
-    const [showRemCatPopup, setShowRemCatPopup] = useState<boolean | string>(false);
+    const [showRemCatPopup, setShowRemCatPopup] = useState<boolean>(false);
+    const [categoryToRemove, setCategoryToRemove] = useState<string>('');
     const [catToAdd, setCatToAdd] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
 
     const handleDropdown = () => {
         setOptionShowState(!optionsShowState);
@@ -47,13 +49,15 @@ function Dropdown(
     }
 
     const removeCategory = (): void => {
-        if (typeof showRemCatPopup === 'string') {
-            store.removeCategory(showRemCatPopup);
-        }
-        popupContext.showPopup(`${showRemCatPopup} has removed`);
-        store.setCategory('All Categories');
-        store.filterCategory('All Categories');
-        setShowRemCatPopup(false);
+        setLoading(true);
+            store.removeCategory(categoryToRemove)
+                .then(message => {
+                    setLoading(false);
+                    popupContext.showPopup(message);
+                    store.setCategory('All Categories');
+                    store.filterCategory('All Categories');
+                    setShowRemCatPopup(false);
+                });
     }
 
     useEffect(() => {
@@ -109,7 +113,10 @@ function Dropdown(
                                 {
                                     store.isUserLog &&
                                     <div className="option-rem-button"
-                                         onClick={() => setShowRemCatPopup(category)}>X</div>
+                                         onClick={() => {
+                                             setCategoryToRemove(category);
+                                             setShowRemCatPopup(true);
+                                         }}>X</div>
                                 }
                             </div>)
                     }
@@ -140,8 +147,10 @@ function Dropdown(
                 showRemCatPopup &&
                 <div className="popup-category">
                     <div className="add-category">
-                        <span>Would You Like To Remove: {showRemCatPopup}? </span>
-                        <button onClick={removeCategory}>Remove</button>
+                        <span className="rem-warning-message">Would You Like To Remove: {categoryToRemove}? </span>
+                        <button className="rem-btn" onClick={removeCategory}>
+                            {loading ? <div className="loader"></div> : 'Remove'}
+                        </button>
                         <button onClick={() => setShowRemCatPopup(false)}>Cansel</button>
                     </div>
                 </div>

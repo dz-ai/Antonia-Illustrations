@@ -15,6 +15,7 @@
   .options-hide {
     display: none;
   }
+
   // TODO make dropdown height dynamic, according to number of the categories.
   .options-show {
     display: block;
@@ -49,8 +50,8 @@
     min-height: unset;
     padding: 0 3px;
     height: unset;
-    box-shadow: unset;
     width: unset;
+    box-shadow: unset;
     color: white;
     border-radius: 2px;
   }
@@ -99,6 +100,8 @@
   color: black;
 
   .add-category {
+    display: flex;
+    align-items: center;
     background: white;
     padding: 20px;
     border-radius: 7px;
@@ -128,6 +131,20 @@
         margin-top: 15px;
         box-shadow: unset;
 
+      }
+    }
+
+    .rem-warning-message {
+      margin-right: 10px;
+    }
+
+    .rem-btn {
+      min-width: 69px;
+      min-height: 35px;
+
+      .loader {
+        height: 16px;
+        width: 16px;
       }
     }
   }
