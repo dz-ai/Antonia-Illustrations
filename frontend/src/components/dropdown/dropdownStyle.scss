@@ -119,18 +119,25 @@
       outline: none;
     }
 
-    button {
+    .btn-section {
+      display: flex;
+      align-items: center;
+    }
+
+    .btn, button {
+      @include container(unset, center, center);
+      width: unset;
+      height: 35px;
       background: #1b1bb7;
       border-radius: 4px;
       color: white;
+      cursor: pointer;
     }
 
     @media (max-width: 800px) {
       button {
         color: white;
-        margin-top: 15px;
         box-shadow: unset;
-
       }
     }
 
@@ -145,6 +152,16 @@
       .loader {
         height: 16px;
         width: 16px;
+      }
+    }
+  }
+  @media (max-width: 600px) {
+    .add-category {
+      flex-direction: column;
+      max-width: 90%;
+
+      .btn-section {
+        margin-top: 15px;
       }
     }
   }
