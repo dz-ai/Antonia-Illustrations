@@ -1,10 +1,12 @@
 import React, {useEffect, useRef, useState} from "react";
-import {categories} from "../../types/types";
 import {MdArrowBackIosNew, MdArrowForwardIos} from "react-icons/md";
 import store from "../../store";
 
+interface Props {
+    categories: string[];
+}
 
-export function CategoryNavBar({categories}: { categories: categories }) {
+export function CategoryNavBar({categories}: Props) {
     const ref = useRef<HTMLDivElement>(null);
 
     const [isOverFlow, setIsOverFlow] = useState<boolean>(false);
@@ -43,6 +45,11 @@ export function CategoryNavBar({categories}: { categories: categories }) {
         }
     };
 
+    const handelNavBtnClick = (category: string): void => {
+        store.setCategory(category);
+        store.filterCategory(category);
+    };
+
     return (
 
         <div className="nav-wrapper">
@@ -69,9 +76,10 @@ export function CategoryNavBar({categories}: { categories: categories }) {
                     justifyContent: isOverFlow ? 'unset' : 'center',
                 }}
             >
+                <div onClick={() => handelNavBtnClick('All Categories')}>{'All Categories'}</div>
                 {
                     categories.map((category, index) =>
-                        <div key={index} onClick={() => store.filterCategory(category)}>{category}</div>
+                        <div key={index} onClick={() => handelNavBtnClick(category)}>{category}</div>
                     )
                 }
             </div>

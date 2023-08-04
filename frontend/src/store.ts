@@ -7,6 +7,7 @@ class Store {
     categories: string[] = [];
     images: IImage = {};
     imagesArray: string[] = [];
+    currentCategory: string = 'All Categories';
 
     rerender: boolean = false;
 
@@ -66,6 +67,10 @@ class Store {
                 this.imagesArray = Array.from(Object.keys(data));
                 return Array.from(Object.keys(data)).length > 0;
             });
+    }
+
+    setCategory(category: string): void {
+        this.currentCategory = category;
     }
 
     filterCategory(category: string): void {

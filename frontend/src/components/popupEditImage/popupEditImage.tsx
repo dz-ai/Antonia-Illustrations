@@ -32,7 +32,6 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
     const [showEditDes, setShowEditDes] = useState<boolean>(false);
     const [showEditImage, setShowEditImage] = useState<boolean>(false);
     const [editImage, setEditImage] = useState<IEditImageState>({imageFileName});
-    const [editCategory, setEditCategory] = useState<string>(imageCategory);
     const [editDescription, setEditDescription] = useState<string>(imageDescription);
     const [loadingImageUpload, setLoadingImageUpload] = useState<boolean>(false);
     const [loadingSave, setLoadingSave] = useState<boolean>(false);
@@ -56,16 +55,16 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
                 });
             return;
         }
-        if (editCategory === '' || editDescription === '') {
+        if (editDescription === '') {
             popupContext.showPopup('Please fill the require fields');
             return;
         }
-        if (editCategory === 'All Categories') {
+        if (store.currentCategory === 'All Categories') {
             popupContext.showPopup('Please choose Category');
             setLoadingSave(false);
             return;
         }
-        if (imageCategory === editCategory && imageDescription === editDescription && imageFileName === editImage.imageFileName) {
+        if (imageCategory === store.currentCategory && imageDescription === editDescription && imageFileName === editImage.imageFileName) {
             popupContext.showPopup('No Data has been change');
             setShowPopupEditImage(false);
             return;
@@ -91,7 +90,7 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
                         },
                         {
                             fileName: imageFileName,
-                            imageCategory: editCategory,
+                            imageCategory: store.currentCategory,
                             imageDescription: editDescription,
                             replaceImageWith: editImage.imageFileName,
                         });
@@ -112,7 +111,7 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
                 },
                 {
                     fileName: imageFileName,
-                    imageCategory: editCategory,
+                    imageCategory: store.currentCategory,
                     imageDescription: editDescription,
                     replaceImageWith: editImage.imageFileName,
                 });
@@ -178,10 +177,8 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
                                     </section>
                                     <h4>Category:</h4>
                                     <Dropdown options={store.categories}
-                                              noInfluence={true}
-                                              onValChange={(val) => setEditCategory(val)}
                                               initCategory={imageCategory}
-                                    />
+                                              noInfluence={true}/>
 
                                     <h4>Description:</h4>
                                     <section className="section">

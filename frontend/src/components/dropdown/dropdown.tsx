@@ -18,7 +18,6 @@ function Dropdown(
     const popupContext = useContext(PopupContext);
     const navigate = useNavigate();
 
-    const [categoryValue, setCategoryValue] = useState<string>('All Categories')
     const [optionsShowState, setOptionShowState] = useState<boolean>(false);
     const [showCatPopup, setShowCatPopup] = useState<boolean>(false);
     const [showRemCatPopup, setShowRemCatPopup] = useState<boolean | string>(false);
@@ -30,13 +29,13 @@ function Dropdown(
         }, 100);
     };
 
-    const handleOption = (currentCategory: string) => {
-        setCategoryValue(currentCategory);
+    const handleOption = (category: string) => {
+        store.setCategory(category);
         if (navigateTo) {
-            if (!noInfluence) store.filterCategory(currentCategory);
-            navigate(navigateTo, {state: {currentCategory}});
+            if (!noInfluence) store.filterCategory(category);
+            navigate(navigateTo, {state: {category}});
         } else {
-            if (!noInfluence) store.filterCategory(currentCategory);
+            if (!noInfluence) store.filterCategory(category);
             setOptionShowState(false);
         }
     };
@@ -52,17 +51,17 @@ function Dropdown(
             store.removeCategory(showRemCatPopup);
         }
         popupContext.showPopup(`${showRemCatPopup} has removed`);
-        setCategoryValue('All Categories');
+        store.setCategory('All Categories');
         store.filterCategory('All Categories');
         setShowRemCatPopup(false);
     }
 
     useEffect(() => {
-        onValChange && onValChange(categoryValue);
-    }, [categoryValue]);
+        onValChange && onValChange(store.currentCategory);
+    }, [store.currentCategory]);
 
     useEffect(() => {
-        initCategory && setCategoryValue(initCategory);
+        initCategory && store.setCategory(initCategory);
     }, []);
     // TODO make out click
     return (
@@ -87,11 +86,11 @@ function Dropdown(
                     />
                 }
 
-                <div className="ellipsis-container current-category">{categoryValue}</div>
+                <div className="ellipsis-container current-category">{store.currentCategory}</div>
 
                 <section className={optionsShowState ? "options-show" : "options-hide"}>
                     {
-                        categoryValue !== 'All Categories' &&
+                        store.currentCategory !== 'All Categories' &&
                         <div
                             className="option"
                             onClick={() => handleOption('All Categories')}

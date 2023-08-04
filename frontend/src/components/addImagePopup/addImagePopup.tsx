@@ -151,12 +151,12 @@ function AddImagePopup({setShowPopup}: IProps) {
             popupContext.showPopup('Please chose an Image file');
             return
         }
-        if (!imageCategory || !imageDescription) {
+        if (!imageDescription) {
             popupContext.showPopup('Please fill in require fields');
             return;
         }
-        if (imageCategory === 'Categories') {
-            popupContext.showPopup('Please fill in require fields');
+        if (store.currentCategory === 'All Categories') {
+            popupContext.showPopup('Please choose category');
             return;
         }
 
@@ -175,6 +175,7 @@ function AddImagePopup({setShowPopup}: IProps) {
 
                 setImageMetaData(results.fileId, results => {
                     setLoadingImageUpload(false);
+                    store.triggerRerender();
                     setUploadImage(null);
                     popupContext.showPopup(results);
                     setShowPopup(false);
