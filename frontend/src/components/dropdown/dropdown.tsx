@@ -50,14 +50,14 @@ function Dropdown(
 
     const removeCategory = (): void => {
         setLoading(true);
-            store.removeCategory(categoryToRemove)
-                .then(message => {
-                    setLoading(false);
-                    popupContext.showPopup(message);
-                    store.setCategory('All Categories');
-                    store.filterCategory('All Categories');
-                    setShowRemCatPopup(false);
-                });
+        store.removeCategory(categoryToRemove)
+            .then(message => {
+                setLoading(false);
+                popupContext.showPopup(message);
+                store.setCategory('All Categories');
+                store.filterCategory('All Categories');
+                setShowRemCatPopup(false);
+            });
     }
 
     useEffect(() => {
@@ -70,29 +70,29 @@ function Dropdown(
     // TODO make out click
     return (
 
-        <>
+        <div className={!optionsShowState ? "dropdown" : "dropdown select-open"}>
             <div
                 className={!optionsShowState ? "hover select" : "select"}
-                onClick={handleDropdown}
-            >
-                {
-                    !optionsShowState &&
-                    <IoIosArrowDropdown
-                        className="icon"
-                        onClick={() => setOptionShowState(true)}
-                    />
-                }
-                {
-                    optionsShowState &&
-                    <IoIosArrowDropup
-                        className="icon"
-                        onClick={() => setOptionShowState(false)}
-                    />
-                }
+                onClick={handleDropdown}>
+                <section className="current-category-section">
+                    <div className="ellipsis-container current-category">{store.currentCategory}</div>
+                    {
+                        !optionsShowState &&
+                        <IoIosArrowDropdown
+                            className="icon"
+                            onClick={() => setOptionShowState(true)}
+                        />
+                    }
+                    {
+                        optionsShowState &&
+                        <IoIosArrowDropup
+                            className="icon"
+                            onClick={() => setOptionShowState(false)}
+                        />
+                    }
+                </section>
 
-                <div className="ellipsis-container current-category">{store.currentCategory}</div>
-
-                <section className={optionsShowState ? "options-show" : "options-hide"}>
+                <section className={optionsShowState ? "options-container options-show" : "options-container"}>
                     {
                         store.currentCategory !== 'All Categories' &&
                         <div
@@ -159,7 +159,7 @@ function Dropdown(
                     </div>
                 </div>
             }
-        </>
+        </div>
 
     );
 }

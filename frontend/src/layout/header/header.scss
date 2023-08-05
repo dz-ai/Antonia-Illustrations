@@ -55,9 +55,6 @@
 
 .dropdown-wrapper {
   margin-right: 5px;
-  background: #889df9;
-  border: 1px solid #6161f5;
-  border-radius: 15px;
 
   &:hover {
     cursor: pointer;
@@ -70,14 +67,9 @@
   .select {
     width: 180px;
     text-align: center;
-    padding: 8px 0 0 5px;
     background: none;
     color: white;
     z-index: 99999999;
-  }
-
-  .options-show {
-    width: 95%;
   }
 
   .option {

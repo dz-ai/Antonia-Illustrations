@@ -51,24 +51,24 @@
     }
 
     // dropdown style //
+    .dropdown {
+      margin-top: 15px;
+      background: white;
+    }
+
+    .current-category-section {
+      padding: 5px;
+    }
+
     .current-category {
       width: 120px;
     }
 
     .select {
-      border: 1px solid #d9d0fd;
-      border-radius: 10px;
-      padding: 5px;
-      margin-top: 15px;
-
-      .options-show {
-        width: 94%;
-      }
 
       .option {
         padding: 0 5px;
       }
-
     }
 
     .popup-category .add-category button {

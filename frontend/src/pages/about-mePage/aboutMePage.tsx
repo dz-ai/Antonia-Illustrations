@@ -20,7 +20,7 @@ export function AboutMePage() {
 
                 <div className="text-container">
                     <div>
-                        <img src={'https://ik.imagekit.io/thfdl6dmv/antonia-illustrations/antonia.png'} alt=""/>
+                        <img src={'https://ik.imagekit.io/thfdl6dmv/antonia-illustrations/tr:w-250/antonia.png'} alt="Me With a children book"/>
                     </div>
 
                     <p>

@@ -1,30 +1,54 @@
 @import "../../styles/general";
 
+.dropdown {
+  background: #889df9;
+  border: 1px solid #6161f5;
+  border-radius: 15px;
+  transition: border-radius 0.5s ease;
+}
+
+.select-open {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
 .select {
   width: 100%;
   height: 30px;
-  background: white;
   position: relative;
+  user-select: none;
 
+
+  .current-category-section {
+    @include container(row, space-between, center);
+    height: 100%;
+    padding-right: 15px;
+  }
 
   .hover:hover {
     background: bisque;
     cursor: pointer;
   }
 
-  .options-hide {
-    display: none;
+  .options-container {
+    overflow: hidden;
+    width: 100%;
+    max-height: 0;
+    transition: max-height 0.25s ease;
   }
 
-  // TODO make dropdown height dynamic, according to number of the categories.
   .options-show {
-    display: block;
-    position: absolute;
-    bottom: -200px;
+    max-height: 200px;
     width: 100%;
-    height: 200px;
     background: white;
     overflow: auto;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+
+  div.option:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
   }
 
   ::-webkit-scrollbar {
@@ -78,8 +102,6 @@
   }
 
   .icon {
-    position: absolute;
-    top: 7px;
     right: 10px;
     width: 18px;
     height: 18px;
@@ -112,7 +134,8 @@
       border: none;
       border-bottom: 1px solid black;
       flex: 1;
-      margin-right: 10px;
+      margin: 0 15px 0 5px;
+      font-size: 1em;
     }
 
     input:focus-visible {
@@ -132,6 +155,10 @@
       border-radius: 4px;
       color: white;
       cursor: pointer;
+    }
+
+    .btn {
+      margin: 0 3px;
     }
 
     @media (max-width: 800px) {
@@ -155,6 +182,7 @@
       }
     }
   }
+
   @media (max-width: 600px) {
     .add-category {
       flex-direction: column;

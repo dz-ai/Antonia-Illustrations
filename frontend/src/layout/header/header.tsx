@@ -32,12 +32,6 @@ function Header() {
     }, [showBurgerMenu]);
 
     useEffect(() => {
-        if (location.pathname !== 'portfolio') {
-            navigate('/portfolio', {state: {categoriesVal}});
-        }
-    }, []);
-
-    useEffect(() => {
         if (isSmallScreen && showBurgerMenu) {
             setShowBurgerMenu(false);
         }

@@ -47,18 +47,19 @@
     }
   }
   // dropdown style //
+  .dropdown {
+    background: unset;
+  }
+
+  .current-category-section {
+    padding-left: 15px;
+  }
+
   .current-category {
     width: 120px;
   }
 
   .select {
-    border: 1px solid #d9d0fd;
-    border-radius: 10px;
-    padding: 5px;
-
-    .options-show {
-      width: 96%;
-    }
 
     .option {
       padding: 0 5px;
