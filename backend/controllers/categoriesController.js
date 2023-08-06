@@ -18,10 +18,18 @@ exports.getCategories = asyncHandler(async (req, res) => {
 });
 
 exports.addCategory = asyncHandler(async (req, res) => {
+    const categoryToAdd = req.body.val;
+
+    const isCategoryExist = await Categories.find({categoriesArray: {$regex: new RegExp(`\\b${categoryToAdd}\\b`, 'i')}});
+
+    if (isCategoryExist.length > 0) {
+        res.json('Category already exist');
+        return;
+    }
 
     await Categories.updateMany(
         {categoriesArray: {$exists: true}},
-        {$push: {categoriesArray: req.body.val}},
+        {$push: {categoriesArray: categoryToAdd}},
     );
     const updatedCategories = await Categories.find({categoriesArray: {$exists: true}});
 
@@ -37,7 +45,7 @@ exports.removeCategory = asyncHandler(async (req, res) => {
 
     if (categoryIsInUse) {
         res.json('This Category is still in use, Remove Images that use this Category before remove the category');
-        return
+        return;
     }
 
     await Categories.updateMany(

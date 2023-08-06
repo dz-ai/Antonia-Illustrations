@@ -88,8 +88,8 @@ class Store {
             .catch(error => console.log(error));
     }
 
-    addCategory(categoryToAdd: string): void {
-        fetch(`${this.url}/api/categories/addCategory`, {
+    async addCategory(categoryToAdd: string): Promise<string> {
+        return fetch(`${this.url}/api/categories/addCategory`, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
@@ -98,8 +98,18 @@ class Store {
             body: JSON.stringify({val: categoryToAdd})
         })
             .then(res => res.json())
-            .then(results => this.categories = results)
-            .catch(error => console.log(error));
+            .then(results => {
+                if (typeof results !== 'string') {
+                    this.categories = results;
+                    return `${categoryToAdd} has added`;
+                } else {
+                    return results;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                return 'Error check console for more info';
+            });
     }
 
     async removeCategory(categoryToRemove: string): Promise<string> {
@@ -122,7 +132,7 @@ class Store {
             })
             .catch(error => {
                 console.log(error);
-                return 'Error';
+                return 'Error check console for more info';
             });
     }
 }

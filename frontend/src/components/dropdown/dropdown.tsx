@@ -29,6 +29,8 @@ function Dropdown(
     const ref = useRef(null);
     useOutClick(ref, setOptionShowState);
 
+    const allCategories: string = 'All Categories';
+
     const handleDropdown = () => {
         setOptionShowState(!optionsShowState);
         setTimeout(() => {
@@ -47,9 +49,15 @@ function Dropdown(
     };
 
     const handleAddCat = (): void => {
-        store.addCategory(catToAdd);
-        popupContext.showPopup(`${catToAdd} has added`);
-        setShowCatPopup(false);
+        if (catToAdd.toLowerCase() !== allCategories.toLowerCase()) {
+            store.addCategory(catToAdd)
+                .then(message => {
+                    popupContext.showPopup(message);
+                    setShowCatPopup(false);
+                });
+        } else {
+            popupContext.showPopup('This Category already exist');
+        }
     }
 
     const removeCategory = (): void => {
@@ -58,8 +66,8 @@ function Dropdown(
             .then(message => {
                 setLoading(false);
                 popupContext.showPopup(message);
-                store.setCategory('All Categories');
-                store.filterCategory('All Categories');
+                store.setCategory(allCategories);
+                store.filterCategory(allCategories);
                 setShowRemCatPopup(false);
             });
     }
@@ -98,10 +106,10 @@ function Dropdown(
 
                 <section className={optionsShowState ? "options-container options-show" : "options-container"}>
                     {
-                        store.currentCategory !== 'All Categories' &&
+                        store.currentCategory !== allCategories &&
                         <div
                             className="option"
-                            onClick={() => handleOption('All Categories')}
+                            onClick={() => handleOption(allCategories)}
                         >
                             <div className="ellipsis-container">All Categories</div>
                         </div>
