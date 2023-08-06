@@ -77,6 +77,12 @@
       box-shadow: 0 0 5px #2626b9;
       border-radius: unset;
 
+      .dropdown {
+        background: unset;
+        border: unset;
+        width: 100%;
+      }
+
       .icon {
         top: 7px;
       }
