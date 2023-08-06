@@ -1,9 +1,10 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import {IoIosArrowDropdown, IoIosArrowDropup} from "react-icons/all";
 import {observer} from "mobx-react";
 import store from "../../store";
 import {PopupContext} from "../popupMessage/popupMessage";
 import {useNavigate} from "react-router-dom";
+import {useOutClick} from "../../Hooks/useOutClick";
 
 interface IDropdown {
     options: string[];
@@ -18,12 +19,15 @@ function Dropdown(
     const popupContext = useContext(PopupContext);
     const navigate = useNavigate();
 
-    const [optionsShowState, setOptionShowState] = useState<boolean>(false);
+    const [optionsShowState, setOptionShowState] = useState<boolean | string>(false);
     const [showCatPopup, setShowCatPopup] = useState<boolean>(false);
     const [showRemCatPopup, setShowRemCatPopup] = useState<boolean>(false);
     const [categoryToRemove, setCategoryToRemove] = useState<string>('');
     const [catToAdd, setCatToAdd] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
+
+    const ref = useRef(null);
+    useOutClick(ref, setOptionShowState);
 
     const handleDropdown = () => {
         setOptionShowState(!optionsShowState);
@@ -67,14 +71,14 @@ function Dropdown(
     useEffect(() => {
         initCategory && store.setCategory(initCategory);
     }, []);
-    // TODO make out click
-    return (
 
-        <div className={!optionsShowState ? "dropdown" : "dropdown select-open"}>
+    return (
+        <div className={!optionsShowState ? "dropdown" : "dropdown select-open"} ref={ref}>
             <div
                 className={!optionsShowState ? "hover select" : "select"}
                 onClick={handleDropdown}>
                 <section className="current-category-section">
+                    {/* todo add tooltip when category ellipsis is in action */}
                     <div className="ellipsis-container current-category">{store.currentCategory}</div>
                     {
                         !optionsShowState &&

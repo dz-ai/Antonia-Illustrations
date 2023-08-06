@@ -208,7 +208,6 @@ function AddImagePopup({setShowPopup}: IProps) {
     }
 
     return (
-        // TODO add out click
         <div className="add-image-popup-wrapper">
             <div className="add-image-popup">
                 <form>

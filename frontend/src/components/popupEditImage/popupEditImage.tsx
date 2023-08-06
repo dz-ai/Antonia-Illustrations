@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useContext, useState} from "react";
+import React, {ChangeEvent, useContext, useRef, useState} from "react";
 import {BiDotsVerticalRounded, FiEdit2} from "react-icons/all";
 import {IImage} from "../../types/types";
 import {
@@ -11,6 +11,7 @@ import {
 import {PopupContext} from "../popupMessage/popupMessage";
 import store from "../../store";
 import Dropdown from "../dropdown/dropdown";
+import {useOutClick} from "../../Hooks/useOutClick";
 
 interface IProp {
     imageDetails: IImage;
@@ -30,13 +31,16 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
     const popupContext = useContext(PopupContext);
 
     const [showEditDes, setShowEditDes] = useState<boolean>(false);
-    const [showEditImage, setShowEditImage] = useState<boolean>(false);
+    const [showEditImage, setShowEditImage] = useState<boolean | string>(false);
     const [editImage, setEditImage] = useState<IEditImageState>({imageFileName});
     const [editDescription, setEditDescription] = useState<string>(imageDescription);
     const [loadingImageUpload, setLoadingImageUpload] = useState<boolean>(false);
     const [loadingSave, setLoadingSave] = useState<boolean>(false);
     const [previewImage, setPreviewImage] = useState<null | string | ArrayBuffer>(null);
     const [deleteImageQuestion, setDeleteImageQuestion] = useState<boolean>(false);
+
+    const ref = useRef(null);
+    useOutClick(ref, setShowEditImage);
 
     const onSave = (): void => {
         setLoadingSave(true);
@@ -156,24 +160,26 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
                                                     height={'auto'}
                                                     alt="image to edit"/>
                                         }
-                                        {
-                                            // TODO add out click
-                                            !loadingImageUpload &&
-                                            <BiDotsVerticalRounded onClick={() => setShowEditImage(!showEditImage)}/>
-                                        }
-                                        {
-                                            showEditImage &&
-                                            <div className="edit-image-btns">
-                                                <label>
-                                                    <input onChange={(e) => replaceImage(e)}
-                                                           type="file"
-                                                           style={{display: 'none'}}/>
-                                                    Replace Image
-                                                </label>
-                                                <button onClick={() => setDeleteImageQuestion(true)}>Delete Image
-                                                </button>
-                                            </div>
-                                        }
+                                        <div ref={ref}>
+                                            {
+                                                !loadingImageUpload &&
+                                                <BiDotsVerticalRounded
+                                                    onClick={() => setShowEditImage(!showEditImage)}/>
+                                            }
+                                            {
+                                                showEditImage &&
+                                                <div className="edit-image-btns">
+                                                    <label>
+                                                        <input onChange={(e) => replaceImage(e)}
+                                                               type="file"
+                                                               style={{display: 'none'}}/>
+                                                        Replace Image
+                                                    </label>
+                                                    <button onClick={() => setDeleteImageQuestion(true)}>Delete Image
+                                                    </button>
+                                                </div>
+                                            }
+                                        </div>
                                     </section>
                                     <h4>Category:</h4>
                                     <Dropdown options={store.categories}
