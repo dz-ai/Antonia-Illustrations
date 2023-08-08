@@ -46,6 +46,7 @@
       width: 100%;
     }
   }
+
   // dropdown style //
   .dropdown {
     background: unset;
@@ -71,29 +72,29 @@
   }
 
   .ellipsis-container {
-    width: 145px;
+    width: 250px;
   }
   // end of dropdown style //
 
-    .section {
-      @include container(row, space-between, center);
+  .section {
+    @include container(row, space-between, center);
 
-      p, input {
-        border: none;
-        border-bottom: 1px solid black;
-        flex: 1;
-        margin-right: 10px;
-        width: 150px;
-      }
-
-      input:focus-visible {
-        outline: none;
-      }
-
-      button {
-        @include btn(blue, white);
-      }
+    p, input {
+      border: none;
+      border-bottom: 1px solid black;
+      flex: 1;
+      margin-right: 10px;
+      width: 150px;
     }
+
+    input:focus-visible {
+      outline: none;
+    }
+
+    button {
+      @include btn(blue, white);
+    }
+  }
 
 
   .edit-image-section {
@@ -157,6 +158,7 @@
 
   }
 }
+
 @media (max-width: 300px) {
   #popup-edit-wrapper {
     #popup-edit-image {

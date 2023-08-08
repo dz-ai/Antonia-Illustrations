@@ -5,6 +5,7 @@ import store from "../../store";
 import {PopupContext} from "../popupMessage/popupMessage";
 import {useNavigate} from "react-router-dom";
 import {useOutClick} from "../../Hooks/useOutClick";
+import {Tooltip} from 'react-tooltip';
 
 interface IDropdown {
     options: string[];
@@ -25,6 +26,7 @@ function Dropdown(
     const [categoryToRemove, setCategoryToRemove] = useState<string>('');
     const [catToAdd, setCatToAdd] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
+    const [hideTooltip, setHideTooltip] = useState<boolean>(true);
 
     const ref = useRef(null);
     useOutClick(ref, setOptionShowState);
@@ -49,6 +51,10 @@ function Dropdown(
     };
 
     const handleAddCat = (): void => {
+        if (catToAdd === '' ) {
+            popupContext.showPopup('Please provide new category to add');
+            return;
+        }
         if (catToAdd.toLowerCase() !== allCategories.toLowerCase()) {
             store.addCategory(catToAdd)
                 .then(message => {
@@ -80,14 +86,28 @@ function Dropdown(
         initCategory && store.setCategory(initCategory);
     }, []);
 
+
+    const detectTextOverflow = (event: React.MouseEvent<HTMLElement>) => {
+        const element = event.currentTarget;
+        const isOverflowing = element.scrollWidth > element.clientWidth;
+
+        if (isOverflowing) {
+            setHideTooltip(false);
+        } else {
+            setHideTooltip(true);
+        }
+    }
+
     return (
         <div className={!optionsShowState ? "dropdown" : "dropdown select-open"} ref={ref}>
             <div
                 className={!optionsShowState ? "hover select" : "select"}
                 onClick={handleDropdown}>
                 <section className="current-category-section">
-                    {/* todo add tooltip when category ellipsis is in action */}
-                    <div className="ellipsis-container current-category">{store.currentCategory}</div>
+                    <div data-tooltip-id="tooltip" data-tooltip-content={store.currentCategory}
+                         className="ellipsis-container current-category"
+                         onMouseEnter={event => detectTextOverflow(event)}>{store.currentCategory}
+                    </div>
                     {
                         !optionsShowState &&
                         <IoIosArrowDropdown
@@ -103,25 +123,41 @@ function Dropdown(
                         />
                     }
                 </section>
-
+                <Tooltip id="tooltip" hidden={hideTooltip} delayShow={150} style={{zIndex: 1}}/>
                 <section className={optionsShowState ? "options-container options-show" : "options-container"}>
+                    {
+                        store.isUserLog && optionsShowState &&
+                        <div className="option container"
+                             onClick={() => setShowCatPopup(true)}>
+                            Add +
+                        </div>
+                    }
                     {
                         store.currentCategory !== allCategories &&
                         <div
                             className="option"
                             onClick={() => handleOption(allCategories)}
                         >
-                            <div className="ellipsis-container">All Categories</div>
+                            <div data-tooltip-id="tooltip" data-tooltip-content={allCategories}
+                                 className="ellipsis-container"
+                                 onMouseEnter={event => detectTextOverflow(event)}>
+                                All Categories
+                            </div>
                         </div>
                     }
                     {
                         options.map((category) =>
+                            category !== store.currentCategory &&
                             <div
                                 key={category}
                                 className="option"
                                 onClick={() => handleOption(category)}
                             >
-                                <div className="ellipsis-container">{category}</div>
+                                <div
+                                    data-tooltip-content={category} className="ellipsis-container" data-tooltip-id="tooltip"
+                                    onMouseEnter={event => detectTextOverflow(event)}>
+                                    {category}
+                                </div>
                                 {
                                     store.isUserLog &&
                                     <div className="option-rem-button"
@@ -131,13 +167,6 @@ function Dropdown(
                                          }}>X</div>
                                 }
                             </div>)
-                    }
-                    {
-                        store.isUserLog && optionsShowState &&
-                        <div className="option container"
-                             onClick={() => setShowCatPopup(true)}>
-                            Add +
-                        </div>
                     }
                 </section>
 
@@ -151,8 +180,8 @@ function Dropdown(
                         </span>
                         <input onChange={(e) => setCatToAdd(e.target.value)} autoFocus={true}/>
                         <div className="btn-section">
-                            <button onClick={handleAddCat} disabled={catToAdd === ''}>Add</button>
-                            <button onClick={() => setShowCatPopup(false)}>Cansel</button>
+                            <div className="btn" onClick={handleAddCat}>Add</div>
+                            <div className="btn" onClick={() => setShowCatPopup(false)}>Cansel</div>
                         </div>
                     </div>
                 </div>

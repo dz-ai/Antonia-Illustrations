@@ -48,7 +48,7 @@ function Portfolio() {
         setLoadingImages(true);
         store.getImages()
             .then(isThereAnyImage => {
-                if (isThereAnyImage) {
+                if (isThereAnyImage && location.state) {
                     const categoriesVal = location.state.currentCategory;
                     if (categoriesVal !== 'All Categories') store.filterCategory(store.currentCategory);
                     setLoadingImages(false);

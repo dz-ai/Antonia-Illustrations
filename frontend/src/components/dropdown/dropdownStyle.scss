@@ -22,7 +22,7 @@
   .current-category-section {
     @include container(row, space-between, center);
     height: 100%;
-    padding-right: 15px;
+    padding: 0 15px;
   }
 
   .hover:hover {
@@ -161,6 +161,7 @@
 
     .btn {
       margin: 0 3px;
+      padding: 5px;
     }
 
     @media (max-width: 800px) {

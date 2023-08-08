@@ -89,7 +89,7 @@
     padding: 0 10px;
   }
 
-  button, label {
+  button, label, .btn {
     @include btn(#cfc1ff, #727272);
     background: #d9d0fd;
     border-radius: 3px;
