@@ -94,7 +94,7 @@ function Header() {
                             <button
                                 onClick={() => {
                                     showBurgerMenu && setShowBurgerMenu(false);
-                                    navigate('/about-me');
+                                    navigate('/about-me', {state: {prevPath: location.pathname}});
                                 }}>
                                 About Me
                             </button>

@@ -1,9 +1,10 @@
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {useMediaQuery} from "react-responsive";
 import {useEffect, useState} from "react";
 
 export function HomePage() {
     const navigate = useNavigate();
+    const location = useLocation();
     const isSmallScreen = useMediaQuery({query: '(max-width: 850px)'});
     const isHighScreen = useMediaQuery({query: '(min-height: 800px)'});
 
@@ -35,7 +36,7 @@ export function HomePage() {
 
                     <nav className="home-down-page">
                     <button className="home-btn-r" onClick={() => navigate('/portfolio')}>Portfolio</button>
-                    <button className="home-btn-l" onClick={() => navigate('/about-me')}>About Me</button>
+                    <button className="home-btn-l" onClick={() => navigate('/about-me', {state: {prevPath: location.pathname}})}>About Me</button>
                 </nav>
                 </div>
 

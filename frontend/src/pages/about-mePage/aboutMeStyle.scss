@@ -4,6 +4,13 @@
   @include container(row, center, centeer);
   height: 100%;
 
+  @mixin button-style {
+    @include btn(#4141ca, white);
+    border-radius: 3px;
+    border: none;
+  }
+
+
   .blur-about-img {
     @include blurBackGround();
     background: rgb(170 186 255 / 67%);
@@ -11,7 +18,7 @@
 
     h2 {
       border-bottom: 0 solid;
-      background-image: linear-gradient(to right,#05007a, #0085d9);
+      background-image: linear-gradient(to right, #05007a, #0085d9);
       background-position: bottom;
       background-size: 100% 2px;
       background-repeat: no-repeat;
@@ -27,6 +34,15 @@
       overflow: auto;
     }
 
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #6666f0;
+      border-radius: 10px;
+    }
+
     img {
       float: right;
       width: 250px;
@@ -34,15 +50,26 @@
       margin-left: 20px;
     }
 
+    @media (max-width: 600px) {
+      img {
+        width: 150px;
+      }
+    }
+
     p {
       text-align: justify;
     }
 
-  .back-btn {
-    @include btn(blue, white);
-    margin-bottom: 50px;
-    font-size: 1.2em;
-  }
+    .back-btn {
+      @include btn(#3030cc, white);
+      margin-bottom: 50px;
+      font-size: 1.2em;
+    }
+
+    button {
+      @include button-style;
+      border-bottom: 1px solid #7f5edd;
+    }
 
     @media (max-width: 600px) {
       .text-container {
@@ -65,5 +92,38 @@
       }
     }
 
+  }
+
+  .popup-edit-wrapper {
+    @include container(unset, center, center);
+    background: rgb(255 255 255 / 51%);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    .popup-edit-text {
+      width: 550px;
+      max-width: 90%;
+      height: 550px;
+      background: white;
+      padding: 20px;
+      border-radius: 7px;
+      box-shadow: 0 0 6px;
+
+      textarea {
+        max-height: 470px;
+        max-width: 100%;
+        resize: none;
+      }
+
+      button {
+        @include button-style;
+        background: #7f5edd;
+        color: white;
+        margin: 0 5px;
+      }
+    }
   }
 }
