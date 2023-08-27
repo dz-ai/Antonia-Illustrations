@@ -1,18 +1,19 @@
 import Masonry from "react-masonry-css";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {IImage} from "../../types/types";
-import {FiEdit2} from "react-icons/all";
-import {PopupEditImage} from "../popupEditImage/popupEditImage";
+// import {IImage} from "../../types/types";
+import {ImagesGroupsNamesEnum, PopupEditImage} from "../popupEditImage/popupEditImage";
 import store from "../../store";
+import {LoadingComponent} from "../loadingComponent/loadingComponent";
 
 type Props = {
     setRemEListener: Dispatch<SetStateAction<boolean>>;
     setFullScreen: Dispatch<SetStateAction<string | boolean>>;
+    loadingImages: boolean | string;
 };
 
-export function MasonryGrid({setRemEListener, setFullScreen}: Props) {
-    const [showPopupEditImage, setShowPopupEditImage] = useState<boolean>(false);
-    const [imageDetails, setImageDetails] = useState<IImage>({});
+export function MasonryGrid({/*setRemEListener, setFullScreen,*/ loadingImages}: Props) {
+    // const [showPopupEditImage, setShowPopupEditImage] = useState<boolean>(false);
+    // const [imageDetails, setImageDetails] = useState<IImage>({});
     const [defaultBreakPoint, setDefaultBreakPoint] = useState<number>(4);
     const [secondBreakPoint, setSecondBreakPoint] = useState<number>(3);
 
@@ -40,59 +41,42 @@ export function MasonryGrid({setRemEListener, setFullScreen}: Props) {
                 columnClassName="my-masonry-grid_column"
                 breakpointCols={breakpoints}
             >
-
                 {
-                    store.imagesArray
-                        .map((key) =>
+                    store.isUserLog &&
+                    <div className="image-card-wrapper image-card-wrapper-hover image-card-wrapper-active">
+                        <PopupEditImage
+                            imagesGroupName={ImagesGroupsNamesEnum.portfolioImagesGroupName}
+                            imageDetails={{['']: {imageCategory: '', imageDescription: ''}}}
+                            imageDetailsFields={true}
+                            newImage={true}/>
+                    </div>
+                }
+                {
+                    // todo make on click option to trigger the pop window
+                    store.imagesArray.length > 0 ?
 
-                            <div
-                                key={key}
-                                className="image-card-wrapper image-card-wrapper-hover image-card-wrapper-active"
-                            >
-                                {
-                                    // TODO add tooltip to Edit button
-                                }
-                                {
-                                    store.isUserLog &&
-                                    <FiEdit2 className="edit-btn"
-                                             title="Edit Image"
-                                             onClick={() => {
-                                                 setImageDetails({
-                                                     [`${key}`]: {
-                                                         imageCategory: store.images[key].imageCategory,
-                                                         imageDescription: store.images[key].imageDescription
-                                                     }
-                                                 });
-                                                 setShowPopupEditImage(true);
-                                             }}/>
-                                }
-                                <img
-                                    src={`https://ik.imagekit.io/thfdl6dmv/tr:w-200/antonia-illustrations/${key}`}
-                                    height="auto"
-                                    width="200"
-                                    alt='img'
-                                    onClick={() => {
-                                        setRemEListener(true);
-                                        setFullScreen(`https://ik.imagekit.io/thfdl6dmv/tr:h-500/antonia-illustrations/${key}`);
+                        store.imagesArray
+                            .map((key) =>
 
-                                        setTimeout(() => {
-                                            setRemEListener(false);
-                                        }, 500);
-                                    }}
-                                    loading="lazy"
-                                />
-                                <p>{store.images[key].imageCategory}</p>
-                                <p>{store.images[key].imageDescription}</p>
-                            </div>
-                        )
+                                <div key={key}
+                                     className="image-card-wrapper image-card-wrapper-hover image-card-wrapper-active">
+                                    <PopupEditImage
+                                        imagesGroupName={ImagesGroupsNamesEnum.portfolioImagesGroupName}
+                                        imageDetails={{[key]: {imageCategory: store.images[key].imageCategory, imageDescription: store.images[key].imageDescription}}}
+                                        imageWidth={200}
+                                        imageAtr={'grid-image'}
+                                        imageDetailsFields={true}
+                                        newImage={false}
+                                    />
+                                    <p>{store.images[key].imageCategory}</p>
+                                    <p>{store.images[key].imageDescription}</p>
+                                </div>
+                            )
+
+                        :
+                        <LoadingComponent loading={loadingImages}/>
                 }
             </Masonry>
-            {
-                showPopupEditImage && store.isUserLog &&
-                <PopupEditImage
-                    imageDetails={imageDetails}
-                    setShowPopupEditImage={setShowPopupEditImage}/>
-            }
         </>
     );
 }

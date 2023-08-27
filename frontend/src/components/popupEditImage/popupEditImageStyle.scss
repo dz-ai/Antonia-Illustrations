@@ -1,5 +1,54 @@
 @import "../../styles/general";
 
+.main-image {
+  position: relative;
+  max-width: fit-content;
+
+  img {
+    max-width: 200px;
+  }
+
+  .edit-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #ff000075;
+    border-radius: 5px;
+    height: 40px;
+    width: 40px;
+    padding: 5px;
+    cursor: pointer;
+  }
+}
+
+.add-new-image {
+  @include container(unset, center, center);
+  width: 200px;
+  height: 200px;
+
+  div {
+    @include container(column, center, center);
+    width: 80%;
+    height: 80%;
+    border: 2px solid #808080;
+    color: gray;
+
+    .add-image-icon {
+      font-size: 50px;
+      margin-top: 15px;
+    }
+
+    label {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+    }
+  }
+}
+
 #popup-edit-wrapper {
   @include container(unset, center, center);
   background: rgb(255 255 255 / 51%);
@@ -8,6 +57,8 @@
   right: 0;
   bottom: 0;
   left: 0;
+  z-index: 1;
+  cursor: default;
 
   #popup-edit-image {
     width: 350px;
@@ -42,6 +93,10 @@
     @include container(row, space-between, start);
     margin-bottom: 10px;
 
+    h4 {
+      text-align: left;
+    }
+
     .edit-section {
       width: 100%;
     }
@@ -74,17 +129,20 @@
   .ellipsis-container {
     width: 250px;
   }
+
   // end of dropdown style //
 
   .section {
-    @include container(row, space-between, center);
+    @include container(row, space-between, end);
 
     p, input {
       border: none;
       border-bottom: 1px solid black;
       flex: 1;
-      margin-right: 10px;
+      margin: 0 10px 0 0;
       width: 150px;
+      font-size: 1em;
+      text-align: left;
     }
 
     input:focus-visible {
@@ -110,13 +168,14 @@
     display: flex;
     justify-content: end;
 
-    svg {
+    .three-dote-edit-icon {
       font-size: 30px;
       position: absolute;
       right: 5px;
       top: 5px;
       background: rgb(255 254 254 / 74%);
       border-radius: 50%;
+      cursor: pointer;
     }
 
     svg:hover {

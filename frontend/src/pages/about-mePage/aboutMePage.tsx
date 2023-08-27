@@ -1,9 +1,10 @@
 import {useLocation, useNavigate} from "react-router-dom";
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import store from "../../store";
 import {observer} from "mobx-react";
 import {FiEdit2} from "react-icons/all";
 import {PopupContext} from "../../components/popupMessage/popupMessage";
+import {ImagesGroupsNamesEnum, PopupEditImage} from "../../components/popupEditImage/popupEditImage";
 
 
 function AboutMePage() {
@@ -17,41 +18,73 @@ function AboutMePage() {
     const [text, setText] = useState<string>('');
     const [editText, setEditText] = useState<string>('');
     const [showEditTextPopup, setShowEditTextPopup] = useState<boolean>(false);
+    const [imageFileName, setImageFileName] = useState<string>('');
 
-    const saveText = () => {
-        if (text === editText) {
+    // in order to synchronize save(); and delete(); functions with the editPopup component I made them async fun
+    // so they finish update the server and then editPopup continues.
+    const save = async (imageName?: string) => {
+        if (text === editText && !imageName) {
             popupContext.showPopup('No changes to save');
-            return;
+            return Promise.resolve(false);
         }
-        fetch(`${url}/api/aboutMe/editAboutMeText`, {
+
+        return fetch(`${url}/api/aboutMe/editAboutMe`, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
                 'auth': `Bearer ${localStorage.getItem('token')}`,
             },
-            body: JSON.stringify({text: editText}),
+            body: JSON.stringify({newText: editText, newImage: imageName}),
         })
             .then(res => res.json())
             .then(results => {
+                setImageFileName(results.image);
                 setText(results.text);
                 popupContext.showPopup('Save Changes');
+                return Promise.resolve(true);
             })
             .catch(error => {
                 console.log(error);
                 popupContext.showPopup('Error please check console for more details');
+                return Promise.reject(false);
+            });
+    }
+
+    const deleteAboutMeImage = async () => {
+        // todo make loading when waiting to server to delete.
+        return fetch(`${url}/api/aboutMe/deleteAboutMe`, {
+            method: 'delete',
+            headers: {
+                'Content-Type': 'application/json',
+                'auth': `Bearer ${localStorage.getItem('token')}`,
+            },
+            body: JSON.stringify({imageToDelete: imageFileName}),
+        })
+            .then(res => res.json())
+            .then(results => {
+                setImageFileName(results.image);
+                popupContext.showPopup('Image Deleted');
+                return Promise.resolve(true);
+            })
+            .catch(error => {
+                console.log(error);
+                popupContext.showPopup('Error please check console for more details');
+                return Promise.reject(false);
             });
     }
 
     useEffect(() => {
-        fetch(`${url}/api/aboutMe/getAboutMeText`)
+        fetch(`${url}/api/aboutMe/getAboutMe`)
             .then(res => res.json())
             .then(results => {
                 setText(results.text);
+                setImageFileName(results.image);
             })
             .catch(error => console.log(error));
     }, []);
 
     return (
+        // todo add loading to text and image on page load
         <div
             className="about-me"
             style={{
@@ -62,13 +95,29 @@ function AboutMePage() {
         >
             <div className="blur-about-img">
 
-
                 <h2>About Me</h2>
 
                 <div className="text-container">
-                    <div>
-                        <img src={'https://ik.imagekit.io/thfdl6dmv/antonia-illustrations/tr:w-250/antonia.png'}
-                             alt="Me With a children book"/>
+                    <div id="about-me-image">
+                        {
+                            imageFileName ?
+                                <PopupEditImage
+                                    imagesGroupName={ImagesGroupsNamesEnum.aboutMeImagesGroupName}
+                                    imageDetails={{[`${imageFileName}`]: {imageCategory: '', imageDescription: ''}}}
+                                    imageWidth={250}
+                                    imageAtr={'About Me Image'}
+                                    imageDetailsFields={false}
+                                    newImage={false}
+                                    onSaveClicked={(imageFileName) => save(imageFileName)}
+                                    onDeleteClicked={_ => deleteAboutMeImage()}/>
+                                :
+                                <PopupEditImage
+                                    imagesGroupName={ImagesGroupsNamesEnum.aboutMeImagesGroupName}
+                                    imageDetails={{['']: {imageCategory: '', imageDescription: ''}}}
+                                    imageDetailsFields={false}
+                                    onSaveClicked={(imageFileName) => save(imageFileName)}
+                                    newImage={true}/>
+                        }
                     </div>
                     {
                         store.isUserLog &&
@@ -79,7 +128,7 @@ function AboutMePage() {
                     }
                     <p>{text}</p>
                 </div>
-
+                {/* todo Fix bug go back when navigation was done by url */}
                 <button
                     className="back-btn"
                     onClick={() => navigate(location.state.prevPath)}
@@ -96,7 +145,7 @@ function AboutMePage() {
                                   onChange={(event) => setEditText(event.target.value)}></textarea>
                         <section>
                             <button onClick={() => {
-                                saveText();
+                                save().then();
                                 setShowEditTextPopup(false);
                             }}>Save
                             </button>

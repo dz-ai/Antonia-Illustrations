@@ -1,18 +1,23 @@
 const mongoose = require("mongoose");
 
-const Image = new mongoose.Schema({
-    fileName: {
-        type: String,
-    },
-    imageCategory: {
+const ImagesGroups = new mongoose.Schema({
+    imagesGroupName: {
         type: String
     },
-    imageDescription: {
-        type: String
-    },
-    imageID: {
-        type: String
-    }
+    images: [{
+        fileName: {
+            type: String,
+        },
+        imageCategory: {
+            type: String
+        },
+        imageDescription: {
+            type: String
+        },
+        imageID: {
+            type: String
+        }
+    }],
 });
 
-module.exports = mongoose.model('Image', Image);
+module.exports = mongoose.model('ImagesGroups', ImagesGroups);

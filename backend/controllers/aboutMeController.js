@@ -1,26 +1,38 @@
 const {asyncHandler} = require("../middlwares");
 const AboutMe = require("../schems/aboutMeSchem");
 
-exports.getAboutMeText = asyncHandler(async (req, res) => {
-    const aboutMeText = await AboutMe.findOne({}, 'text');
-
-    res.json(aboutMeText);
+exports.getAboutMe = asyncHandler(async (req, res) => {
+    const aboutMe = await AboutMe.findOne();
+    res.json(aboutMe);
 });
 
-exports.editAboutMeText = asyncHandler(async (req, res) => {
-    const newText = req.body.text;
+exports.editAboutMe = asyncHandler(async (req, res) => {
+    const {newText, newImage} = req.body;
 
-    let aboutMeText = await AboutMe.findOne({}, 'text');
+    let aboutMe = await AboutMe.findOne();
 
-    if (!aboutMeText) {
-        aboutMeText = new AboutMe({text: newText});
-    } else {
-        aboutMeText.text = newText;
+    if (!aboutMe) {
+        aboutMe = new AboutMe();
     }
 
-    await aboutMeText.save();
+    if (newText) {
+        aboutMe.text = newText;
+    }
 
-    const aboutMeNewText = await AboutMe.findOne({}, 'text');
+    if (newImage) {
+        aboutMe.image = newImage;
+    }
 
-    res.json(aboutMeNewText);
+    await aboutMe.save();
+
+    const newAboutMe = await AboutMe.findOne();
+
+    res.json(newAboutMe);
+});
+
+exports.deleteAboutMe = asyncHandler(async (req, res) => {
+    await AboutMe.updateMany({image: ''});
+    const newAboutMe = await AboutMe.findOne();
+
+    res.json(newAboutMe);
 });

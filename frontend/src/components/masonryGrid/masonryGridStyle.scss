@@ -27,6 +27,7 @@
   border-radius: 7px;
   box-shadow: 0 0 6px;
   width: min-content;
+  max-width: 200px;
 
   p {
     margin: 5px;
@@ -37,30 +38,20 @@
     position: unset;
   }
 
-  img {
-    border-radius: 7px 7px 0 0;
+  .main-image {
+
+    img {
+      border-radius: 7px 7px 0 0;
+    }
   }
 }
 
 .image-card-wrapper-hover:hover {
   box-shadow: -1px -1px 10px;
   cursor: pointer;
-  transform: translate(2px, 2px);
+  //transform: translate(2px, 2px);
 }
 
 .image-card-wrapper-active:active {
   box-shadow: 0 0 4px;
 }
-
-.edit-btn {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background: #ff000075;
-  border-radius: 5px;
-  height: 40px;
-  width: 40px;
-  padding: 5px;
-}
-
-

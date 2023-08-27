@@ -43,11 +43,19 @@
       border-radius: 10px;
     }
 
-    img {
+    #about-me-image {
       float: right;
       width: 250px;
       height: auto;
       margin-left: 20px;
+
+      .main-image {
+        img {
+          min-height: 55px;
+          min-width: 200px;
+          max-width: unset;
+        }
+      }
     }
 
     @media (max-width: 600px) {

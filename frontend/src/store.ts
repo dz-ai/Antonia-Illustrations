@@ -1,5 +1,6 @@
 import {makeAutoObservable} from "mobx";
 import {IImage} from "./types/types";
+import {ImagesGroupsNamesEnum} from "./components/popupEditImage/popupEditImage";
 
 class Store {
     url: string = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
@@ -59,8 +60,8 @@ class Store {
         this.rerender = !this.rerender;
     }
 
-    async getImages(): Promise<boolean> {
-        return fetch(`${this.url}/api/uploadImage/getImages`)
+    async getImages(imagesGroupName: ImagesGroupsNamesEnum): Promise<boolean> {
+        return fetch(`${this.url}/api/uploadImage/getImages/${imagesGroupName}`)
             .then(res => res.json())
             .then(data => {
                 this.images = data;

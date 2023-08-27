@@ -5,10 +5,10 @@ const {
     getImages,
     getSignature,
     setImageMetaData,
-    deleteImageMetaData
+    deleteImage
 } = require("./controllers/uploadImageControllers");
 const {getCategories, addCategory, removeCategory} = require("./controllers/categoriesController");
-const {editAboutMeText, getAboutMeText} = require("./controllers/aboutMeController");
+const {editAboutMe, getAboutMe, deleteAboutMe} = require("./controllers/aboutMeController");
 
 exports.userRouter = express.Router({mergeParams: true});
 exports.uploadRouter = express.Router({mergeParams: true});
@@ -21,10 +21,10 @@ this.userRouter.post('/logIn', loginUser);
 this.userRouter.get('/authToken', protect, authenticateToken);
 
 // ---- Image Routes ---- //
-this.uploadRouter.get('/getImages', getImages);
+this.uploadRouter.get('/getImages/:imagesGroupName', getImages);
 this.uploadRouter.get('/auth', getSignature);
-this.uploadRouter.post('/setImageMetaData', protect, setImageMetaData);
-this.uploadRouter.delete('/deleteImage', protect, deleteImageMetaData);
+this.uploadRouter.post('/setImageMetaData/:imagesGroupName', protect, setImageMetaData);
+this.uploadRouter.delete('/deleteImage/:imagesGroupName', protect, deleteImage);
 
 // ---- Category Routes ---- //
 this.categoryRouter.get('/getCategories', getCategories);
@@ -32,5 +32,6 @@ this.categoryRouter.post('/addCategory', protect, addCategory);
 this.categoryRouter.post('/removeCategory', protect, removeCategory);
 
 // ---- AboutMe Routes ---- //
-this.aboutMeRouter.get('/getAboutMeText', getAboutMeText);
-this.aboutMeRouter.post('/editAboutMeText', protect, editAboutMeText);
+this.aboutMeRouter.get('/getAboutMe', getAboutMe);
+this.aboutMeRouter.post('/editAboutMe', protect, editAboutMe);
+this.aboutMeRouter.delete('/deleteAboutMe', protect, deleteAboutMe);

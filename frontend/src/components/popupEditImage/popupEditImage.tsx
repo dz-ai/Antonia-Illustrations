@@ -1,21 +1,32 @@
 import React, {ChangeEvent, useContext, useRef, useState} from "react";
-import {BiDotsVerticalRounded, FiEdit2} from "react-icons/all";
+import {AiOutlineCloseCircle, BiDotsVerticalRounded, FiEdit2, RiImageAddLine} from "react-icons/all";
 import {IImage} from "../../types/types";
 import {
     deleteImage,
-    handleFileChange,
+    handleFileChange, IImageMetaData,
     setImageMetaData,
     standardFileName,
     uploadImageFun
-} from "../addImagePopup/addImagePopup";
+} from "./addImageUtil";
 import {PopupContext} from "../popupMessage/popupMessage";
 import store from "../../store";
 import Dropdown from "../dropdown/dropdown";
 import {useOutClick} from "../../Hooks/useOutClick";
 
+export enum ImagesGroupsNamesEnum {
+    portfolioImagesGroupName = 'portfolio-images',
+    aboutMeImagesGroupName = 'about-me-images',
+}
+
 interface IProp {
+    imagesGroupName: ImagesGroupsNamesEnum;
+    newImage: boolean;
     imageDetails: IImage;
-    setShowPopupEditImage: React.Dispatch<boolean>;
+    imageWidth?: number;
+    imageAtr?: string;
+    imageDetailsFields: boolean;
+    onSaveClicked?: (imageFileName: string) => Promise<boolean>;
+    onDeleteClicked?: (imageFileName: string) => Promise<boolean>;
 }
 
 interface IEditImageState {
@@ -24,16 +35,17 @@ interface IEditImageState {
     imageFile?: File
 }
 
-export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
+export function PopupEditImage({imagesGroupName, imageDetails, imageWidth, imageAtr, imageDetailsFields, newImage, onSaveClicked, onDeleteClicked}: IProp) {
     const imageFileName: string = Object.keys(imageDetails)[0];
     const {imageCategory, imageDescription} = imageDetails[imageFileName];
 
     const popupContext = useContext(PopupContext);
 
+    const [showPopupEditImage, setShowPopupEditImage] = useState<boolean>(false);
     const [showEditDes, setShowEditDes] = useState<boolean>(false);
     const [showEditImage, setShowEditImage] = useState<boolean | string>(false);
-    const [editImage, setEditImage] = useState<IEditImageState>({imageFileName});
-    const [editDescription, setEditDescription] = useState<string>(imageDescription);
+    const [editImage, setEditImage] = useState<IEditImageState>({imageFileName: ''});
+    const [editDescription, setEditDescription] = useState<string>(!newImage ? imageDescription : '');
     const [loadingImageUpload, setLoadingImageUpload] = useState<boolean>(false);
     const [loadingSave, setLoadingSave] = useState<boolean>(false);
     const [previewImage, setPreviewImage] = useState<null | string | ArrayBuffer>(null);
@@ -42,11 +54,19 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
     const ref = useRef(null);
     useOutClick(ref, setShowEditImage);
 
-    const onSave = (): void => {
+    const onSave = async () => {
+        if (newImage && !editImage.imageFile) {
+            popupContext.showPopup('Please choose an image');
+            return;
+        }
         setLoadingSave(true);
+        setShowEditDes(false);
+
         // delete image case
         if (deleteImageQuestion) {
-            deleteImage(editImage.imageFileName, (results) => {
+            onDeleteClicked && await onDeleteClicked('')
+            deleteImage(imagesGroupName, imageFileName, (results) => {
+                    setDeleteImageQuestion(false);
                     setLoadingSave(false);
                     popupContext.showPopup(results);
                     store.triggerRerender(); /* update the rendered images on the portfolio page */
@@ -54,53 +74,64 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
                 },
                 (error) => {
                     console.log(error);
-                    store.logOut(() => popupContext.showPopup(error.message + ' login first'));
+                    popupContext.showPopup(error.message);
                     setShowPopupEditImage(false);
                 });
             return;
         }
-        if (editDescription === '') {
+
+        // check for require fields
+        if (imageDetailsFields && editDescription === '') {
             popupContext.showPopup('Please fill the require fields');
+            setLoadingSave(false);
             return;
         }
-        if (store.currentCategory === 'All Categories') {
+        if (imageDetailsFields && store.currentCategory === 'All Categories') {
             popupContext.showPopup('Please choose Category');
             setLoadingSave(false);
             return;
         }
-        if (imageCategory === store.currentCategory && imageDescription === editDescription && imageFileName === editImage.imageFileName) {
+        if (imageCategory === store.currentCategory && imageDescription === editDescription && !editImage.imageFileName) {
             popupContext.showPopup('No Data has been change');
-            setShowPopupEditImage(false);
+            setLoadingSave(false);
+            return;
+        }
+        if (!imageDetailsFields && !editImage.imageFileName) {
+            popupContext.showPopup('No Data has been change');
+            setLoadingSave(false);
             return;
         }
 
+        // add or replace image
+        const image: IImageMetaData = {
+            existingImageFileName: imageFileName,
+            imageCategory: store.currentCategory,
+            imageDescription: editDescription,
+            imageToUpLoad: editImage.imageFileName,
+        };
+
         if (editImage.imageFile) {
             uploadImageFun(editImage.imageFile)
-                .then(results => {
-                    setEditImage({imageFileName: standardFileName(editImage.imageFileName), fileID: results.fileId});
-
-                    setImageMetaData(results.fileId,
+                .then(async results => {
+                    onSaveClicked && await onSaveClicked(editImage.imageFileName);
+                    setImageMetaData(image, imagesGroupName, results.fileId,
                         results => {
                             store.triggerRerender();
                             popupContext.showPopup(results);
+                            setEditImage({imageFile: undefined, imageFileName: '', fileID: ''})
+                            setPreviewImage(null);
                             setLoadingSave(false);
                             setShowPopupEditImage(false);
                         },
                         error => {
                             console.log(error);
-                            store.logOut(() => popupContext.showPopup(`Fail to edit - ${error} - login first`));
+                            popupContext.showPopup(`Fail to edit - ${error}`);
                             setLoadingSave(false);
                             setShowPopupEditImage(false);
-                        },
-                        {
-                            fileName: imageFileName,
-                            imageCategory: store.currentCategory,
-                            imageDescription: editDescription,
-                            replaceImageWith: editImage.imageFileName,
                         });
                 });
-        } else {
-            setImageMetaData(undefined,
+        } else { /* replace image details */
+            setImageMetaData(image, imagesGroupName, undefined,
                 results => {
                     store.triggerRerender();
                     popupContext.showPopup(results);
@@ -108,21 +139,15 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
                     setShowPopupEditImage(false);
                 },
                 error => {
-                    console.log(error);
-                    store.logOut(() => popupContext.showPopup(`Fail to edit - ${error} - login first`));
+                    console.log(error.message);
+                    popupContext.showPopup(`Fail to edit - ${error.message} - login first`);
                     setLoadingSave(false);
                     setShowPopupEditImage(false);
-                },
-                {
-                    fileName: imageFileName,
-                    imageCategory: store.currentCategory,
-                    imageDescription: editDescription,
-                    replaceImageWith: editImage.imageFileName,
                 });
         }
     }
 
-    const replaceImage = (event: ChangeEvent<HTMLInputElement>): void => {
+    const uploadImage = (event: ChangeEvent<HTMLInputElement>): void => {
         handleFileChange(event, (file, imagePreview) => {
 
                 setShowEditImage(false);
@@ -137,91 +162,158 @@ export function PopupEditImage({imageDetails, setShowPopupEditImage}: IProp) {
                 popupContext.showPopup(errorMessage);
             });
     }
-
+    // todo Fix - the previous uploaded image description appears in new image upload window.
 
     return (
-        <div id="popup-edit-wrapper">
-            <div id="popup-edit-image">
-                <section>
-                    {
-                        !deleteImageQuestion &&
-                        <>
-                            <h2>Edit</h2>
-                            <div className="image-details">
-                                <div className="edit-section">
-                                    <section className="image-edit-section">
-                                        {
-                                            loadingImageUpload ?
-                                                <div className="loader"></div>
-                                                :
-                                                <img
-                                                    src={!previewImage ? `${import.meta.env.VITE_IMAGEKIT}/tr:w-100/${editImage.imageFileName}` : previewImage as string}
-                                                    width={100}
-                                                    height={'auto'}
-                                                    alt="image to edit"/>
-                                        }
-                                        <div ref={ref}>
-                                            {
-                                                !loadingImageUpload &&
-                                                <BiDotsVerticalRounded
-                                                    onClick={() => setShowEditImage(!showEditImage)}/>
-                                            }
-                                            {
-                                                showEditImage &&
-                                                <div className="edit-image-btns">
-                                                    <label>
-                                                        <input onChange={(e) => replaceImage(e)}
-                                                               type="file"
-                                                               style={{display: 'none'}}/>
-                                                        Replace Image
-                                                    </label>
-                                                    <button onClick={() => setDeleteImageQuestion(true)}>Delete Image
-                                                    </button>
+        <>
+            {/* TODO add tooltip to Edit button */}
+
+            <div className="main-image">
+                {
+                    store.isUserLog && !newImage &&
+                    <FiEdit2 className="edit-btn"
+                             title="Edit Image"
+                             onClick={() => setShowPopupEditImage(true)}/>
+                }
+                {
+                    store.isUserLog && newImage &&
+                    <div className="add-new-image" onClick={() => setShowPopupEditImage(true)}>
+                        <div>Add New Image <RiImageAddLine className="add-image-icon"/></div>
+                    </div>
+                }
+                {
+                    !newImage &&
+                    <img src={`${import.meta.env.VITE_IMAGEKIT}/tr:w-${imageWidth}/${imageFileName}`} width={imageWidth}
+                         alt={imageAtr}
+                         loading="lazy"/>
+                }
+            </div>
+
+            {
+                showPopupEditImage &&
+
+                <div id="popup-edit-wrapper">
+                    <div id="popup-edit-image">
+                        <section>
+                            {
+                                !deleteImageQuestion &&
+                                <>
+                                    <h2>Edit</h2>
+                                    <div className="image-details">
+                                        <div className="edit-section">
+                                            <section className="image-edit-section">
+                                                {
+                                                    loadingImageUpload ?
+                                                        <div className="loader"></div>
+                                                        :
+                                                        previewImage === null && newImage ?
+                                                            <div className="add-new-image">
+                                                                <div>Add New Image <RiImageAddLine
+                                                                    className="add-image-icon"/>
+                                                                    <label>
+                                                                        <input onChange={(e) => uploadImage(e)}
+                                                                               type="file"
+                                                                               style={{visibility: 'hidden'}}/>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            :
+                                                            <img
+                                                                src={!previewImage ? `${import.meta.env.VITE_IMAGEKIT}/tr:w-100/${imageFileName}` : previewImage as string}
+                                                                width={100}
+                                                                height={'auto'}
+                                                                alt="image to edit"/>
+                                                }
+                                                <div ref={ref}>
+                                                    {
+                                                        !loadingImageUpload && !newImage &&
+                                                        <BiDotsVerticalRounded
+                                                            className="three-dote-edit-icon"
+                                                            onClick={() => setShowEditImage(!showEditImage)}/>
+                                                    }
+                                                    {
+                                                        !loadingImageUpload && newImage && previewImage !== null &&
+                                                        <AiOutlineCloseCircle
+                                                            className="three-dote-edit-icon"
+                                                            onClick={() => {
+                                                                setPreviewImage(null);
+                                                            }}/>
+                                                    }
+                                                    {
+                                                        showEditImage &&
+                                                        <div className="edit-image-btns">
+                                                            <label>
+                                                                <input onChange={(e) => uploadImage(e)}
+                                                                       type="file"
+                                                                       style={{display: 'none'}}/>
+                                                                Replace Image
+                                                            </label>
+                                                            <button onClick={() => setDeleteImageQuestion(true)}>
+                                                                Delete Image
+                                                            </button>
+                                                        </div>
+                                                    }
                                                 </div>
+                                            </section>
+                                            {
+                                                imageDetailsFields &&
+                                                <>
+                                                    <h4>Category:</h4>
+                                                    <Dropdown options={store.categories}
+                                                              initCategory={!newImage ? imageCategory : 'All Categories'}
+                                                              noInfluence={true}/>
+
+                                                    <h4>Description:</h4>
+                                                    <section className="section">
+                                                        {
+                                                            !showEditDes &&
+                                                            <p>{editDescription}</p>
+                                                        }
+                                                        {
+                                                            showEditDes &&
+                                                            <input value={editDescription}
+                                                                   type="text"
+                                                                   autoFocus={true}
+                                                                   placeholder="Description"
+                                                                   onChange={e => setEditDescription(e.target.value)}/>
+                                                        }
+                                                        <button onClick={() => setShowEditDes(!showEditDes)}>
+                                                            <FiEdit2/>
+                                                        </button>
+                                                    </section>
+                                                </>
                                             }
                                         </div>
-                                    </section>
-                                    <h4>Category:</h4>
-                                    <Dropdown options={store.categories}
-                                              initCategory={imageCategory}
-                                              noInfluence={true}/>
-
-                                    <h4>Description:</h4>
-                                    <section className="section">
-                                        {
-                                            !showEditDes &&
-                                            <p>{editDescription}</p>
-                                        }
-                                        {
-                                            showEditDes &&
-                                            <input value={editDescription}
-                                                   type="text"
-                                                   autoFocus={true}
-                                                   onChange={e => setEditDescription(e.target.value)}/>
-                                        }
-                                        <button onClick={() => setShowEditDes(!showEditDes)}><FiEdit2/></button>
-                                    </section>
-                                </div>
+                                    </div>
+                                </>
+                            }
+                            {
+                                deleteImageQuestion &&
+                                <section className="delete-warning">
+                                    <p>You Are About To Delete The Image - {imageFileName}!</p>
+                                    <img src={`${import.meta.env.VITE_IMAGEKIT}/tr:w-100/${imageFileName}`}
+                                         alt="image to delete"/>
+                                    <p>Press "Save" to Continue Or "Cansel" to Quit</p>
+                                </section>
+                            }
+                            <div className="cansel-save-btn">
+                                <button onClick={onSave} disabled={loadingImageUpload || loadingSave}>
+                                    {!loadingImageUpload && !loadingSave ? 'Save' : <div className="loader"></div>}
+                                </button>
+                                <button onClick={() => {
+                                    setDeleteImageQuestion(false);
+                                    setShowEditDes(false);
+                                    setPreviewImage(null);
+                                    setLoadingSave(false);
+                                    setShowPopupEditImage(false);
+                                }}>
+                                    Cansel
+                                </button>
                             </div>
-                        </>
-                    }
-                    {
-                        deleteImageQuestion &&
-                        <section className="delete-warning">
-                            <p>You Are About To Delete The Image - {editImage.imageFileName}!</p>
-                            <img src={`${import.meta.env.VITE_IMAGEKIT}/tr:w-100/${editImage.imageFileName}`}
-                                 alt="image to delete"/>
-                            <p>Press "Save" to Continue Or "Cansel" to Quit</p>
                         </section>
-                    }
-                    <div className="cansel-save-btn">
-                        <button onClick={onSave} disabled={loadingImageUpload || loadingSave}>
-                            {!loadingImageUpload && !loadingSave ? 'Save' : <div className="loader"></div>}
-                        </button>
-                        <button onClick={() => setShowPopupEditImage(false)}>Cansel</button>
                     </div>
-                </section>
-            </div>
-        </div>
+                </div>
+            }
+        </>
     );
 }
