@@ -10,8 +10,6 @@
 
   @include container(column, center, center);
 
-
-
   #full-screen-img-wrapper {
     @include container(row, center, center);
     width: auto;
@@ -21,6 +19,7 @@
 
     .image-card-wrapper {
       width: unset;
+      max-width: unset;
     }
 
     .close-button {

@@ -11,7 +11,7 @@ type Props = {
     loadingImages: boolean | string;
 };
 
-export function MasonryGrid({/*setRemEListener, setFullScreen,*/ loadingImages}: Props) {
+export function MasonryGrid({setRemEListener, setFullScreen, loadingImages}: Props) {
     // const [showPopupEditImage, setShowPopupEditImage] = useState<boolean>(false);
     // const [imageDetails, setImageDetails] = useState<IImage>({});
     const [defaultBreakPoint, setDefaultBreakPoint] = useState<number>(4);
@@ -52,7 +52,6 @@ export function MasonryGrid({/*setRemEListener, setFullScreen,*/ loadingImages}:
                     </div>
                 }
                 {
-                    // todo make on click option to trigger the pop window
                     store.imagesArray.length > 0 ?
 
                         store.imagesArray
@@ -62,11 +61,23 @@ export function MasonryGrid({/*setRemEListener, setFullScreen,*/ loadingImages}:
                                      className="image-card-wrapper image-card-wrapper-hover image-card-wrapper-active">
                                     <PopupEditImage
                                         imagesGroupName={ImagesGroupsNamesEnum.portfolioImagesGroupName}
-                                        imageDetails={{[key]: {imageCategory: store.images[key].imageCategory, imageDescription: store.images[key].imageDescription}}}
+                                        imageDetails={{
+                                            [key]: {
+                                                imageCategory: store.images[key].imageCategory,
+                                                imageDescription: store.images[key].imageDescription
+                                            }
+                                        }}
                                         imageWidth={200}
                                         imageAtr={'grid-image'}
                                         imageDetailsFields={true}
                                         newImage={false}
+                                        onImageClicked={imageFileName => {
+                                            setRemEListener(true);
+                                            setFullScreen(imageFileName);
+                                            setTimeout(() => {
+                                                setRemEListener(false);
+                                            }, 500);
+                                        }}
                                     />
                                     <p>{store.images[key].imageCategory}</p>
                                     <p>{store.images[key].imageDescription}</p>

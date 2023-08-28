@@ -25,6 +25,7 @@ interface IProp {
     imageWidth?: number;
     imageAtr?: string;
     imageDetailsFields: boolean;
+    onImageClicked?: (imageFileName: string) => void;
     onSaveClicked?: (imageFileName: string) => Promise<boolean>;
     onDeleteClicked?: (imageFileName: string) => Promise<boolean>;
 }
@@ -35,7 +36,17 @@ interface IEditImageState {
     imageFile?: File
 }
 
-export function PopupEditImage({imagesGroupName, imageDetails, imageWidth, imageAtr, imageDetailsFields, newImage, onSaveClicked, onDeleteClicked}: IProp) {
+export function PopupEditImage({
+                                   imagesGroupName,
+                                   imageDetails,
+                                   imageWidth,
+                                   imageAtr,
+                                   imageDetailsFields,
+                                   newImage,
+                                   onSaveClicked,
+                                   onDeleteClicked,
+                                   onImageClicked
+                               }: IProp) {
     const imageFileName: string = Object.keys(imageDetails)[0];
     const {imageCategory, imageDescription} = imageDetails[imageFileName];
 
@@ -185,6 +196,7 @@ export function PopupEditImage({imagesGroupName, imageDetails, imageWidth, image
                     !newImage &&
                     <img src={`${import.meta.env.VITE_IMAGEKIT}/tr:w-${imageWidth}/${imageFileName}`} width={imageWidth}
                          alt={imageAtr}
+                         onClick={() => onImageClicked && onImageClicked(imageFileName)}
                          loading="lazy"/>
                 }
             </div>

@@ -8,7 +8,7 @@ type Props = {
     description: string;
 };
 
-export function FullScreen({fullScreen, setFullScreen, removeEListener, description}:Props) {
+export function FullScreen({fullScreen, setFullScreen, removeEListener, description}: Props) {
     const refFullScreen = useRef<HTMLDivElement>(null);
 
     useOutClick(refFullScreen, setFullScreen, removeEListener);
@@ -17,14 +17,16 @@ export function FullScreen({fullScreen, setFullScreen, removeEListener, descript
         <div id="ful-screen-image">
 
             <div id="full-screen-img-wrapper">
-            <button
-                className="close-button"
-                onClick={() => setFullScreen(false)}
-            >
-                ✖
-            </button>
+                <button
+                    className="close-button"
+                    onClick={() => setFullScreen(false)}
+                >
+                    ✖
+                </button>
                 <div className="image-card-wrapper" ref={refFullScreen}>
-                    <img src={typeof fullScreen === 'string' ? fullScreen : ''} alt=""/>
+                    <img
+                        src={typeof fullScreen === 'string' ? `${import.meta.env.VITE_IMAGEKIT}/tr:w-1000}/${fullScreen}` : ''}
+                        alt="Full screen image"/>
                     <p>{description}</p>
                 </div>
             </div>

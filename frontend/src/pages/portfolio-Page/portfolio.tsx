@@ -92,7 +92,6 @@ function Portfolio() {
                     loadingImages={loadingImages}
                 />
                 {
-                    // todo set functionality to editPopup to enable full screen
                     typeof fullScreen === 'string' &&
                     <FullScreen
                         fullScreen={fullScreen}
