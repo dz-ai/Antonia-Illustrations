@@ -5,6 +5,7 @@ import {observer} from "mobx-react";
 import {FiEdit2} from "react-icons/all";
 import {PopupContext} from "../../components/popupMessage/popupMessage";
 import {ImagesGroupsNamesEnum, PopupEditImage} from "../../components/popupEditImage/popupEditImage";
+import {LoadingTextPlaceHolder} from "../../components/loadingTextPlaceHolder/loadingTextPlaceHolder";
 
 
 function AboutMePage() {
@@ -19,8 +20,9 @@ function AboutMePage() {
     const [editText, setEditText] = useState<string>('');
     const [showEditTextPopup, setShowEditTextPopup] = useState<boolean>(false);
     const [imageFileName, setImageFileName] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
 
-    // in order to synchronize save(); and delete(); functions with the editPopup component I made them async fun
+    // in order to synchronize save(); and delete(); functions with the editPopup component I made them async fun,
     // so they finish update the server and then editPopup continues.
     const save = async (imageName?: string) => {
         if (text === editText && !imageName) {
@@ -51,7 +53,6 @@ function AboutMePage() {
     }
 
     const deleteAboutMeImage = async () => {
-        // todo make loading when waiting to server to delete.
         return fetch(`${url}/api/aboutMe/deleteAboutMe`, {
             method: 'delete',
             headers: {
@@ -74,17 +75,18 @@ function AboutMePage() {
     }
 
     useEffect(() => {
+        setLoading(true);
         fetch(`${url}/api/aboutMe/getAboutMe`)
             .then(res => res.json())
             .then(results => {
                 setText(results.text);
                 setImageFileName(results.image);
+                setLoading(false);
             })
             .catch(error => console.log(error));
     }, []);
 
     return (
-        // todo add loading to text and image on page load
         <div
             className="about-me"
             style={{
@@ -98,35 +100,49 @@ function AboutMePage() {
                 <h2>About Me</h2>
 
                 <div className="text-container">
-                    <div id="about-me-image">
-                        {
-                            imageFileName ?
-                                <PopupEditImage
-                                    imagesGroupName={ImagesGroupsNamesEnum.aboutMeImagesGroupName}
-                                    imageDetails={{[`${imageFileName}`]: {imageCategory: '', imageDescription: ''}}}
-                                    imageWidth={250}
-                                    imageAtr={'About Me Image'}
-                                    imageDetailsFields={false}
-                                    newImage={false}
-                                    onSaveClicked={(imageFileName) => save(imageFileName)}
-                                    onDeleteClicked={_ => deleteAboutMeImage()}/>
-                                :
-                                <PopupEditImage
-                                    imagesGroupName={ImagesGroupsNamesEnum.aboutMeImagesGroupName}
-                                    imageDetails={{['']: {imageCategory: '', imageDescription: ''}}}
-                                    imageDetailsFields={false}
-                                    onSaveClicked={(imageFileName) => save(imageFileName)}
-                                    newImage={true}/>
-                        }
-                    </div>
                     {
-                        store.isUserLog &&
-                        <button onClick={() => {
-                            setEditText(text);
-                            setShowEditTextPopup(true);
-                        }}><FiEdit2/>Edit Text</button>
+                        loading &&
+                        <LoadingTextPlaceHolder image={true} rows={1}/>
                     }
-                    <p>{text}</p>
+                    {
+                        !loading &&
+                        <>
+                            <div id="about-me-image">
+                                {
+                                    imageFileName ?
+                                        <PopupEditImage
+                                            imagesGroupName={ImagesGroupsNamesEnum.aboutMeImagesGroupName}
+                                            imageDetails={{
+                                                [`${imageFileName}`]: {
+                                                    imageCategory: '',
+                                                    imageDescription: ''
+                                                }
+                                            }}
+                                            imageWidth={250}
+                                            imageAtr={'About Me Image'}
+                                            imageDetailsFields={false}
+                                            newImage={false}
+                                            onSaveClicked={(imageFileName) => save(imageFileName)}
+                                            onDeleteClicked={_ => deleteAboutMeImage()}/>
+                                        :
+                                        <PopupEditImage
+                                            imagesGroupName={ImagesGroupsNamesEnum.aboutMeImagesGroupName}
+                                            imageDetails={{['']: {imageCategory: '', imageDescription: ''}}}
+                                            imageDetailsFields={false}
+                                            onSaveClicked={(imageFileName) => save(imageFileName)}
+                                            newImage={true}/>
+                                }
+                            </div>
+                            {
+                                store.isUserLog &&
+                                <button onClick={() => {
+                                    setEditText(text);
+                                    setShowEditTextPopup(true);
+                                }}><FiEdit2/>Edit Text</button>
+                            }
+                            <p>{text}</p>
+                        </>
+                    }
                 </div>
                 {/* todo Fix bug go back when navigation was done by url */}
                 <button

@@ -1,0 +1,52 @@
+@import "../../styles/general";
+
+.loading-page-placeholder {
+  @include container(column, center, center);
+
+  .image-text-section {
+    @include container(row, unset, unset);
+    background: #ffffff80;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+
+    .text-section {
+      flex: 4;
+    }
+
+    .image-section {
+      @include container(unset, center, center);
+      margin: 0 10px;
+      flex: 2;
+
+      .image {
+        height: 70px;
+        width: 70px;
+        border-radius: 50%;
+        animation: colorChange 1s infinite alternate;
+      }
+    }
+  }
+
+  .only-text-section {
+    width: 100%;
+    background: #ffffff80;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+
+  .text {
+    height: 15px;
+    margin: 10px;
+    border-radius: 5px;
+    animation: colorChange 1s infinite alternate
+  }
+
+  @keyframes colorChange {
+    0% {
+      background-color: #cecece;
+    }
+    100% {
+      background-color: #b0b0b0;
+    }
+  }
+}

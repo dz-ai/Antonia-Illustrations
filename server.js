@@ -46,8 +46,12 @@ const db = mongoose.connection;
 // make sure the mongoose connection established before using it in basic actions, on loading image controller file.
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', async () => {
-    const imageController = require("./backend/controllers/uploadImageControllers");
-    await imageController.loadDatabaseData();
+    try {
+        const imageController = require("./backend/controllers/uploadImageControllers");
+        await imageController.loadDatabaseData();
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 app.listen(PORT, () => console.log(PORT));

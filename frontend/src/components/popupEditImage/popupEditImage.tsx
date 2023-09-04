@@ -303,8 +303,12 @@ export function PopupEditImage({
                                 deleteImageQuestion &&
                                 <section className="delete-warning">
                                     <p>You Are About To Delete The Image - {imageFileName}!</p>
-                                    <img src={`${import.meta.env.VITE_IMAGEKIT}/tr:w-100/${imageFileName}`}
-                                         alt="image to delete"/>
+                                    {loadingSave && <div className="loader"/>}
+                                    {
+                                        !loadingSave &&
+                                        <img src={`${import.meta.env.VITE_IMAGEKIT}/tr:w-100/${imageFileName}`}
+                                             alt="image to delete"/>
+                                    }
                                     <p>Press "Save" to Continue Or "Cansel" to Quit</p>
                                 </section>
                             }
