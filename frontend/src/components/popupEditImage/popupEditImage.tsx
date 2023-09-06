@@ -12,6 +12,7 @@ import {PopupContext} from "../popupMessage/popupMessage";
 import store from "../../store";
 import Dropdown from "../dropdown/dropdown";
 import {useOutClick} from "../../Hooks/useOutClick";
+import {Tooltip} from "react-tooltip";
 
 export enum ImagesGroupsNamesEnum {
     portfolioImagesGroupName = 'portfolio-images',
@@ -180,10 +181,12 @@ export function PopupEditImage({
             {/* TODO add tooltip to Edit button */}
 
             <div className="main-image">
+                <Tooltip id="edit-tooltip"/>
                 {
                     store.isUserLog && !newImage &&
                     <FiEdit2 className="edit-btn"
-                             title="Edit Image"
+                             data-tooltip-id="edit-tooltip"
+                             data-tooltip-content={'Edit Image'}
                              onClick={() => setShowPopupEditImage(true)}/>
                 }
                 {
