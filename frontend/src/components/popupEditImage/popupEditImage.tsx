@@ -131,6 +131,7 @@ export function PopupEditImage({
                             popupContext.showPopup(results);
                             setEditImage({imageFile: undefined, imageFileName: '', fileID: ''})
                             setPreviewImage(null);
+                            setEditDescription('');
                             setLoadingSave(false);
                             setShowPopupEditImage(false);
                         },
@@ -173,7 +174,6 @@ export function PopupEditImage({
                 popupContext.showPopup(errorMessage);
             });
     }
-    // todo Fix - the previous uploaded image description appears in new image upload window.
 
     return (
         <>
