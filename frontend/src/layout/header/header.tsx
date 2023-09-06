@@ -90,11 +90,11 @@ function Header() {
                                           navigateTo={location.pathname !== 'portfolio' ? '/portfolio' : null}
                                 />
                             </div>
-
+                            {/* todo if everything is all right get rid of the commented "stat" */}
                             <button
                                 onClick={() => {
                                     showBurgerMenu && setShowBurgerMenu(false);
-                                    navigate('/about-me', {state: {prevPath: location.pathname}});
+                                    navigate('/about-me'/*, {state: {prevPath: location.pathname}}*/);
                                 }}>
                                 About Me
                             </button>

@@ -147,7 +147,7 @@ function AboutMePage() {
                 {/* todo Fix bug go back when navigation was done by url */}
                 <button
                     className="back-btn"
-                    onClick={() => navigate(location.state.prevPath)}
+                    onClick={() => navigate(-1)}
                 >
                     ← Back
                 </button>
