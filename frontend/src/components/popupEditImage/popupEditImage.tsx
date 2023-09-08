@@ -178,8 +178,6 @@ export function PopupEditImage({
 
     return (
         <>
-            {/* TODO add tooltip to Edit button */}
-
             <div className="main-image">
                 <Tooltip id="edit-tooltip"/>
                 {

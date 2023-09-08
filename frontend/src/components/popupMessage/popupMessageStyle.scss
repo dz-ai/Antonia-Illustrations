@@ -16,4 +16,11 @@
   font-family: 'Quicksand', sans-serif;
   font-size: 1em;
   text-align: center;
+  opacity: 0;
+  transition: opacity 0.7s ease-in-out;
+}
+
+.popup-message.show {
+  opacity: 1;
+  transition: opacity 0.7s ease-in-out;
 }

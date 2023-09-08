@@ -1,9 +1,8 @@
 import React, {useState, createContext} from "react";
 
 export function PopupMessage({message}: { message: string }) {
-    // TODO add animation
     return (
-        <div className="popup-message">
+        <div className={`popup-message ${message ? "show" : ""}`}>
             <p>{message}</p>
         </div>
     );
@@ -30,7 +29,7 @@ const PopupProvider = ({children}: { children: any }) => {
     return (
         <PopupContext.Provider value={{showPopup}}>
             {children}
-            {popupMessage && <PopupMessage message={popupMessage}/>}
+            {<PopupMessage message={popupMessage}/>}
         </PopupContext.Provider>
     );
 };
