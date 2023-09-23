@@ -13,13 +13,15 @@ interface IDropdown {
     onValChange?: (val: string) => void;
     navigateTo?: string | null;
     initCategory?: string;
+    onCategoryChang: (currentCategory: string) => void;
 }
 
 function Dropdown(
-    {options, noInfluence, onValChange, navigateTo, initCategory}: IDropdown) {
+    {options, noInfluence, onValChange, navigateTo, initCategory, onCategoryChang}: IDropdown) {
     const popupContext = useContext(PopupContext);
     const navigate = useNavigate();
 
+    const [currentCategory, setCurrentCategory] = useState(initCategory ? initCategory : 'All Categories')
     const [optionsShowState, setOptionShowState] = useState<boolean | string>(false);
     const [showCatPopup, setShowCatPopup] = useState<boolean>(false);
     const [showRemCatPopup, setShowRemCatPopup] = useState<boolean>(false);
@@ -40,7 +42,8 @@ function Dropdown(
     };
 
     const handleOption = (category: string) => {
-        store.setCategory(category);
+        onCategoryChang(category);
+        setCurrentCategory(category);
         if (navigateTo) {
             if (!noInfluence) store.filterCategory(category);
             navigate(navigateTo, {state: {category}});
@@ -51,7 +54,7 @@ function Dropdown(
     };
 
     const handleAddCat = (): void => {
-        if (catToAdd === '' ) {
+        if (catToAdd === '') {
             popupContext.showPopup('Please provide new category to add');
             return;
         }
@@ -83,9 +86,8 @@ function Dropdown(
     }, [store.currentCategory]);
 
     useEffect(() => {
-        initCategory && store.setCategory(initCategory);
+        initCategory && setCurrentCategory(initCategory);
     }, []);
-
 
     const detectTextOverflow = (event: React.MouseEvent<HTMLElement>) => {
         const element = event.currentTarget;
@@ -104,9 +106,9 @@ function Dropdown(
                 className={!optionsShowState ? "hover select" : "select"}
                 onClick={handleDropdown}>
                 <section className="current-category-section">
-                    <div data-tooltip-id="tooltip" data-tooltip-content={store.currentCategory}
+                    <div data-tooltip-id="tooltip" data-tooltip-content={currentCategory}
                          className="ellipsis-container current-category"
-                         onMouseEnter={event => detectTextOverflow(event)}>{store.currentCategory}
+                         onMouseEnter={event => detectTextOverflow(event)}>{currentCategory}
                     </div>
                     {
                         !optionsShowState &&
@@ -133,7 +135,7 @@ function Dropdown(
                         </div>
                     }
                     {
-                        store.currentCategory !== allCategories &&
+                        currentCategory !== allCategories &&
                         <div
                             className="option"
                             onClick={() => handleOption(allCategories)}
@@ -147,14 +149,16 @@ function Dropdown(
                     }
                     {
                         options.map((category) =>
-                            category !== store.currentCategory &&
+                            category !== currentCategory &&
                             <div
                                 key={category}
                                 className="option"
                                 onClick={() => handleOption(category)}
                             >
                                 <div
-                                    data-tooltip-content={category} className="ellipsis-container" data-tooltip-id="tooltip"
+                                    className="ellipsis-container"
+                                    data-tooltip-content={category}
+                                    data-tooltip-id="tooltip"
                                     onMouseEnter={event => detectTextOverflow(event)}>
                                     {category}
                                 </div>

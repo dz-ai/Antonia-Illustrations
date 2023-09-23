@@ -88,6 +88,10 @@ function Header() {
                                 <Dropdown options={store.categories} noInfluence={false}
                                           onValChange={(val) => setCategoriesVal(val)}
                                           navigateTo={location.pathname !== 'portfolio' ? '/portfolio' : null}
+                                          onCategoryChang={currentCategory => {
+                                              setCategoriesVal(currentCategory);
+                                              store.setCategory(currentCategory);
+                                          }}
                                 />
                             </div>
                             {/* todo if everything is all right get rid of the commented "stat" */}

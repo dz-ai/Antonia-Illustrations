@@ -12,7 +12,7 @@ const PopupContext: React.Context<any> = createContext(null);
 
 const PopupProvider = ({children}: { children: any }) => {
     const [popupMessage, setPopupMessage] = useState('');
-
+    // todo bag fix the popup must disappear after use, so it is not disturbing user clicking.
     const showPopup = (message: string) => {
         let timeToShowMessage: number = 5;
         if (message.length > 40) {

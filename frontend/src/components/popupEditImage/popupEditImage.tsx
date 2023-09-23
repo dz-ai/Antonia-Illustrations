@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useContext, useRef, useState} from "react";
+import React, {ChangeEvent, useContext, useEffect, useRef, useState} from "react";
 import {AiOutlineCloseCircle, BiDotsVerticalRounded, FiEdit2, RiImageAddLine} from "react-icons/all";
 import {IImage} from "../../types/types";
 import {
@@ -57,6 +57,7 @@ export function PopupEditImage({
     const [showEditDes, setShowEditDes] = useState<boolean>(false);
     const [showEditImage, setShowEditImage] = useState<boolean | string>(false);
     const [editImage, setEditImage] = useState<IEditImageState>({imageFileName: ''});
+    const [editCategory, setEditCategory] = useState<string>(imageCategory);
     const [editDescription, setEditDescription] = useState<string>(!newImage ? imageDescription : '');
     const [loadingImageUpload, setLoadingImageUpload] = useState<boolean>(false);
     const [loadingSave, setLoadingSave] = useState<boolean>(false);
@@ -93,17 +94,17 @@ export function PopupEditImage({
         }
 
         // check for require fields
-        if (imageDetailsFields && editDescription === '') {
-            popupContext.showPopup('Please fill the require fields');
-            setLoadingSave(false);
-            return;
-        }
-        if (imageDetailsFields && store.currentCategory === 'All Categories') {
+        if (imageDetailsFields && editCategory === 'All Categories' || editCategory === '') {
             popupContext.showPopup('Please choose Category');
             setLoadingSave(false);
             return;
         }
-        if (imageCategory === store.currentCategory && imageDescription === editDescription && !editImage.imageFileName) {
+        if (imageDetailsFields && editDescription === '') {
+            popupContext.showPopup('Please fill in description');
+            setLoadingSave(false);
+            return;
+        }
+        if (imageCategory === editCategory && imageDescription === editDescription && !editImage.imageFileName) {
             popupContext.showPopup('No Data has been change');
             setLoadingSave(false);
             return;
@@ -117,7 +118,7 @@ export function PopupEditImage({
         // add or replace image
         const image: IImageMetaData = {
             existingImageFileName: imageFileName,
-            imageCategory: store.currentCategory,
+            imageCategory: editCategory,
             imageDescription: editDescription,
             imageToUpLoad: editImage.imageFileName,
         };
@@ -175,6 +176,10 @@ export function PopupEditImage({
                 popupContext.showPopup(errorMessage);
             });
     }
+
+    useEffect(() => {
+        newImage && setEditCategory('All Categories');
+    }, []);
 
     return (
         <>
@@ -274,7 +279,8 @@ export function PopupEditImage({
                                                     <h4>Category:</h4>
                                                     <Dropdown options={store.categories}
                                                               initCategory={!newImage ? imageCategory : 'All Categories'}
-                                                              noInfluence={true}/>
+                                                              noInfluence={true}
+                                                              onCategoryChang={currentCategory => setEditCategory(currentCategory)}/>
 
                                                     <h4>Description:</h4>
                                                     <section className="section">
@@ -321,6 +327,8 @@ export function PopupEditImage({
                                     setDeleteImageQuestion(false);
                                     setShowEditDes(false);
                                     setPreviewImage(null);
+                                    setEditImage({imageFile: undefined, imageFileName: '', fileID: undefined})
+                                    setEditCategory('');
                                     setLoadingSave(false);
                                     setShowPopupEditImage(false);
                                 }}>
