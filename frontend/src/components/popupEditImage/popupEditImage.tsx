@@ -131,11 +131,7 @@ export function PopupEditImage({
                         results => {
                             store.triggerRerender();
                             popupContext.showPopup(results);
-                            setEditImage({imageFile: undefined, imageFileName: '', fileID: ''})
-                            setPreviewImage(null);
-                            setEditDescription('');
-                            setLoadingSave(false);
-                            setShowPopupEditImage(false);
+                            closePopupEditImage();
                         },
                         error => {
                             console.log(error);
@@ -175,6 +171,17 @@ export function PopupEditImage({
             (errorMessage) => {
                 popupContext.showPopup(errorMessage);
             });
+    }
+
+    function closePopupEditImage(): void {
+        setDeleteImageQuestion(false);
+        setShowEditDes(false);
+        setEditDescription('');
+        setEditCategory('');
+        setPreviewImage(null);
+        setEditImage({imageFile: undefined, imageFileName: '', fileID: undefined})
+        setLoadingSave(false);
+        setShowPopupEditImage(false);
     }
 
     useEffect(() => {
@@ -323,15 +330,7 @@ export function PopupEditImage({
                                 <button onClick={onSave} disabled={loadingImageUpload || loadingSave}>
                                     {!loadingImageUpload && !loadingSave ? 'Save' : <div className="loader"></div>}
                                 </button>
-                                <button onClick={() => {
-                                    setDeleteImageQuestion(false);
-                                    setShowEditDes(false);
-                                    setPreviewImage(null);
-                                    setEditImage({imageFile: undefined, imageFileName: '', fileID: undefined})
-                                    setEditCategory('');
-                                    setLoadingSave(false);
-                                    setShowPopupEditImage(false);
-                                }}>
+                                <button onClick={() => closePopupEditImage()}>
                                     Cansel
                                 </button>
                             </div>

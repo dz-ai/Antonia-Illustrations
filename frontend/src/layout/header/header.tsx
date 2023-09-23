@@ -85,7 +85,9 @@ function Header() {
                                 }, 500);
                             }
                             }>
-                                <Dropdown options={store.categories} noInfluence={false}
+                                <Dropdown initCategory={store.currentCategory}
+                                          options={store.categories}
+                                          noInfluence={false}
                                           onValChange={(val) => setCategoriesVal(val)}
                                           navigateTo={location.pathname !== 'portfolio' ? '/portfolio' : null}
                                           onCategoryChang={currentCategory => {
@@ -94,7 +96,7 @@ function Header() {
                                           }}
                                 />
                             </div>
-                            {/* todo if everything is all right get rid of the commented "stat" */}
+                            {/* todo if everything is all right get rid of the commented "state" */}
                             <button
                                 onClick={() => {
                                     showBurgerMenu && setShowBurgerMenu(false);

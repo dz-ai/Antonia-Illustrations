@@ -87,7 +87,7 @@ function Dropdown(
 
     useEffect(() => {
         initCategory && setCurrentCategory(initCategory);
-    }, []);
+    }, [initCategory]);
 
     const detectTextOverflow = (event: React.MouseEvent<HTMLElement>) => {
         const element = event.currentTarget;
