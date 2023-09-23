@@ -197,7 +197,11 @@ export function PopupEditImage({
                     <FiEdit2 className="edit-btn"
                              data-tooltip-id="edit-tooltip"
                              data-tooltip-content={'Edit Image'}
-                             onClick={() => setShowPopupEditImage(true)}/>
+                             onClick={() => {
+                                 setEditCategory(imageCategory);
+                                 setEditDescription(imageDescription);
+                                 setShowPopupEditImage(true);
+                             }}/>
                 }
                 {
                     store.isUserLog && newImage &&
