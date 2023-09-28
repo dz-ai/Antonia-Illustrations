@@ -30,18 +30,18 @@ function SliderComponent({numOfImages, auto, scroll, focusOnSelect}: IMagesRow) 
                 {
                     store.imagesArray
                         .map((image) =>
-                            <div
-                                key={image}
-                                className="my-slider-image"
-                            >
-                                <div
-                                    style={{
-                                        backgroundImage: `url(https://ik.imagekit.io/thfdl6dmv/tr:h-400/antonia-illustrations/${image})`,
-                                        backgroundRepeat: 'no-repeat',
-                                        backgroundSize: 'contain',
-                                        backgroundPosition: 'center',
-                                        height: '400px',
-                                    }}/>
+                            <div key={image}>
+                                <div className="image-wrapper">
+                                    <div
+                                        style={{
+                                            backgroundImage: `url(https://ik.imagekit.io/thfdl6dmv/tr:h-400/antonia-illustrations/${image})`,
+                                            backgroundRepeat: 'no-repeat',
+                                            backgroundSize: 'contain',
+                                            backgroundPosition: 'center',
+                                            height: '400px',
+                                            width: '100%',
+                                        }}></div>
+                                </div>
                             </div>
                         )
                 }
