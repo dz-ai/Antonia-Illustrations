@@ -11,6 +11,7 @@ import {observer} from "mobx-react";
 import {useLocation} from "react-router-dom";
 import {LoadingComponent} from "../../components/loadingComponent/loadingComponent";
 import {ImagesGroupsNamesEnum} from "../../components/popupEditImage/popupEditImage";
+import mandalaAssetsImage from "../../../assets/mandala_horizontal.jpg"
 
 function Portfolio() {
     const ref = useRef<HTMLDivElement>(null);
@@ -47,7 +48,7 @@ function Portfolio() {
                 className="portfolio-up-page"
                 ref={ref}
                 style={{
-                    background: `url(../../../assets/mandala_horizontal.jpg) no-repeat center center`,
+                    background: `url(${mandalaAssetsImage}) no-repeat center center`,
                     backgroundSize: isUnder950pxScreen ? 'auto 120%' : '150% auto',
                     flex: '1'
                 }}

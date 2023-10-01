@@ -1,10 +1,10 @@
-import {/*useLocation,*/ useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {useMediaQuery} from "react-responsive";
 import {useEffect, useState} from "react";
+import mandalaAssetsImage from '../../../assets/mandala_horizontal.jpg'
 
 export function HomePage() {
     const navigate = useNavigate();
-    // const location = useLocation();
     const isSmallScreen = useMediaQuery({query: '(max-width: 850px)'});
     const isHighScreen = useMediaQuery({query: '(min-height: 800px)'});
 
@@ -26,7 +26,7 @@ export function HomePage() {
             <div
                 className="home-up-page"
                 style={{
-                    background: `url(../../../assets/mandala_horizontal.jpg) no-repeat center center`,
+                    background: `url(${mandalaAssetsImage}) no-repeat center center`,
                     backgroundSize: imageDimensions,
                     flex: '1'
                 }}

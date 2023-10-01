@@ -6,6 +6,7 @@ import {FiEdit2} from "react-icons/all";
 import {PopupContext} from "../../components/popupMessage/popupMessage";
 import {ImagesGroupsNamesEnum, PopupEditImage} from "../../components/popupEditImage/popupEditImage";
 import {LoadingTextPlaceHolder} from "../../components/loadingTextPlaceHolder/loadingTextPlaceHolder";
+import purplePlantAssetsImage from "../../../assets/purple-plant.jpg"
 
 
 function AboutMePage() {
@@ -89,7 +90,7 @@ function AboutMePage() {
         <div
             className="about-me"
             style={{
-                background: `url(../../../assets/purple-plant.jpg) no-repeat center center`,
+                background: `url(${purplePlantAssetsImage}) no-repeat center center`,
                 backgroundSize: 'cover',
                 flex: '1'
             }}
