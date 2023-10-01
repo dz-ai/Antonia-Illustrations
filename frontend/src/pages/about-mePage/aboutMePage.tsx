@@ -6,8 +6,6 @@ import {FiEdit2} from "react-icons/all";
 import {PopupContext} from "../../components/popupMessage/popupMessage";
 import {ImagesGroupsNamesEnum, PopupEditImage} from "../../components/popupEditImage/popupEditImage";
 import {LoadingTextPlaceHolder} from "../../components/loadingTextPlaceHolder/loadingTextPlaceHolder";
-import purplePlantAssetsImage from "../../../assets/purple-plant.jpg"
-
 
 function AboutMePage() {
     const navigate = useNavigate();
@@ -90,7 +88,7 @@ function AboutMePage() {
         <div
             className="about-me"
             style={{
-                background: `url(${purplePlantAssetsImage}) no-repeat center center`,
+                background: `url(https://ik.imagekit.io/thfdl6dmv/antonia-illustrations/purple-plant.jpg) no-repeat center center`,
                 backgroundSize: 'cover',
                 flex: '1'
             }}

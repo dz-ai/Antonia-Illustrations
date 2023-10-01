@@ -1,7 +1,6 @@
 import {useNavigate} from 'react-router-dom';
 import {useMediaQuery} from "react-responsive";
 import {useEffect, useState} from "react";
-import mandalaAssetsImage from '../../../assets/mandala_horizontal.jpg'
 
 export function HomePage() {
     const navigate = useNavigate();
