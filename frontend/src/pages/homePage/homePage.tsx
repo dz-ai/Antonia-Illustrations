@@ -26,7 +26,7 @@ export function HomePage() {
             <div
                 className="home-up-page"
                 style={{
-                    background: `url(${mandalaAssetsImage}) no-repeat center center`,
+                    background: `url(https://ik.imagekit.io/thfdl6dmv/antonia-illustrations/mandala_horizontal.jpg) no-repeat center center`,
                     backgroundSize: imageDimensions,
                     flex: '1'
                 }}
