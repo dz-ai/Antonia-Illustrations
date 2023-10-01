@@ -211,10 +211,14 @@ export function PopupEditImage({
                 }
                 {
                     !newImage &&
-                    <img src={`${import.meta.env.VITE_IMAGEKIT}/tr:w-${imageWidth}/${imageFileName}`} width={imageWidth}
-                         alt={imageAtr}
-                         onClick={() => onImageClicked && onImageClicked(imageFileName)}
-                         loading="lazy"/>
+                    <img
+                        loading="lazy"
+                        width={imageWidth}
+                        height={'auto'}
+                        alt={imageAtr}
+                        src={`${import.meta.env.VITE_IMAGEKIT}/tr:w-${imageWidth}/${imageFileName}`}
+                        onClick={() => onImageClicked && onImageClicked(imageFileName)}
+                    />
                 }
             </div>
 

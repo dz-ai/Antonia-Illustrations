@@ -1,6 +1,7 @@
 import Slider, {Settings} from "react-slick";
 import {observer} from "mobx-react";
 import store from "../../store";
+import {ImagePlaceHolder} from "../imagePlaceHolder/imagePlaceHolder";
 
 interface IMagesRow {
     numOfImages: number;
@@ -10,6 +11,7 @@ interface IMagesRow {
 }
 
 function SliderComponent({numOfImages, auto, scroll, focusOnSelect}: IMagesRow) {
+
     const settings: Settings = {
         dots: false,
         infinite: true,
@@ -32,15 +34,20 @@ function SliderComponent({numOfImages, auto, scroll, focusOnSelect}: IMagesRow) 
                         .map((image) =>
                             <div key={image}>
                                 <div className="image-wrapper">
-                                    <div
-                                        style={{
-                                            backgroundImage: `url(https://ik.imagekit.io/thfdl6dmv/tr:h-400/antonia-illustrations/${image})`,
-                                            backgroundRepeat: 'no-repeat',
-                                            backgroundSize: 'contain',
-                                            backgroundPosition: 'center',
-                                            height: '400px',
-                                            width: '100%',
-                                        }}></div>
+                                    {/*<ImagePlaceHolder*/}
+                                    {/*    src={`https://ik.imagekit.io/thfdl6dmv/tr:h-400/antonia-illustrations/${image}`}*/}
+                                    {/*    useBackgroundImage={false}*/}
+                                    {/*    imageHeight={''}*/}
+                                    {/*    imageWidth={''}*/}
+                                    {/*    alt={'slider image'}*/}
+                                    {/*/>*/}
+                                    <ImagePlaceHolder
+                                        src={`url(https://ik.imagekit.io/thfdl6dmv/tr:h-400/antonia-illustrations/${image})`}
+                                        alt={'Slider Image'}
+                                        useBackgroundImage={true}
+                                        imageWidth={'100%'}
+                                        imageHeight={'400px'}
+                                    />
                                 </div>
                             </div>
                         )
