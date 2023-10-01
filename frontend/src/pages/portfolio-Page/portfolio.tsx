@@ -43,14 +43,11 @@ function Portfolio() {
 
     return (
         <>
-            {
-                // TODO make loading image place holder (check for built in slick-slide feature).
-            }
             <div
                 className="portfolio-up-page"
                 ref={ref}
                 style={{
-                    background: `url(https://ik.imagekit.io/thfdl6dmv/antonia-illustrations/mandala_horizontal.jpg) no-repeat center center`,
+                    background: `url(../../../assets/mandala_horizontal.jpg) no-repeat center center`,
                     backgroundSize: isUnder950pxScreen ? 'auto 120%' : '150% auto',
                     flex: '1'
                 }}

@@ -96,11 +96,10 @@ function Header() {
                                           }}
                                 />
                             </div>
-                            {/* todo if everything is all right get rid of the commented "state" */}
                             <button
                                 onClick={() => {
                                     showBurgerMenu && setShowBurgerMenu(false);
-                                    navigate('/about-me'/*, {state: {prevPath: location.pathname}}*/);
+                                    navigate('/about-me');
                                 }}>
                                 About Me
                             </button>

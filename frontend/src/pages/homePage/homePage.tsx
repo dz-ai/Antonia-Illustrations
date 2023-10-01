@@ -25,20 +25,19 @@ export function HomePage() {
         <>
             <div
                 className="home-up-page"
-            style={{
-                background: `url(https://ik.imagekit.io/thfdl6dmv/antonia-illustrations/mandala_horizontal.jpg) no-repeat center center`,
-                backgroundSize: imageDimensions,
-                flex: '1'
-            }}
+                style={{
+                    background: `url(../../../assets/mandala_horizontal.jpg) no-repeat center center`,
+                    backgroundSize: imageDimensions,
+                    flex: '1'
+                }}
             >
                 <div className="blur-home-img">
                     <h1>Antonia <br/> Illustrations</h1>
 
                     <nav className="home-down-page">
-                    <button className="home-btn-r" onClick={() => navigate('/portfolio')}>Portfolio</button>
-                        {/* todo if everything is all right get rid of the commented "stat" */}
-                    <button className="home-btn-l" onClick={() => navigate('/about-me'/*, {state: {prevPath: location.pathname}}*/)}>About Me</button>
-                </nav>
+                        <button className="home-btn-r" onClick={() => navigate('/portfolio')}>Portfolio</button>
+                        <button className="home-btn-l" onClick={() => navigate('/about-me')}>About Me</button>
+                    </nav>
                 </div>
 
             </div>

@@ -1,4 +1,4 @@
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import React, {useContext, useEffect, useState} from "react";
 import store from "../../store";
 import {observer} from "mobx-react";
@@ -10,7 +10,6 @@ import {LoadingTextPlaceHolder} from "../../components/loadingTextPlaceHolder/lo
 
 function AboutMePage() {
     const navigate = useNavigate();
-    const location = useLocation();
 
     const popupContext = useContext(PopupContext);
 
@@ -90,7 +89,7 @@ function AboutMePage() {
         <div
             className="about-me"
             style={{
-                background: `url(https://ik.imagekit.io/thfdl6dmv/antonia-illustrations/purple-plant.jpg) no-repeat center center`,
+                background: `url(../../../assets/purple-plant.jpg) no-repeat center center`,
                 backgroundSize: 'cover',
                 flex: '1'
             }}
@@ -144,7 +143,6 @@ function AboutMePage() {
                         </>
                     }
                 </div>
-                {/* todo Fix bug go back when navigation was done by url */}
                 <button
                     className="back-btn"
                     onClick={() => navigate(-1)}
