@@ -34,7 +34,13 @@ export function ImagePlaceHolder({src, alt, useBackgroundImage, imageHeight, ima
                  }}
                  alt="none visible image"
             />
-            {isLoading && <RiImageAddLine className="image-place-holder-icon"/>}
+            {
+                isLoading &&
+                <div className="place-holder-loader-wrapper">
+                    <RiImageAddLine className="image-place-holder-icon"/>
+                    <div className="loader"></div>
+                </div>
+            }
             {
                 !isLoading && useBackgroundImage &&
                 <div

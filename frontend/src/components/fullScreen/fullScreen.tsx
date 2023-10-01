@@ -1,5 +1,6 @@
 import React, {Dispatch, SetStateAction, useRef} from "react";
 import {useOutClick} from "../../Hooks/useOutClick";
+import {ImagePlaceHolder} from "../imagePlaceHolder/imagePlaceHolder";
 
 type Props = {
     fullScreen: string | boolean;
@@ -24,9 +25,13 @@ export function FullScreen({fullScreen, setFullScreen, removeEListener, descript
                     ✖
                 </button>
                 <div className="image-card-wrapper" ref={refFullScreen}>
-                    <img
-                        src={typeof fullScreen === 'string' ? `${import.meta.env.VITE_IMAGEKIT}/tr:w-1000}/${fullScreen}` : ''}
-                        alt="Full screen image"/>
+                    <ImagePlaceHolder
+                        src={typeof fullScreen === 'string' ? `${import.meta.env.VITE_IMAGEKIT}/tr:w-1000/${fullScreen}` : ''}
+                        useBackgroundImage={false}
+                        imageHeight={''}
+                        imageWidth={''}
+                        alt={'Full screen image'}
+                    />
                     <p>{description}</p>
                 </div>
             </div>

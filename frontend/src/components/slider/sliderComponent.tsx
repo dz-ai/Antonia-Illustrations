@@ -34,13 +34,6 @@ function SliderComponent({numOfImages, auto, scroll, focusOnSelect}: IMagesRow) 
                         .map((image) =>
                             <div key={image}>
                                 <div className="image-wrapper">
-                                    {/*<ImagePlaceHolder*/}
-                                    {/*    src={`https://ik.imagekit.io/thfdl6dmv/tr:h-400/antonia-illustrations/${image}`}*/}
-                                    {/*    useBackgroundImage={false}*/}
-                                    {/*    imageHeight={''}*/}
-                                    {/*    imageWidth={''}*/}
-                                    {/*    alt={'slider image'}*/}
-                                    {/*/>*/}
                                     <ImagePlaceHolder
                                         src={`url(https://ik.imagekit.io/thfdl6dmv/tr:h-400/antonia-illustrations/${image})`}
                                         alt={'Slider Image'}

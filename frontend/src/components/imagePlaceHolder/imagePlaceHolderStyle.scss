@@ -1,4 +1,15 @@
-.slide-container {
+.place-holder-loader-wrapper {
+  position: relative;
+  margin: 0 25px;
+
+  .loader {
+    position: absolute;
+    bottom: 40px;
+    right: 43%;
+    height: 40px;
+    width: 40px;
+  }
+
   .image-place-holder-icon {
     height: 70%;
     min-height: 200px;
