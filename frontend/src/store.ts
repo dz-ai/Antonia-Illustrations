@@ -10,7 +10,8 @@ class Store {
     imagesArray: string[] = [];
     currentCategory: string = 'All Categories';
 
-    rerender: boolean = false;
+    reloadPortfolioImages: boolean = false;
+    triggerDownScrollOnSearch: boolean = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -56,8 +57,9 @@ class Store {
         messageCB('You have logged out');
     }
 
-    triggerRerender(): void {
-        this.rerender = !this.rerender;
+    triggerRerender(whatToRender: 'downSearchScroll' | 'reloadPortfolioImages'): void {
+        if (whatToRender === 'reloadPortfolioImages') this.reloadPortfolioImages = !this.reloadPortfolioImages;
+        if (whatToRender === 'downSearchScroll') this.triggerDownScrollOnSearch = !this.triggerDownScrollOnSearch;
     }
 
     async getImages(imagesGroupName: ImagesGroupsNamesEnum): Promise<boolean> {
@@ -135,6 +137,37 @@ class Store {
                 console.log(error);
                 return 'Error check console for more info';
             });
+    }
+
+    searchFilter(searchTerm: string) {
+        this.imagesArray = Array.from(Object.keys(this.images)).filter(image => {
+            const imageFileNameMatch: boolean = image.toLowerCase().includes(searchTerm.toLowerCase());
+            const imageCategoryMatch: boolean = this.images[image].imageCategory.toLowerCase().includes(searchTerm.toLowerCase());
+            const imageDescriptionMatch: boolean = this.images[image].imageDescription.toLowerCase().includes(searchTerm.toLowerCase());
+
+            if (imageFileNameMatch || imageCategoryMatch || imageDescriptionMatch) {
+                return image;
+            }
+        });
+
+        const resultsArray: string[] = [];
+
+        Array.from(Object.keys(this.images)).forEach(image => {
+            const imageFileNameMatch: boolean = image.toLowerCase().includes(searchTerm.toLowerCase());
+            const imageCategoryMatch: boolean = this.images[image].imageCategory.toLowerCase().includes(searchTerm.toLowerCase());
+            const imageDescriptionMatch: boolean = this.images[image].imageDescription.toLowerCase().includes(searchTerm.toLowerCase());
+
+            if (imageFileNameMatch) {
+                resultsArray.push(image);
+            }
+            if (imageCategoryMatch) {
+                resultsArray.push(this.images[image].imageCategory);
+            }
+            if (imageDescriptionMatch) {
+                resultsArray.push(this.images[image].imageDescription);
+            }
+        });
+        return [...new Set(resultsArray)];
     }
 }
 

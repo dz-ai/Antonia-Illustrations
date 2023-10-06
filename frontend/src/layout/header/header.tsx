@@ -7,6 +7,7 @@ import {useOutClick} from "../../Hooks/useOutClick";
 import store from "../../store";
 import {observer} from "mobx-react";
 import {PopupContext} from "../../components/popupMessage/popupMessage";
+import SearchComponent from "../../components/search/searchComponent";
 
 
 function Header() {
@@ -78,6 +79,13 @@ function Header() {
                                 Portfolio
                             </button>
 
+                            <button
+                                onClick={() => {
+                                    showBurgerMenu && setShowBurgerMenu(false);
+                                    navigate('/about-me');
+                                }}>
+                                About Me
+                            </button>
                             <div className="dropdown-wrapper" onClick={() => {
                                 setOutClickRem(true);
                                 setTimeout(() => {
@@ -96,13 +104,7 @@ function Header() {
                                           }}
                                 />
                             </div>
-                            <button
-                                onClick={() => {
-                                    showBurgerMenu && setShowBurgerMenu(false);
-                                    navigate('/about-me');
-                                }}>
-                                About Me
-                            </button>
+                            <SearchComponent onSearchClicked={() => setShowBurgerMenu(false)} />
                             {
                                 store.isUserLog && localStorage.getItem('token') !== null &&
                                 <button id="logout-btn"

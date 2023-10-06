@@ -11,10 +11,14 @@ import {observer} from "mobx-react";
 import {useLocation} from "react-router-dom";
 import {LoadingComponent} from "../../components/loadingComponent/loadingComponent";
 import {ImagesGroupsNamesEnum} from "../../components/popupEditImage/popupEditImage";
+import {TUseScrollIntoView, useScrollIntoView} from "../../Hooks/useScrollIntoView";
 
 function Portfolio() {
     const ref = useRef<HTMLDivElement>(null);
     const downRef = useRef<HTMLDivElement>(null);
+
+    const scrollIntoView: TUseScrollIntoView = useScrollIntoView();
+
     const location = useLocation();
 
     // Customise Hooks //
@@ -23,11 +27,12 @@ function Portfolio() {
 
     const isUnder950pxScreen = useMediaQuery({query: '(max-width: 950px)'});
 
+    const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
     const [fullScreen, setFullScreen] = useState<string | boolean>(false);
     const [remEListener, setRemEListener] = useState<boolean>(false);
     const [loadingImages, setLoadingImages] = useState<boolean | string>(false);
 
-    useEffect((): void => {
+    const loadImages = ():void => {
         setLoadingImages(true);
         store.getImages(ImagesGroupsNamesEnum.portfolioImagesGroupName)
             .then(isThereAnyImage => {
@@ -39,7 +44,26 @@ function Portfolio() {
                     setLoadingImages('No Images To Show');
                 }
             });
-    }, [store.rerender]);
+    }
+
+    useEffect((): void => {
+        if (!location.state?.searchResult) {
+            loadImages();
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!isFirstLoad) {
+            loadImages();
+        }
+    }, [store.reloadPortfolioImages]);
+
+    useEffect(() => {
+        store.imagesArray.length < 1 && setLoadingImages('No Images To Show');
+        !isFirstLoad && scrollIntoView(downRef);
+        location.state?.searchResult && scrollIntoView(downRef);
+        setIsFirstLoad(false);
+    }, [store.triggerDownScrollOnSearch]);
 
     return (
         <>

@@ -82,7 +82,7 @@ export function PopupEditImage({
                     setDeleteImageQuestion(false);
                     setLoadingSave(false);
                     popupContext.showPopup(results);
-                    store.triggerRerender(); /* update the rendered images on the portfolio page */
+                    store.triggerRerender('reloadPortfolioImages'); /* update the rendered images on the portfolio page */
                     setShowPopupEditImage(false);
                 },
                 (error) => {
@@ -129,7 +129,7 @@ export function PopupEditImage({
                     onSaveClicked && await onSaveClicked(editImage.imageFileName);
                     setImageMetaData(image, imagesGroupName, results.fileId,
                         results => {
-                            store.triggerRerender();
+                            store.triggerRerender('reloadPortfolioImages');
                             popupContext.showPopup(results);
                             closePopupEditImage();
                         },
@@ -143,7 +143,7 @@ export function PopupEditImage({
         } else { /* replace image details */
             setImageMetaData(image, imagesGroupName, undefined,
                 results => {
-                    store.triggerRerender();
+                    store.triggerRerender('reloadPortfolioImages');
                     popupContext.showPopup(results);
                     setLoadingSave(false);
                     setShowPopupEditImage(false);
