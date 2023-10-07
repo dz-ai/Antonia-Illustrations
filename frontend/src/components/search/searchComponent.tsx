@@ -20,6 +20,11 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
     const ref = useRef(null);
     useOutClick(ref, setShowSearchList);
 
+    const searchInputRef = useRef<HTMLInputElement>(null);
+    const unFocusSearchInput = () => {
+        searchInputRef.current?.blur();
+    }
+
     useEffect(() => {
         if (store.imagesArray.length === 0) {
             store.getImages(ImagesGroupsNamesEnum.portfolioImagesGroupName).then();
@@ -44,6 +49,7 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
     }
 
     const onSearchResultClicked = (result: string): void => {
+        unFocusSearchInput();
         if (location.pathname !== '/portfolio') {
             navigate('/portfolio', {state: {searchResult: result}});
         }
@@ -79,6 +85,7 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
     return (
         <div ref={ref} className="search-wrapper">
             <input
+                ref={searchInputRef}
                 style={{borderBottomLeftRadius: showSearchList ? '0px' : '5px'}}
                 type="text"
                 placeholder="Search Here..."
