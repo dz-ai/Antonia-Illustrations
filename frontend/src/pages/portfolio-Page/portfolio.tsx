@@ -32,7 +32,7 @@ function Portfolio() {
     const [remEListener, setRemEListener] = useState<boolean>(false);
     const [loadingImages, setLoadingImages] = useState<boolean | string>(false);
 
-    const loadImages = ():void => {
+    const loadImages = (): void => {
         setLoadingImages(true);
         store.getImages(ImagesGroupsNamesEnum.portfolioImagesGroupName)
             .then(isThereAnyImage => {
@@ -60,8 +60,8 @@ function Portfolio() {
 
     useEffect(() => {
         store.imagesArray.length < 1 && setLoadingImages('No Images To Show');
-        !isFirstLoad && scrollIntoView(downRef);
-        location.state?.searchResult && scrollIntoView(downRef);
+        !isFirstLoad && store.imagesArray.length > 1 && scrollIntoView(downRef);
+        location.state?.searchResult && store.imagesArray.length > 1 && scrollIntoView(downRef);
         setIsFirstLoad(false);
     }, [store.triggerDownScrollOnSearch]);
 

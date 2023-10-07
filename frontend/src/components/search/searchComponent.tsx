@@ -99,6 +99,10 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
                                 key={result}
                                 className={index === highlightedIndex ? "search-results-result highlighted" : "search-results-result"}
                                 onClick={() => onSearchResultClicked(result)}
+                                onTouchEnd={(e) => {
+                                    e.preventDefault();
+                                    onSearchResultClicked(result);
+                                }}
                             >
                                 {result}</div>)
 
