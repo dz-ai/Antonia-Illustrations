@@ -25,6 +25,7 @@ function Portfolio() {
     const isInViewPort: boolean = useInterSectionObserver(ref);
     const isDownInViewPort: boolean = useInterSectionObserver(downRef);
 
+    const isShortScreen = useMediaQuery({query: '(max-height: 505px)'});
     const isUnder950pxScreen = useMediaQuery({query: '(max-width: 950px)'});
 
     const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
@@ -66,7 +67,7 @@ function Portfolio() {
     }, [store.triggerDownScrollOnSearch]);
 
     useEffect(() => {
-           !isFirstLoad && store.imagesArray.length < 1 && setLoadingImages('No Images To Show');
+        !isFirstLoad && store.imagesArray.length < 1 && setLoadingImages('No Images To Show');
     }, [store.imagesArray]);
 
     return (
@@ -82,7 +83,7 @@ function Portfolio() {
             >
 
                 {
-                    isInViewPort &&
+                    isInViewPort && !isShortScreen &&
                     <CategoryNavBar categories={store.categories}/>
                 }
                 <div className="portfolio-page-blur"/>

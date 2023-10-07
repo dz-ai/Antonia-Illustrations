@@ -55,6 +55,16 @@
       top: 50%;
     }
   }
+
+  @media (max-height: 630px) {
+    .slick-next, .slick-prev {
+      top: 50%;
+    }
+
+    .slick-next:before, .slick-prev:before {
+      font-size: 30px;
+    }
+  }
   //
 }
 
