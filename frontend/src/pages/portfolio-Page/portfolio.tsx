@@ -30,7 +30,7 @@ function Portfolio() {
     const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
     const [fullScreen, setFullScreen] = useState<string | boolean>(false);
     const [remEListener, setRemEListener] = useState<boolean>(false);
-    const [loadingImages, setLoadingImages] = useState<boolean | string>(false);
+    const [loadingImages, setLoadingImages] = useState<boolean | string>(true);
 
     const loadImages = (): void => {
         setLoadingImages(true);
@@ -59,11 +59,15 @@ function Portfolio() {
     }, [store.reloadPortfolioImages]);
 
     useEffect(() => {
-        store.imagesArray.length < 1 && setLoadingImages('No Images To Show');
+        !isFirstLoad && store.imagesArray.length < 1 && setLoadingImages('No Images To Show');
         !isFirstLoad && store.imagesArray.length > 1 && scrollIntoView(downRef);
         location.state?.searchResult && store.imagesArray.length > 1 && scrollIntoView(downRef);
         setIsFirstLoad(false);
     }, [store.triggerDownScrollOnSearch]);
+
+    useEffect(() => {
+           !isFirstLoad && store.imagesArray.length < 1 && setLoadingImages('No Images To Show');
+    }, [store.imagesArray]);
 
     return (
         <>
