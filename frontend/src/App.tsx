@@ -29,7 +29,7 @@ function App() {
             const swipeDistance = endYRef.current - startYRef.current;
 
             // Define a threshold for a successful swipe (adjust as needed)
-            const swipeThreshold = 150;
+            const swipeThreshold = 300;
 
             // Check if the swipe distance exceeds the threshold
             if (swipeDistance > swipeThreshold) {

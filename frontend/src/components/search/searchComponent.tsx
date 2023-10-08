@@ -95,7 +95,10 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
             />
             <AiOutlineClose className="clear-text-btn" onClick={() => handleSearchChange(undefined)}/>
             <div className="search-btn" style={{borderBottomRightRadius: showSearchList ? '0px' : '5px'}}>
-                <HiOutlineMagnifyingGlass onClick={() => onSearchResultClicked(searchTerm)}/>
+                <HiOutlineMagnifyingGlass onClick={(e) => {
+                    e.preventDefault();
+                    onSearchResultClicked(searchTerm);
+                }}/>
             </div>
             {
                 showSearchList &&
@@ -105,7 +108,10 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
                             <div
                                 key={result}
                                 className={index === highlightedIndex ? "search-results-result highlighted" : "search-results-result"}
-                                onClick={() => onSearchResultClicked(result)}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    onSearchResultClicked(result);
+                                }}
                                 onTouchEnd={(e) => {
                                     e.preventDefault();
                                     onSearchResultClicked(result);
