@@ -61,18 +61,14 @@ function Portfolio() {
 
     useEffect(() => {
         !isFirstLoad && store.imagesArray.length < 1 && setLoadingImages('No Images To Show');
-        /*!isFirstLoad &&*/ /*store.imagesArray.length > 1 && */scrollIntoView(downRef);
-        // location.state?.searchResult && store.imagesArray.length > 1 && scrollIntoView(downRef);
+        !isFirstLoad && store.imagesArray.length > 1 && scrollIntoView(downRef);
+        location.state?.searchResult && store.imagesArray.length > 1 && scrollIntoView(downRef);
         setIsFirstLoad(false);
     }, [store.triggerDownScrollOnSearch]);
 
     useEffect(() => {
         !isFirstLoad && store.imagesArray.length < 1 && setLoadingImages('No Images To Show');
     }, [store.imagesArray]);
-
-    useEffect(() => {
-        scrollIntoView(downRef);
-    }, [store.imagesArray && store.triggerDownScrollOnSearch]);
 
     return (
         <>
