@@ -16,26 +16,31 @@ function App() {
 
     const startYRef = useRef(0);
     const endYRef = useRef(0);
+    const contentFooterRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         const handleTouchStart = (e: TouchEvent) => {
-            startYRef.current = e.touches[0].clientY;
-        };
+            if (contentFooterRef.current?.scrollTop === 0) {
+                startYRef.current = e.touches[0].clientY;
+            }
+        }
 
         const handleTouchEnd = (e: TouchEvent) => {
-            endYRef.current = e.changedTouches[0].clientY;
+            if (contentFooterRef.current?.scrollTop === 0) {
+                endYRef.current = e.changedTouches[0].clientY;
 
-            // Calculate the vertical distance of the swipe
-            const swipeDistance = endYRef.current - startYRef.current;
+                // Calculate the vertical distance of the swipe
+                const swipeDistance = endYRef.current - startYRef.current;
 
-            // Define a threshold for a successful swipe (adjust as needed)
-            const swipeThreshold = 300;
+                // Define a threshold for a successful swipe (adjust as needed)
+                const swipeThreshold = 300;
 
-            // Check if the swipe distance exceeds the threshold
-            if (swipeDistance > swipeThreshold) {
-                window.location.reload();
+                // Check if the swipe distance exceeds the threshold
+                if (swipeDistance > swipeThreshold) {
+                    window.location.reload();
+                }
             }
-        };
+        }
 
         document.addEventListener("touchstart", handleTouchStart);
         document.addEventListener("touchend", handleTouchEnd);
@@ -53,7 +58,7 @@ function App() {
 
                     <>
                         <Header/>
-                        <div className="content-footer-wrapper">
+                        <div className="content-footer-wrapper" ref={contentFooterRef}>
                             <Outlet/>
                             <Footer/>
                         </div>
