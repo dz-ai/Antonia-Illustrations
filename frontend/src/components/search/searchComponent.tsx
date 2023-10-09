@@ -103,7 +103,7 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
             <div className="search-btn" style={{borderBottomRightRadius: showSearchList ? '0px' : '5px'}}>
                 <HiOutlineMagnifyingGlass onClick={(e) => {
                     // test && e.preventDefault();
-                    popupContext.showPopup(document.activeElement?.localName);
+                    popupContext.showPopup(document.activeElement?.localName as string);
                     onSearchResultClicked(searchTerm);
                 }}/>
             </div>
