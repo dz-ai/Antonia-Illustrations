@@ -18,7 +18,6 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
     const [searchResults, setSearchResults] = useState<string[]>([]);
     const [showSearchList, setShowSearchList] = useState<boolean | string>(false);
     const [highlightedIndex, setHighlightedIndex] = useState<null | number>(null);
-    const [test, setTest] = useState(false);
 
     const ref = useRef(null);
     useOutClick(ref, setShowSearchList);
@@ -57,8 +56,6 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
         setShowSearchList(false);
         result && store.triggerRerender('downSearchScroll');
         onSearchClicked();
-        test && searchInputRef.current?.blur();
-        popupContext.showPopup(document.activeElement?.localName);
     }
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -96,13 +93,9 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
                 onChange={(e) => handleSearchChange(e)}
                 onKeyDown={(e) => handleKeyPress(e)}
             />
-            <button style={{background: test ? 'red' : 'blue'}} onClick={() => setTest(!test)}>test</button>
             <AiOutlineClose className="clear-text-btn" onClick={() => handleSearchChange(undefined)}/>
             <div className="search-btn" style={{borderBottomRightRadius: showSearchList ? '0px' : '5px'}}>
-                <HiOutlineMagnifyingGlass onClick={() => {
-                    popupContext.showPopup(document.activeElement?.localName as string);
-                    onSearchResultClicked(searchTerm);
-                }}/>
+                <HiOutlineMagnifyingGlass onClick={() => onSearchResultClicked(searchTerm)}/>
             </div>
             {
                 showSearchList &&
@@ -113,6 +106,7 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
                                 key={result}
                                 className={index === highlightedIndex ? "search-results-result highlighted" : "search-results-result"}
                                 onClick={() => onSearchResultClicked(result)}
+                                onTouchStart={() => searchInputRef.current?.blur()}
                                 onTouchEnd={(e) => {
                                     e.preventDefault();
                                     onSearchResultClicked(result);
