@@ -93,8 +93,8 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
                 type="text"
                 placeholder="Search Here..."
                 value={searchTerm}
-                onBlur={event => popupContext.showPopup('blur')}
-                onFocus={event => popupContext.showPopup('focus')}
+                onBlur={() => popupContext.showPopup('blur')}
+                onFocus={() => popupContext.showPopup('focus')}
                 onChange={(e) => handleSearchChange(e)}
                 onKeyDown={(e) => handleKeyPress(e)}
             />
@@ -102,7 +102,7 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
             <AiOutlineClose className="clear-text-btn" onClick={() => handleSearchChange(undefined)}/>
             <div className="search-btn" style={{borderBottomRightRadius: showSearchList ? '0px' : '5px'}}>
                 <HiOutlineMagnifyingGlass onClick={(e) => {
-                    test && e.preventDefault();
+                    // test && e.preventDefault();
                     popupContext.showPopup(document.activeElement?.localName);
                     onSearchResultClicked(searchTerm);
                 }}/>
@@ -116,16 +116,16 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
                                 key={result}
                                 className={index === highlightedIndex ? "search-results-result highlighted" : "search-results-result"}
                                 onClick={(e) => {
-                                    test && e.preventDefault();
+                                    // test && e.preventDefault();
                                     onSearchResultClicked(result);
                                 }}
-                                // onTouchEnd={(e) => {
-                                //     popupContext.showPopup(document.activeElement?.localName);
-                                //     unFocusSearchInput();
-                                //     e.preventDefault();
-                                //     popupContext.showPopup(document.activeElement?.localName);
-                                //     onSearchResultClicked(result);
-                                // }}
+                                onTouchEnd={(e) => {
+                                    popupContext.showPopup(document.activeElement?.localName);
+                                    test && unFocusSearchInput();
+                                    e.preventDefault();
+                                    popupContext.showPopup(document.activeElement?.localName);
+                                    onSearchResultClicked(result);
+                                }}
                             >
                                 {result}</div>)
 
