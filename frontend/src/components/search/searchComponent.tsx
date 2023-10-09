@@ -1,18 +1,14 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import store from "../../store";
 import {ImagesGroupsNamesEnum} from "../popupEditImage/popupEditImage";
 import {observer} from "mobx-react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useOutClick} from "../../Hooks/useOutClick";
 import {AiOutlineClose, HiOutlineMagnifyingGlass} from "react-icons/all";
-import {PopupContext} from "../popupMessage/popupMessage";
-
 
 const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => {
     const navigate = useNavigate();
     const location = useLocation();
-
-    const popupContext = useContext(PopupContext);
 
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [searchResults, setSearchResults] = useState<string[]>([]);
@@ -88,8 +84,6 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
                 type="text"
                 placeholder="Search Here..."
                 value={searchTerm}
-                onBlur={() => popupContext.showPopup('blur')}
-                onFocus={() => popupContext.showPopup('focus')}
                 onChange={(e) => handleSearchChange(e)}
                 onKeyDown={(e) => handleKeyPress(e)}
             />

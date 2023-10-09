@@ -1,5 +1,5 @@
 import Dropdown from "../../components/dropdown/dropdown";
-import {FaUserCircle, GiHamburgerMenu} from "react-icons/all";
+import {AiOutlineClose, FaUserCircle, GiHamburgerMenu} from "react-icons/all";
 import {useContext, useEffect, useRef, useState} from "react";
 import {useLocation, useNavigate} from 'react-router-dom';
 import {useMediaQuery} from "react-responsive";
@@ -47,8 +47,12 @@ function Header() {
                     id="burger-btn"
                     onClick={() => setShowBurgerMenu(!showBurgerMenu)}
                 >
-
-                    <GiHamburgerMenu/>
+                    {
+                        showBurgerMenu ?
+                            <AiOutlineClose/>
+                            :
+                            <GiHamburgerMenu/>
+                    }
                 </button>
             }
 
@@ -107,9 +111,11 @@ function Header() {
                             <SearchComponent onSearchClicked={() => setShowBurgerMenu(false)} />
                             {
                                 store.isUserLog && localStorage.getItem('token') !== null &&
-                                <button id="logout-btn"
-                                        onClick={() => store.logOut((message) => popupContext.showPopup(message))}>Log
-                                    Out<FaUserCircle/></button>
+                                <div className="logout-wrapper">
+                                    <button id="logout-btn"
+                                            onClick={() => store.logOut((message) => popupContext.showPopup(message))}>Log
+                                        Out<FaUserCircle/></button>
+                                </div>
                             }
                         </nav>
                     </div>

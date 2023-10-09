@@ -7,7 +7,7 @@
   padding: 10px;
 
   #burger-btn {
-    @include btn(#4141ca, white);
+    @include btn(unset, unset);
     @include container(column, center, center);
     width: unset;
     min-height: 25px;
@@ -29,21 +29,21 @@
 
   .nav-blur {
     position: absolute;
-    top: 0;
+    top: 50px;
+    bottom: 0;
     right: -100%;
     z-index: 9;
     width: 100%;
-    height: 100%;
     transition: all 0.5s ease-in-out;
   }
 
   .nav-blur-active {
     position: absolute;
-    top: 0;
+    top: 50px;
+    bottom: 0;
     right: 0;
     z-index: 9;
     width: 100%;
-    height: 100%;
     background: rgb(0 0 0 / 54%);
     transition: all 0.5s ease-in-out;
 
@@ -69,6 +69,27 @@
       display: none;
     }
 
+    button {
+      @include container(row, center, center);
+      width: 100%;
+      border: none;
+      background: white;
+      margin: 3px;
+      height: 35px;
+      box-shadow: 0 0 5px #2626b9;
+
+      &:hover {
+        box-shadow: 0 0 10px #2626b9;
+        background: #2c027a;
+        color: white;
+      }
+
+      &:active {
+        box-shadow: 0 0 10px #2626b9;
+        background: #2c027a;
+        color: white;
+      }
+    }
 
     .dropdown-wrapper {
       @include container(row, center, center);
@@ -125,42 +146,18 @@
       }
     }
 
-    #search-btn-mobil {
-      display: flex;
+    .search-wrapper {
+      height: 45px;
 
-      button {
-        @include container(row, center, center);
-        width: unset;
-        height: 20px;
-        border-radius: 5px;
-        font-size: 15px;
-      }
-
-      input {
-        padding: 0;
+      input, .search-btn {
+        height: 35px;
       }
     }
 
-    button {
-      @include container(row, center, center);
+    .logout-wrapper {
+      @include container(unset, center, center);
+      flex: 1;
       width: 100%;
-      border: none;
-      background: white;
-      margin: 3px;
-      height: 35px;
-      box-shadow: 0 0 5px #2626b9;
-
-      &:hover {
-        box-shadow: 0 0 10px #2626b9;
-        background: #2c027a;
-        color: white;
-      }
-
-      &:active {
-        box-shadow: 0 0 10px #2626b9;
-        background: #2c027a;
-        color: white;
-      }
     }
   }
 }
