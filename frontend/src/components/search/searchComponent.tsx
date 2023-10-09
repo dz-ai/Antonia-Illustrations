@@ -1,21 +1,24 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import store from "../../store";
 import {ImagesGroupsNamesEnum} from "../popupEditImage/popupEditImage";
 import {observer} from "mobx-react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useOutClick} from "../../Hooks/useOutClick";
 import {AiOutlineClose, HiOutlineMagnifyingGlass} from "react-icons/all";
+import {PopupContext} from "../popupMessage/popupMessage";
 
 
 const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const popupContext = useContext(PopupContext);
 
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [searchResults, setSearchResults] = useState<string[]>([]);
     const [showSearchList, setShowSearchList] = useState<boolean | string>(false);
     const [highlightedIndex, setHighlightedIndex] = useState<null | number>(null);
+    const [test, setTest] = useState(false);
 
     const ref = useRef(null);
     useOutClick(ref, setShowSearchList);
@@ -49,7 +52,7 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
     }
 
     const onSearchResultClicked = (result: string): void => {
-        unFocusSearchInput();
+        // unFocusSearchInput();
         if (location.pathname !== '/portfolio') {
             navigate('/portfolio', {state: {searchResult: result}});
         }
@@ -90,13 +93,17 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
                 type="text"
                 placeholder="Search Here..."
                 value={searchTerm}
+                onBlur={event => popupContext.showPopup('blur')}
+                onFocus={event => popupContext.showPopup('focus')}
                 onChange={(e) => handleSearchChange(e)}
                 onKeyDown={(e) => handleKeyPress(e)}
             />
+            <button style={{background: test ? 'red' : 'blue'}} onClick={() => setTest(!test)}>test</button>
             <AiOutlineClose className="clear-text-btn" onClick={() => handleSearchChange(undefined)}/>
             <div className="search-btn" style={{borderBottomRightRadius: showSearchList ? '0px' : '5px'}}>
                 <HiOutlineMagnifyingGlass onClick={(e) => {
-                    e.preventDefault();
+                    test && e.preventDefault();
+                    popupContext.showPopup(document.activeElement?.localName);
                     onSearchResultClicked(searchTerm);
                 }}/>
             </div>
@@ -109,13 +116,16 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
                                 key={result}
                                 className={index === highlightedIndex ? "search-results-result highlighted" : "search-results-result"}
                                 onClick={(e) => {
-                                    e.preventDefault();
+                                    test && e.preventDefault();
                                     onSearchResultClicked(result);
                                 }}
-                                onTouchEnd={(e) => {
-                                    e.preventDefault();
-                                    onSearchResultClicked(result);
-                                }}
+                                // onTouchEnd={(e) => {
+                                //     popupContext.showPopup(document.activeElement?.localName);
+                                //     unFocusSearchInput();
+                                //     e.preventDefault();
+                                //     popupContext.showPopup(document.activeElement?.localName);
+                                //     onSearchResultClicked(result);
+                                // }}
                             >
                                 {result}</div>)
 
