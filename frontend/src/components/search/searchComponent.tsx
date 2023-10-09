@@ -24,9 +24,6 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
     useOutClick(ref, setShowSearchList);
 
     const searchInputRef = useRef<HTMLInputElement>(null);
-    const unFocusSearchInput = () => {
-        searchInputRef.current?.blur();
-    }
 
     useEffect(() => {
         if (store.imagesArray.length === 0) {
@@ -52,7 +49,6 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
     }
 
     const onSearchResultClicked = (result: string): void => {
-        // unFocusSearchInput();
         if (location.pathname !== '/portfolio') {
             navigate('/portfolio', {state: {searchResult: result}});
         }
@@ -61,6 +57,8 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
         setShowSearchList(false);
         result && store.triggerRerender('downSearchScroll');
         onSearchClicked();
+        test && searchInputRef.current?.blur();
+        popupContext.showPopup(document.activeElement?.localName);
     }
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -101,8 +99,7 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
             <button style={{background: test ? 'red' : 'blue'}} onClick={() => setTest(!test)}>test</button>
             <AiOutlineClose className="clear-text-btn" onClick={() => handleSearchChange(undefined)}/>
             <div className="search-btn" style={{borderBottomRightRadius: showSearchList ? '0px' : '5px'}}>
-                <HiOutlineMagnifyingGlass onClick={(e) => {
-                    // test && e.preventDefault();
+                <HiOutlineMagnifyingGlass onClick={() => {
                     popupContext.showPopup(document.activeElement?.localName as string);
                     onSearchResultClicked(searchTerm);
                 }}/>
@@ -115,15 +112,9 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
                             <div
                                 key={result}
                                 className={index === highlightedIndex ? "search-results-result highlighted" : "search-results-result"}
-                                onClick={(e) => {
-                                    // test && e.preventDefault();
-                                    onSearchResultClicked(result);
-                                }}
+                                onClick={() => onSearchResultClicked(result)}
                                 onTouchEnd={(e) => {
-                                    popupContext.showPopup(document.activeElement?.localName);
-                                    test && unFocusSearchInput();
                                     e.preventDefault();
-                                    popupContext.showPopup(document.activeElement?.localName);
                                     onSearchResultClicked(result);
                                 }}
                             >
