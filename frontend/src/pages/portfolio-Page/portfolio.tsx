@@ -64,7 +64,6 @@ function Portfolio() {
         !isFirstLoad && store.imagesArray.length > 1 && scrollIntoView(downRef);
         location.state?.searchResult && store.imagesArray.length > 1 && scrollIntoView(downRef);
         setIsFirstLoad(false);
-        document.body.focus();
     }, [store.triggerDownScrollOnSearch]);
 
     useEffect(() => {
