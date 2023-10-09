@@ -64,6 +64,7 @@ function Portfolio() {
         !isFirstLoad && store.imagesArray.length > 1 && scrollIntoView(downRef);
         location.state?.searchResult && store.imagesArray.length > 1 && scrollIntoView(downRef);
         setIsFirstLoad(false);
+        document.body.focus();
     }, [store.triggerDownScrollOnSearch]);
 
     useEffect(() => {
@@ -75,6 +76,7 @@ function Portfolio() {
             <div
                 className="portfolio-up-page"
                 ref={ref}
+                tabIndex={-1}
                 style={{
                     background: `url(https://ik.imagekit.io/thfdl6dmv/antonia-illustrations/mandala_horizontal.jpg) no-repeat center center`,
                     backgroundSize: isUnder950pxScreen ? 'auto 120%' : '150% auto',
