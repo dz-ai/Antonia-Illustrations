@@ -141,22 +141,18 @@ class Store {
     }
 
     searchFilter(searchTerm: string): string[] {
-        this.imagesArray = Array.from(Object.keys(this.images)).filter(image => {
-            const imageFileNameMatch: boolean = image.toLowerCase().includes(searchTerm.toLowerCase());
-            const imageCategoryMatch: boolean = this.images[image].imageCategory.toLowerCase().includes(searchTerm.toLowerCase());
-            const imageDescriptionMatch: boolean = this.images[image].imageDescription.toLowerCase().includes(searchTerm.toLowerCase());
-
-            if (imageFileNameMatch || imageCategoryMatch || imageDescriptionMatch) {
-                return image;
-            }
-        });
 
         const resultsArray: string[] = [];
+        const storeImageArr: string[] = [];
 
         Array.from(Object.keys(this.images)).forEach(image => {
             const imageFileNameMatch: boolean = image.toLowerCase().includes(searchTerm.toLowerCase());
             const imageCategoryMatch: boolean = this.images[image].imageCategory.toLowerCase().includes(searchTerm.toLowerCase());
             const imageDescriptionMatch: boolean = this.images[image].imageDescription.toLowerCase().includes(searchTerm.toLowerCase());
+
+            if (imageFileNameMatch || imageCategoryMatch || imageDescriptionMatch) {
+                storeImageArr.push(image);
+            }
 
             if (imageFileNameMatch) {
                 resultsArray.push(image);
@@ -168,7 +164,8 @@ class Store {
                 resultsArray.push(this.images[image].imageDescription);
             }
         });
-        return [...new Set(resultsArray)];
+        this.imagesArray = storeImageArr; /* update the image array, so the relevant images will show on the screen */
+        return [...new Set(resultsArray)]; /* return all possible matches and those will be shown as a result list */
     }
 }
 
