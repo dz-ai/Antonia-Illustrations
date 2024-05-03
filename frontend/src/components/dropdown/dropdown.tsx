@@ -1,72 +1,67 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 import {IoIosArrowDropdown, IoIosArrowDropup} from "react-icons/all";
 import {observer} from "mobx-react";
-import store from "../../store";
+import store from "../../store";  /* todo consider to move the store out of the component */
 import {PopupContext} from "../popupMessage/popupMessage";
 import {useNavigate} from "react-router-dom";
 import {useOutClick} from "../../Hooks/useOutClick";
 import {Tooltip} from 'react-tooltip';
 
 interface IDropdown {
-    options: string[];
-    noInfluence: boolean;
-    onValChange?: (val: string) => void;
-    navigateTo?: string | null;
-    initCategory?: string;
+    categories: string[];
+    initCategory: string;
     onCategoryChang: (currentCategory: string) => void;
+    navigateTo?: string | null; /* suggest the option to navigate after that a category has been chosen */
 }
 
 function Dropdown(
-    {options, noInfluence, onValChange, navigateTo, initCategory, onCategoryChang}: IDropdown) {
+    {categories, navigateTo, initCategory, onCategoryChang}: IDropdown) {
     const popupContext = useContext(PopupContext);
     const navigate = useNavigate();
 
-    const [currentCategory, setCurrentCategory] = useState(initCategory ? initCategory : 'All Categories')
-    const [optionsShowState, setOptionShowState] = useState<boolean | string>(false);
-    const [showCatPopup, setShowCatPopup] = useState<boolean>(false);
+    const [currentCategory, setCurrentCategory] = useState<string>(initCategory);
+    const [openDropdown, setOpenDropdown] = useState<boolean | string>(false);
+    const [showAddCatPopup, setShowAddCatPopup] = useState<boolean>(false);
     const [showRemCatPopup, setShowRemCatPopup] = useState<boolean>(false);
-    const [categoryToRemove, setCategoryToRemove] = useState<string>('');
     const [catToAdd, setCatToAdd] = useState<string>('');
+    const [categoryToRemove, setCategoryToRemove] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const [hideTooltip, setHideTooltip] = useState<boolean>(true);
 
     const ref = useRef(null);
-    useOutClick(ref, setOptionShowState);
+    useOutClick(ref, setOpenDropdown);
 
     const allCategories: string = 'All Categories';
 
-    const handleDropdown = () => {
-        setOptionShowState(!optionsShowState);
+    const handleDropdown = (): void => {
+        setOpenDropdown(!openDropdown);
         setTimeout(() => {
         }, 100);
     };
 
-    const handleOption = (category: string) => {
+    const handleCategoryChoice = (category: string): void => {
         onCategoryChang(category);
         setCurrentCategory(category);
         if (navigateTo) {
-            if (!noInfluence) store.filterCategory(category);
             navigate(navigateTo, {state: {category}});
         } else {
-            if (!noInfluence) store.filterCategory(category);
-            setOptionShowState(false);
+            setOpenDropdown(false);
         }
     };
 
     const handleAddCat = (): void => {
+        setLoading(true);
         if (catToAdd === '') {
+            setLoading(false);
             popupContext.showPopup('Please provide new category to add');
             return;
         }
-        if (catToAdd.toLowerCase() !== allCategories.toLowerCase()) {
-            store.addCategory(catToAdd)
-                .then(message => {
-                    popupContext.showPopup(message);
-                    setShowCatPopup(false);
-                });
-        } else {
-            popupContext.showPopup('This Category already exist');
-        }
+        store.addCategory(catToAdd)
+            .then(message => {
+                setLoading(false);
+                popupContext.showPopup(message);
+                setShowAddCatPopup(false);
+            });
     }
 
     const removeCategory = (): void => {
@@ -81,14 +76,6 @@ function Dropdown(
             });
     }
 
-    useEffect(() => {
-        onValChange && onValChange(store.currentCategory);
-    }, [store.currentCategory]);
-
-    useEffect(() => {
-        initCategory && setCurrentCategory(initCategory);
-    }, [initCategory]);
-
     const detectTextOverflow = (event: React.MouseEvent<HTMLElement>) => {
         const element = event.currentTarget;
         const isOverflowing = element.scrollWidth > element.clientWidth;
@@ -100,10 +87,14 @@ function Dropdown(
         }
     }
 
+    useEffect(() => {
+        setCurrentCategory(initCategory);
+    }, [initCategory]);
+
     return (
-        <div className={!optionsShowState ? "dropdown" : "dropdown select-open"} ref={ref}>
+        <div className={!openDropdown ? "dropdown" : "dropdown select-open"} ref={ref}>
             <div
-                className={!optionsShowState ? "hover select" : "select"}
+                className={!openDropdown ? "hover select" : "select"}
                 onClick={handleDropdown}>
                 <section className="current-category-section">
                     <div data-tooltip-id="tooltip" data-tooltip-content={currentCategory}
@@ -111,49 +102,36 @@ function Dropdown(
                          onMouseEnter={event => detectTextOverflow(event)}>{currentCategory}
                     </div>
                     {
-                        !optionsShowState &&
+                        !openDropdown &&
                         <IoIosArrowDropdown
                             className="icon"
-                            onClick={() => setOptionShowState(true)}
+                            onClick={() => setOpenDropdown(true)}
                         />
                     }
                     {
-                        optionsShowState &&
+                        openDropdown &&
                         <IoIosArrowDropup
                             className="icon"
-                            onClick={() => setOptionShowState(false)}
+                            onClick={() => setOpenDropdown(false)}
                         />
                     }
                 </section>
                 <Tooltip id="tooltip" hidden={hideTooltip} delayShow={150} style={{zIndex: 1}}/>
-                <section className={optionsShowState ? "options-container options-show" : "options-container"}>
+                <section className={openDropdown ? "options-container options-show" : "options-container"}>
                     {
-                        store.isUserLog && optionsShowState &&
+                        store.isUserLog && openDropdown &&
                         <div className="option container"
-                             onClick={() => setShowCatPopup(true)}>
+                             onClick={() => setShowAddCatPopup(true)}>
                             Add +
                         </div>
                     }
                     {
-                        currentCategory !== allCategories &&
-                        <div
-                            className="option"
-                            onClick={() => handleOption(allCategories)}
-                        >
-                            <div data-tooltip-id="tooltip" data-tooltip-content={allCategories}
-                                 className="ellipsis-container"
-                                 onMouseEnter={event => detectTextOverflow(event)}>
-                                All Categories
-                            </div>
-                        </div>
-                    }
-                    {
-                        options.map((category) =>
+                        categories.map((category) =>
                             category !== currentCategory &&
                             <div
                                 key={category}
                                 className="option"
-                                onClick={() => handleOption(category)}
+                                onClick={() => handleCategoryChoice(category)}
                             >
                                 <div
                                     className="ellipsis-container"
@@ -163,7 +141,7 @@ function Dropdown(
                                     {category}
                                 </div>
                                 {
-                                    store.isUserLog &&
+                                    store.isUserLog && category !== allCategories &&
                                     <div className="option-rem-button"
                                          onClick={() => {
                                              setCategoryToRemove(category);
@@ -176,7 +154,7 @@ function Dropdown(
 
             </div>
             {
-                showCatPopup &&
+                showAddCatPopup &&
                 <div className="popup-category">
                     <div className="add-category">
                         <span>
@@ -184,8 +162,10 @@ function Dropdown(
                         </span>
                         <input onChange={(e) => setCatToAdd(e.target.value)} autoFocus={true}/>
                         <div className="btn-section">
-                            <div className="btn" onClick={handleAddCat}>Add</div>
-                            <div className="btn" onClick={() => setShowCatPopup(false)}>Cansel</div>
+                            <div className="rem-btn btn" onClick={handleAddCat}>
+                                {loading ? <div className="loader"></div> : 'Add'}
+                            </div>
+                            <div className="btn" onClick={() => setShowAddCatPopup(false)}>Cansel</div>
                         </div>
                     </div>
                 </div>

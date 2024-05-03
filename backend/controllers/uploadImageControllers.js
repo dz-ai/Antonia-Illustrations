@@ -42,9 +42,9 @@ exports.setImageMetaData = asyncHandler(async (req, res) => {
     // replace existing image or its details (category, description)
     if (existingImageFileName) {
 
-        const imageMD = data[imagesGroupName][existingImageFileName];
+        const imageToChange = data[imagesGroupName][existingImageFileName];
 
-        // change the image with new image
+        // replace the image with a new image
         if (imageToUpLoad) {
             // delete from imagekit only if not in use in another imagesGroup
             if (!doesImageInUseInOtherGroups(data, imagesGroupName, existingImageFileName)) {
@@ -76,7 +76,7 @@ exports.setImageMetaData = asyncHandler(async (req, res) => {
         }
 
         // change image Category or/and Description
-        if (imageMD.imageCategory !== imageCategory || imageMD.imageDescription !== imageDescription) {
+        if (imageToChange.imageCategory !== imageCategory || imageToChange.imageDescription !== imageDescription) {
             const updateImage = {
                 fileName: existingImageFileName,
                 imageCategory,
@@ -140,7 +140,7 @@ exports.deleteImage = asyncHandler(async (req, res) => {
     // delete from imagekit.io service
     if (!doesImageInUseInOtherGroups(data, imagesGroupName, fileName) && data[imagesGroupName].hasOwnProperty(fileName)) {
         await imagekit.deleteFile(data[imagesGroupName][fileName].imageID)
-            .then(results => console.log('del file?: ', results))
+            .then(results => console.log('delete file: ', results))
             .catch(error => console.log(error));
 
         await imagekit.purgeCache(`https://ik.imagekit.io/thfdl6dmv/${fileName}`)

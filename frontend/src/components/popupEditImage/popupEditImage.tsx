@@ -93,8 +93,8 @@ export function PopupEditImage({
             return;
         }
 
-        // check for require fields
-        if (imageDetailsFields && editCategory === 'All Categories' || editCategory === '') {
+        // check for required fields
+        if (imageDetailsFields && (editCategory === 'All Categories' || editCategory === '')) {
             popupContext.showPopup('Please choose Category');
             setLoadingSave(false);
             return;
@@ -158,7 +158,7 @@ export function PopupEditImage({
     }
 
     const uploadImage = (event: ChangeEvent<HTMLInputElement>): void => {
-        handleFileChange(event, (file, imagePreview) => {
+        handleFileChange(event, (file, imagePreview): void => {
 
                 setShowEditImage(false);
                 setLoadingImageUpload(true);
@@ -173,7 +173,7 @@ export function PopupEditImage({
             });
     }
 
-    function closePopupEditImage(): void {
+    const closePopupEditImage = (): void => {
         setDeleteImageQuestion(false);
         setShowEditDes(false);
         setEditDescription('');
@@ -292,9 +292,8 @@ export function PopupEditImage({
                                                 imageDetailsFields &&
                                                 <>
                                                     <h4>Category:</h4>
-                                                    <Dropdown options={store.categories}
+                                                    <Dropdown categories={store.categories}
                                                               initCategory={!newImage ? imageCategory : 'All Categories'}
-                                                              noInfluence={true}
                                                               onCategoryChang={currentCategory => setEditCategory(currentCategory)}/>
 
                                                     <h4>Description:</h4>

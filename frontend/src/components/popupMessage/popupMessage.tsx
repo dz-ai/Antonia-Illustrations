@@ -14,25 +14,25 @@ const PopupProvider = ({children}: { children: any }) => {
     const [popupMessage, setPopupMessage] = useState('');
     const [displayPopup, setDisplayPopup] = useState<boolean>(false);
 
-    const showPopup = (message: string) => {
+    const showPopup = (message: string): void => {
         setDisplayPopup(true);
 
-        let timeToShowMessage: number = 5;
+        let showMessageDuration: number = 5;
         if (message.length > 40) {
-            timeToShowMessage = 8;
+            showMessageDuration = 8;
         }
-        // separate the component display and the actual message appearing with the animation affect
+        // separate the component display and the actual message appearing with the animation effect
         setTimeout(() => {
             setPopupMessage(message);
         }, 100);
-        // remove the message with the animation affect
+        // remove the message with the animation effect
         setTimeout(() => {
             setPopupMessage('');
-        }, timeToShowMessage * 1000);
+        }, showMessageDuration * 1000);
         // remove the component completely from the DOM
         setTimeout(() => {
             setDisplayPopup(false);
-        }, (timeToShowMessage * 1000) + 500);
+        }, (showMessageDuration * 1000) + 500);
 
     };
 

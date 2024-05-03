@@ -32,6 +32,7 @@
     height: 80%;
     border: 2px solid #808080;
     color: gray;
+    position: relative;
 
     .add-image-icon {
       font-size: 50px;
@@ -45,6 +46,7 @@
       bottom: 0;
       left: 0;
       z-index: 1;
+      width: 100%;
     }
   }
 }

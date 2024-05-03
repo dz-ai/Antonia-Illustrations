@@ -51,7 +51,7 @@ function AboutMePage() {
     }
 
     const deleteAboutMeImage = async () => {
-        return fetch(`${url}/api/aboutMe/deleteAboutMe`, {
+        return fetch(`${url}/api/aboutMe/deleteAboutMeImage`, {
             method: 'delete',
             headers: {
                 'Content-Type': 'application/json',

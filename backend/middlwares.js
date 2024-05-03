@@ -4,7 +4,7 @@ const asyncHandler = fn => (req, res, next) =>
     Promise.resolve(fn(req, res, next)).catch(next);
 
 
- // console.log(crypto.randomBytes(64).toString('hex'));
+// console.log(crypto.randomBytes(64).toString('hex'));
 
 const protect = asyncHandler((req, res, next) => {
     let token;
@@ -20,7 +20,7 @@ const protect = asyncHandler((req, res, next) => {
     try {
         const id = jwt.verify(token, process.env.JWT_SECRET);
 
-        req.decodeUserId = id
+        req.decodeUserId = id;
         next();
     } catch (error) {
         res.status(403).send({isSign: false, error});

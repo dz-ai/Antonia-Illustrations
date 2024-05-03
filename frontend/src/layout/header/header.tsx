@@ -98,17 +98,16 @@ function Header() {
                             }
                             }>
                                 <Dropdown initCategory={store.currentCategory}
-                                          options={store.categories}
-                                          noInfluence={false}
-                                          onValChange={(val) => setCategoriesVal(val)}
+                                          categories={store.categories}
                                           navigateTo={location.pathname !== 'portfolio' ? '/portfolio' : null}
                                           onCategoryChang={currentCategory => {
+                                              store.filterCategory(currentCategory);
                                               setCategoriesVal(currentCategory);
                                               store.setCategory(currentCategory);
                                           }}
                                 />
                             </div>
-                            <SearchComponent onSearchClicked={() => setShowBurgerMenu(false)} />
+                            <SearchComponent onSearchClicked={() => setShowBurgerMenu(false)}/>
                             {
                                 store.isUserLog && localStorage.getItem('token') !== null &&
                                 <div className="logout-wrapper">

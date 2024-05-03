@@ -1,6 +1,5 @@
 import SliderComponent from "../../components/slider/sliderComponent";
 import React, {useEffect, useRef, useState} from "react";
-import {FullScreen} from "../../components/fullScreen/fullScreen";
 import {MasonryGrid} from "../../components/masonryGrid/MasonryGrid";
 import {CategoryNavBar} from "../../components/categoryNavBar/categoryNavBar";
 import {useInterSectionObserver} from "../../Hooks/useInterSectionObserver";
@@ -21,7 +20,7 @@ function Portfolio() {
 
     const location = useLocation();
 
-    // Customise Hooks //
+    // Customise Hooks to keep categories navbar sticking to the current visible section //
     const isInViewPort: boolean = useInterSectionObserver(ref);
     const isDownInViewPort: boolean = useInterSectionObserver(downRef);
 
@@ -29,8 +28,6 @@ function Portfolio() {
     const isUnder950pxScreen = useMediaQuery({query: '(max-width: 950px)'});
 
     const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
-    const [fullScreen, setFullScreen] = useState<string | boolean>(false);
-    const [remEListener, setRemEListener] = useState<boolean>(false);
     const [loadingImages, setLoadingImages] = useState<boolean | string>(true);
 
     const loadImages = (): void => {
@@ -114,19 +111,8 @@ function Portfolio() {
                     <JumpUpBtn upRef={ref}/>
                 }
                 <MasonryGrid
-                    setRemEListener={setRemEListener}
-                    setFullScreen={setFullScreen}
                     loadingImages={loadingImages}
                 />
-                {
-                    typeof fullScreen === 'string' &&
-                    <FullScreen
-                        fullScreen={fullScreen}
-                        setFullScreen={setFullScreen}
-                        removeEListener={remEListener}
-                        description={store.images[fullScreen.split('/')[fullScreen.split('/').length - 1]].imageDescription}
-                    />
-                }
             </section>
         </>
     );

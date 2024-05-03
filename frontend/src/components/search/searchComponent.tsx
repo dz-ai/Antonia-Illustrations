@@ -20,7 +20,7 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
 
     const searchInputRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => {
+    useEffect((): void => {
         if (store.imagesArray.length === 0) {
             store.getImages(ImagesGroupsNamesEnum.portfolioImagesGroupName).then();
         }
@@ -29,12 +29,12 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement> | undefined): void => {
         setHighlightedIndex(null);
 
-        const searchTermIn: string = e?.target.value || '';
-        setSearchTerm(searchTermIn);
+        const currentSearchVal: string = e?.target.value || '';
+        setSearchTerm(currentSearchVal);
 
-        const searchResults: string[] = store.searchFilter(searchTermIn);
+        const searchResults: string[] = store.searchFilter(currentSearchVal);
 
-        if (searchTermIn === '' || searchResults.length === 0) {
+        if (currentSearchVal === '' || searchResults.length === 0) {
             setSearchResults([]);
             setShowSearchList(false);
             return
@@ -107,14 +107,15 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
                                 key={result}
                                 className={index === highlightedIndex ? "search-results-result highlighted" : "search-results-result"}
                                 onClick={() => onSearchResultClicked(result)}
-                                onTouchStart={() => searchInputRef.current?.blur()}
+                                onTouchStart={() => searchInputRef.current?.blur()/* clear the keyboard on a mobile device */}
                                 onTouchEnd={(e) => {
                                     e.preventDefault();
                                     onSearchResultClicked(result);
                                 }}
                             >
-                                {result}</div>)
-
+                                {result}
+                            </div>
+                        )
                     }
                 </section>
             }

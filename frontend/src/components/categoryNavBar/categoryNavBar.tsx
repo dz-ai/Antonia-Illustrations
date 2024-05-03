@@ -76,7 +76,6 @@ export function CategoryNavBar({categories}: Props) {
                     justifyContent: isOverFlow ? 'unset' : 'center',
                 }}
             >
-                <div onClick={() => handelNavBtnClick('All Categories')}>{'All Categories'}</div>
                 {
                     categories.map((category, index) =>
                         <div key={index} onClick={() => handelNavBtnClick(category)}>{category}</div>

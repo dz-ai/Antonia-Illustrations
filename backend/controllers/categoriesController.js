@@ -22,7 +22,7 @@ exports.addCategory = asyncHandler(async (req, res) => {
 
     const isCategoryExist = await Categories.find({categoriesArray: {$regex: new RegExp(`\\b${categoryToAdd}\\b`, 'i')}});
 
-    if (isCategoryExist.length > 0) {
+    if (isCategoryExist.length > 0 || categoryToAdd.toLowerCase() === 'all categories') {
         res.json('Category already exist');
         return;
     }

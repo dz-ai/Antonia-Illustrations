@@ -30,7 +30,7 @@ exports.editAboutMe = asyncHandler(async (req, res) => {
     res.json(newAboutMe);
 });
 
-exports.deleteAboutMe = asyncHandler(async (req, res) => {
+exports.deleteAboutMeImage = asyncHandler(async (req, res) => {
     await AboutMe.updateMany({image: ''});
     const newAboutMe = await AboutMe.findOne();
 

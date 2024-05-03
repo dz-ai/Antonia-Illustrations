@@ -3,11 +3,11 @@ import React from "react";
 import {TUseScrollIntoView, useScrollIntoView} from "../../Hooks/useScrollIntoView";
 
 type Props = {
-    upRef:  React.RefObject<HTMLDivElement>
+    upRef: React.RefObject<HTMLDivElement>
 };
 
 export function JumpUpBtn({upRef}: Props) {
-    const scrollIntoView:TUseScrollIntoView = useScrollIntoView();
+    const scrollIntoView: TUseScrollIntoView = useScrollIntoView();
 
 
     return (

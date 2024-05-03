@@ -66,6 +66,7 @@ class Store {
         return fetch(`${this.url}/api/uploadImage/getImages/${imagesGroupName}`)
             .then(res => res.json())
             .then(data => {
+                // todo What happen when for some reason there is no data?
                 this.images = data;
                 this.imagesArray = Array.from(Object.keys(data));
                 return Array.from(Object.keys(data)).length > 0;
@@ -111,7 +112,7 @@ class Store {
             })
             .catch(error => {
                 console.log(error);
-                return 'Error check console for more info';
+                return 'Error, check console for more info';
             });
     }
 
@@ -135,11 +136,11 @@ class Store {
             })
             .catch(error => {
                 console.log(error);
-                return 'Error check console for more info';
+                return 'Error, check console for more info';
             });
     }
 
-    searchFilter(searchTerm: string) {
+    searchFilter(searchTerm: string): string[] {
         this.imagesArray = Array.from(Object.keys(this.images)).filter(image => {
             const imageFileNameMatch: boolean = image.toLowerCase().includes(searchTerm.toLowerCase());
             const imageCategoryMatch: boolean = this.images[image].imageCategory.toLowerCase().includes(searchTerm.toLowerCase());

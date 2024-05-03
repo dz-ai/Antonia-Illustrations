@@ -8,7 +8,7 @@ const {
     deleteImage
 } = require("./controllers/uploadImageControllers");
 const {getCategories, addCategory, removeCategory} = require("./controllers/categoriesController");
-const {editAboutMe, getAboutMe, deleteAboutMe} = require("./controllers/aboutMeController");
+const {editAboutMe, getAboutMe, deleteAboutMeImage} = require("./controllers/aboutMeController");
 
 exports.userRouter = express.Router({mergeParams: true});
 exports.uploadRouter = express.Router({mergeParams: true});
@@ -34,4 +34,4 @@ this.categoryRouter.post('/removeCategory', protect, removeCategory);
 // ---- AboutMe Routes ---- //
 this.aboutMeRouter.get('/getAboutMe', getAboutMe);
 this.aboutMeRouter.post('/editAboutMe', protect, editAboutMe);
-this.aboutMeRouter.delete('/deleteAboutMe', protect, deleteAboutMe);
+this.aboutMeRouter.delete('/deleteAboutMeImage', protect, deleteAboutMeImage);

@@ -7,7 +7,7 @@ export interface IImageMetaData {
     existingImageFileName: string;
     imageCategory: string;
     imageDescription: string;
-    imageToUpLoad?: string;
+    imageToUpLoad?: string; /* only to use in replace an image case */
 }
 
 // util ver
@@ -36,12 +36,15 @@ function checkFileExtension(fileName: string): boolean {
 
 function limitImageSize(file: File): boolean {
     const fileSizeInBytes = file.size;
-    return (fileSizeInBytes / 1024 / 1024) < 7;
+    return (fileSizeInBytes / 1024 / 1024) < 7; /* limited to 7 mb file */
 }
 
 export const handleFileChange = (event: ChangeEvent<HTMLInputElement>, cbSuccess: (file: File, imagePreview: string | ArrayBuffer | null) => void, cbFail: (errorMessage: string) => void): void => {
 
-    if (!event.target.files || !event.target.files[0]) return;
+    if (!event.target.files || !event.target.files[0]) {
+        cbFail('Something went wrong');
+        return;
+    }
 
     const file: File = event.target.files[0];
 
@@ -55,13 +58,14 @@ export const handleFileChange = (event: ChangeEvent<HTMLInputElement>, cbSuccess
         return;
     }
 
+    // create url from the image file to use it immediately as an Image preview.
     const reader = new FileReader();
     reader.onload = () => {
         const imagePreview = reader.result;
         cbSuccess(file, imagePreview);
     };
     reader.readAsDataURL(file);
-};
+}
 
 export async function uploadImageFun(uploadImage: File) {
     return store.verifyToken()
@@ -97,7 +101,7 @@ export function deleteImage(imagesGroupName: ImagesGroupsNamesEnum, fileName: st
         .catch(cbFail);
 }
 
-export function setImageMetaData(image: IImageMetaData, imageGroupName: ImagesGroupsNamesEnum, imageID: string | undefined, cbRes: (res: any) => void, cbErr: (error: any) => void): void {
+export function setImageMetaData(image: IImageMetaData, imageGroupName: ImagesGroupsNamesEnum, imageID: string | undefined, cbRes: (res: string) => void, cbErr: (error: any) => void): void {
     const {existingImageFileName, imageCategory, imageDescription, imageToUpLoad} = image;
 
     fetch(uploadMetaDataEndpoint + '/' + imageGroupName,

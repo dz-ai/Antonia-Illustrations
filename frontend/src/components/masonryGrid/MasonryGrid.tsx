@@ -1,21 +1,20 @@
 import Masonry from "react-masonry-css";
-import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
-// import {IImage} from "../../types/types";
+import React, {useEffect, useState} from "react";
 import {ImagesGroupsNamesEnum, PopupEditImage} from "../popupEditImage/popupEditImage";
 import store from "../../store";
 import {LoadingComponent} from "../loadingComponent/loadingComponent";
+import {FullScreen} from "../fullScreen/fullScreen";
 
 type Props = {
-    setRemEListener: Dispatch<SetStateAction<boolean>>;
-    setFullScreen: Dispatch<SetStateAction<string | boolean>>;
     loadingImages: boolean | string;
 };
 
-export function MasonryGrid({setRemEListener, setFullScreen, loadingImages}: Props) {
-    // const [showPopupEditImage, setShowPopupEditImage] = useState<boolean>(false);
-    // const [imageDetails, setImageDetails] = useState<IImage>({});
+export function MasonryGrid({loadingImages}: Props) {
+
     const [defaultBreakPoint, setDefaultBreakPoint] = useState<number>(4);
     const [secondBreakPoint, setSecondBreakPoint] = useState<number>(3);
+    const [fullScreen, setFullScreen] = useState<string | boolean>(false);
+    const [remEListener, setRemEListener] = useState<boolean>(false);
 
     const breakpoints = {
         default: defaultBreakPoint,
@@ -41,7 +40,7 @@ export function MasonryGrid({setRemEListener, setFullScreen, loadingImages}: Pro
                 columnClassName="my-masonry-grid_column"
                 breakpointCols={breakpoints}
             >
-                {
+                { // this PopupEditImage component allows uploading new Image (it doesn't show any image).
                     store.isUserLog &&
                     <div className="image-card-wrapper image-card-wrapper-hover image-card-wrapper-active">
                         <PopupEditImage
@@ -88,6 +87,15 @@ export function MasonryGrid({setRemEListener, setFullScreen, loadingImages}: Pro
                         <LoadingComponent loading={loadingImages}/>
                 }
             </Masonry>
+            {
+                typeof fullScreen === 'string' &&
+                <FullScreen
+                    fullScreen={fullScreen}
+                    setFullScreen={setFullScreen}
+                    removeEListener={remEListener}
+                    description={store.images[fullScreen.split('/')[fullScreen.split('/').length - 1]].imageDescription}
+                />
+            }
         </>
     );
 }

@@ -18,6 +18,7 @@ function App() {
     const endYRef = useRef(0);
     const contentFooterRef = useRef<HTMLDivElement | null>(null);
 
+    // Effect to reload the page on mobile screen as the user sweep down with the finger
     useEffect(() => {
         const handleTouchStart = (e: TouchEvent) => {
             if (contentFooterRef.current?.scrollTop === 0) {
