@@ -1,11 +1,11 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
-import {IoIosArrowDropdown, IoIosArrowDropup} from "react-icons/all";
 import {observer} from "mobx-react";
 import store from "../../store";  /* todo consider to move the store out of the component */
 import {PopupContext} from "../popupMessage/popupMessage";
 import {useNavigate} from "react-router-dom";
 import {useOutClick} from "../../Hooks/useOutClick";
 import {Tooltip} from 'react-tooltip';
+import {SvgArrowIconWrapper} from "./svgArrowIconWrapper";
 
 interface IDropdown {
     categories: string[];
@@ -35,8 +35,6 @@ function Dropdown(
 
     const handleDropdown = (): void => {
         setOpenDropdown(!openDropdown);
-        setTimeout(() => {
-        }, 100);
     };
 
     const handleCategoryChoice = (category: string): void => {
@@ -92,8 +90,9 @@ function Dropdown(
     }, [initCategory]);
 
     return (
-        <div className={!openDropdown ? "dropdown" : "dropdown select-open"} ref={ref}>
+        <div className={!openDropdown ? "dropdown" : "dropdown select-open"}>
             <div
+                ref={ref}
                 className={!openDropdown ? "hover select" : "select"}
                 onClick={handleDropdown}>
                 <section className="current-category-section">
@@ -101,20 +100,7 @@ function Dropdown(
                          className="ellipsis-container current-category"
                          onMouseEnter={event => detectTextOverflow(event)}>{currentCategory}
                     </div>
-                    {
-                        !openDropdown &&
-                        <IoIosArrowDropdown
-                            className="icon"
-                            onClick={() => setOpenDropdown(true)}
-                        />
-                    }
-                    {
-                        openDropdown &&
-                        <IoIosArrowDropup
-                            className="icon"
-                            onClick={() => setOpenDropdown(false)}
-                        />
-                    }
+                    <SvgArrowIconWrapper arrowDirection={openDropdown ? 'up' : 'down'}/>
                 </section>
                 <Tooltip id="tooltip" hidden={hideTooltip} delayShow={150} style={{zIndex: 1}}/>
                 <section className={openDropdown ? "options-container options-show" : "options-container"}>
