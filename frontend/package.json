@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "vite": "vite",
-    "build": "tsc && vite build",
+    "build": "NODE_OPTIONS='--max-old-space-size=4096' tsc && vite build",
     "preview": "vite preview",
     "start:env": "env-cmd .env npm start"
   },

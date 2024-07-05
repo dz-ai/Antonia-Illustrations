@@ -11,7 +11,7 @@ exports.imageUploadRefs = path.join(__dirname, 'uploadsRefs');
 exports.imageMetadataFile = path.join(__dirname, 'uploadsRefs', 'imageMetadataFile.json');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 // const crypto = require('crypto');
 // console.log(crypto.randomBytes(64).toString('hex'));
