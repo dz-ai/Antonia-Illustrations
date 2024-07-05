@@ -3,7 +3,7 @@ import {IImage} from "./types/types";
 import {ImagesGroupsNamesEnum} from "./components/popupEditImage/popupEditImage";
 
 class Store {
-    url: string = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
+    url: string = '';
     isUserLog: boolean = false;
     categories: string[] = [];
     images: IImage = {};
@@ -15,6 +15,20 @@ class Store {
 
     constructor() {
         makeAutoObservable(this);
+        this.getFetchUel();
+    }
+
+    getFetchUel(): void {
+        switch (import.meta.env.VITE_DEV) {
+            case 'true':
+                this.url = import.meta.env.VITE_DEV_SERVER;
+                break
+            case 'AWS':
+                this.url = import.meta.env.VITE_AWS_SERVER;
+                break
+            case 'false':
+                this.url = '';
+        }
     }
 
     userLogToggle(isLog: boolean): void {
@@ -146,6 +160,7 @@ class Store {
         const storeImageArr: string[] = [];
 
         Array.from(Object.keys(this.images)).forEach(image => {
+            // todo buxFix 1 - search results with keydown Enter 'searchTerm' is undefined. 2 - clean search field after user push on search btn.
             const imageFileNameMatch: boolean = image.toLowerCase().includes(searchTerm.toLowerCase());
             const imageCategoryMatch: boolean = this.images[image].imageCategory.toLowerCase().includes(searchTerm.toLowerCase());
             const imageDescriptionMatch: boolean = this.images[image].imageDescription.toLowerCase().includes(searchTerm.toLowerCase());

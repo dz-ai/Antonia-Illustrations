@@ -12,7 +12,7 @@ function AboutMePage() {
 
     const popupContext = useContext(PopupContext);
 
-    const url: string = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
+    const url: string = store.url;
 
     const [text, setText] = useState<string>('');
     const [editText, setEditText] = useState<string>('');

@@ -27,7 +27,7 @@ function RegisterPage() {
                 navigate('/');
             }).catch(async () => {
             localStorage.clear()
-            const url = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
+            const url = store.url;
 
             const response = await fetch(`${url}/api/users/logIn`, {
                 method: 'post',

@@ -11,16 +11,15 @@ export interface IImageMetaData {
 }
 
 // util ver
-const devServer = 'http://localhost:3001';
-const productServer = 'https://antonia-illustrations.onrender.com';
 const dev = import.meta.env.VITE_DEV;
+const url: string = dev === 'AWS' || dev === 'true' ? store.url : 'https://antonia-illustrations.onrender.com';
 
-const uploadMetaDataEndpoint: string = `${dev === 'true' ? devServer : productServer}/api/uploadImage/setImageMetaData`;
+const uploadMetaDataEndpoint: string = `${url}/api/uploadImage/setImageMetaData`;
 
 const imagekit = new IKCore({
     publicKey: "public_mvSjUFM9xBvSh8H9560m37S+jD8=",
     urlEndpoint: "https://ik.imagekit.io/thfdl6dmv",
-    authenticationEndpoint: `${dev === 'true' ? devServer : productServer}/api/uploadImage/auth`,
+    authenticationEndpoint: `${url}/api/uploadImage/auth`,
 });
 // end util ver //
 
@@ -81,7 +80,7 @@ export async function uploadImageFun(uploadImage: File) {
 }
 
 export function deleteImage(imagesGroupName: ImagesGroupsNamesEnum, fileName: string, cbSuccess: (results: any) => void, cbFail: (error: any) => void): void {
-    const url = import.meta.env.VITE_DEV === 'true' ? import.meta.env.VITE_DEV_SERVER : '';
+    const url = store.url;
 
     fetch(`${url}/api/uploadImage/deleteImage/${imagesGroupName}`, {
         method: 'delete',
