@@ -105,3 +105,4 @@ uploadsRefs
 *.iml
 out
 gen
+dist
