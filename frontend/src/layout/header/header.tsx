@@ -41,7 +41,7 @@ function Header() {
     return (
         <header className={!isSmallScreen ? "main-header" : "mobile-header"}>
 
-            {
+            { /* todo close burger menu on mobile device as the user click back btn */
                 isSmallScreen &&
                 <button
                     id="burger-btn"

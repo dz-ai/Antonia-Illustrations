@@ -47,8 +47,8 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
         if (location.pathname !== '/portfolio') {
             navigate('/portfolio', {state: {searchResult: result}});
         }
-        setSearchTerm(result);
         store.searchFilter(result);
+        setSearchTerm('');
         setShowSearchList(false);
         result && store.triggerRerender('downSearchScroll');
         onSearchClicked();
@@ -68,7 +68,7 @@ const SearchComponent = ({onSearchClicked}: { onSearchClicked: () => void }) => 
                 setHighlightedIndex(prevState => prevState === 0 ? searchResults.length - 1 : prevState as number - 1);
         }
         if (e.key === "Enter") {
-            onSearchResultClicked(searchResults[highlightedIndex as number]);
+            onSearchResultClicked(searchResults[highlightedIndex as number] || searchTerm);
         }
         if (e.key === "Escape") {
             setShowSearchList(false);
