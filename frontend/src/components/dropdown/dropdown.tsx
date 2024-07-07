@@ -113,7 +113,6 @@ function Dropdown(
                     }
                     {
                         categories.map((category) =>
-                            category !== currentCategory &&
                             <div
                                 key={category}
                                 className="option"
@@ -159,13 +158,21 @@ function Dropdown(
             {
                 showRemCatPopup &&
                 <div className="popup-category">
-                    <div className="add-category">
+                    <div className={store.imagesArray.length === 0 ? "add-category" : "add-category-column"}>
                         <span className="rem-warning-message">Would You Like To Remove: {categoryToRemove}? </span>
+                        {
+                            store.imagesArray.length !== 0 &&
+                            <span className="rem-warning-message">The current Category is still in use. Please remove the images under this Category
+                                before you remove the Category</span>
+                        }
                         <div className="btn-section">
-                            <div className="rem-btn btn" onClick={removeCategory}>
-                                {loading ? <div className="loader"></div> : 'Remove'}
-                            </div>
-                            <button className="btn" onClick={() => setShowRemCatPopup(false)}>Cansel</button>
+                            {
+                                store.imagesArray.length === 0 &&
+                                <div className="rem-btn btn" onClick={removeCategory}>
+                                    {loading ? <div className="loader"></div> : 'Remove'}
+                                </div>
+                            }
+                            <button className="btn" onClick={() => setShowRemCatPopup(false)}>Cancel</button>
                         </div>
                     </div>
                 </div>
