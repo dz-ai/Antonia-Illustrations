@@ -68,18 +68,16 @@
     border: 1px solid orange;
     height: 30px;
     color: black;
-    padding: 0 5px;
+    padding-left: 5px;
   }
 
   .option-rem-button {
-    background: #1b1bb7;
+    @include container(unset, center, center);
     min-height: unset;
-    padding: 0 3px;
-    height: unset;
+    height: 100%;
     width: unset;
     box-shadow: unset;
-    color: white;
-    border-radius: 2px;
+    color: #a49797;
   }
 
   .current-category {
@@ -153,15 +151,16 @@
       @include container(unset, center, center);
       width: unset;
       height: 35px;
-      background: #1b1bb7;
       border-radius: 4px;
       color: white;
       cursor: pointer;
     }
 
     .btn {
+      background: #1b1bb7;
       margin: 0 3px;
       padding: 5px;
+      width: 80px;
     }
 
     @media (max-width: 800px) {
@@ -178,11 +177,27 @@
     .rem-btn {
       min-width: 69px;
       min-height: 35px;
+      background: #9f4545;
+    }
 
-      .loader {
-        height: 16px;
-        width: 16px;
-      }
+    .rename-btn {
+      background: #6c6ccb;
+    }
+
+    .loader {
+      height: 16px;
+      width: 16px;
+    }
+  }
+
+  .add-category-column {
+    @extend .add-category;
+    flex-direction: column;
+    max-width: 90%;
+
+    .rem-warning-message {
+      margin: 5px 0;
+      text-align: center;
     }
   }
 
@@ -193,6 +208,10 @@
 
       .btn-section {
         margin-top: 15px;
+      }
+
+      .btn, input {
+        margin-bottom: 5px;
       }
     }
   }

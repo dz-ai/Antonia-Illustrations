@@ -5,7 +5,10 @@ import {PopupContext} from "../popupMessage/popupMessage";
 import {useNavigate} from "react-router-dom";
 import {useOutClick} from "../../Hooks/useOutClick";
 import {Tooltip} from 'react-tooltip';
-import {SvgArrowIconWrapper} from "./svgArrowIconWrapper";
+import {SvgArrowIconWrapper} from "./svgArrowIconWrapper/svgArrowIconWrapper";
+import {BiDotsVerticalRounded} from "react-icons/all";
+import EditCategoryPopup from "./editCategoryPopup/editCategoryPopup";
+import {ImagesGroupsNamesEnum} from "../popupEditImage/popupEditImage";
 
 interface IDropdown {
     categories: string[];
@@ -19,12 +22,13 @@ function Dropdown(
     const popupContext = useContext(PopupContext);
     const navigate = useNavigate();
 
+    const [renderCategories, setRenderCategories] = useState<string[]>(categories);
     const [currentCategory, setCurrentCategory] = useState<string>(initCategory);
     const [openDropdown, setOpenDropdown] = useState<boolean | string>(false);
     const [showAddCatPopup, setShowAddCatPopup] = useState<boolean>(false);
-    const [showRemCatPopup, setShowRemCatPopup] = useState<boolean>(false);
+    const [showEditCatPopup, setShowEditCatPopup] = useState<boolean>(false);
     const [catToAdd, setCatToAdd] = useState<string>('');
-    const [categoryToRemove, setCategoryToRemove] = useState<string>('');
+    const [categoryToEdit, setCategoryToEdit] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const [hideTooltip, setHideTooltip] = useState<boolean>(true);
 
@@ -64,13 +68,38 @@ function Dropdown(
 
     const removeCategory = (): void => {
         setLoading(true);
-        store.removeCategory(categoryToRemove)
+        store.removeCategory(categoryToEdit)
             .then(message => {
                 setLoading(false);
                 popupContext.showPopup(message);
                 store.setCategory(allCategories);
                 store.filterCategory(allCategories);
-                setShowRemCatPopup(false);
+                setShowEditCatPopup(false);
+            })
+            .catch(err => {
+                setLoading(false);
+                setShowEditCatPopup(false);
+                popupContext.showPopup(err);
+            });
+    }
+
+    const renameCategory = (newCategoryName: string): void => {
+        setLoading(true);
+
+        store.renameCategory(categoryToEdit, newCategoryName.trim(), ImagesGroupsNamesEnum.portfolioImagesGroupName)
+            .then(results => {
+                const newCategory: string = results;
+                setLoading(false);
+                setCurrentCategory(newCategory);
+                store.filterCategory(newCategory);
+                setShowEditCatPopup(false);
+                popupContext.showPopup(`${categoryToEdit} changed to ${newCategory}`);
+            })
+            .catch(err => {
+                console.log(err);
+                setLoading(false);
+                setShowEditCatPopup(false);
+                popupContext.showPopup('Error please check console for more details');
             });
     }
 
@@ -84,6 +113,10 @@ function Dropdown(
             setHideTooltip(true);
         }
     }
+
+    useEffect(() => {
+        setRenderCategories(categories);
+    }, [categories]);
 
     useEffect(() => {
         setCurrentCategory(initCategory);
@@ -112,8 +145,7 @@ function Dropdown(
                         </div>
                     }
                     {
-                        categories.map((category) =>
-                            category !== currentCategory &&
+                        renderCategories.map((category) =>
                             <div
                                 key={category}
                                 className="option"
@@ -130,9 +162,9 @@ function Dropdown(
                                     store.isUserLog && category !== allCategories &&
                                     <div className="option-rem-button"
                                          onClick={() => {
-                                             setCategoryToRemove(category);
-                                             setShowRemCatPopup(true);
-                                         }}>X</div>
+                                             setCategoryToEdit(category);
+                                             setShowEditCatPopup(true);
+                                         }}><BiDotsVerticalRounded/></div>
                                 }
                             </div>)
                     }
@@ -148,7 +180,7 @@ function Dropdown(
                         </span>
                         <input onChange={(e) => setCatToAdd(e.target.value)} autoFocus={true}/>
                         <div className="btn-section">
-                            <div className="rem-btn btn" onClick={handleAddCat}>
+                            <div className="btn" onClick={handleAddCat}>
                                 {loading ? <div className="loader"></div> : 'Add'}
                             </div>
                             <div className="btn" onClick={() => setShowAddCatPopup(false)}>Cansel</div>
@@ -157,18 +189,14 @@ function Dropdown(
                 </div>
             }
             {
-                showRemCatPopup &&
-                <div className="popup-category">
-                    <div className="add-category">
-                        <span className="rem-warning-message">Would You Like To Remove: {categoryToRemove}? </span>
-                        <div className="btn-section">
-                            <div className="rem-btn btn" onClick={removeCategory}>
-                                {loading ? <div className="loader"></div> : 'Remove'}
-                            </div>
-                            <button className="btn" onClick={() => setShowRemCatPopup(false)}>Cansel</button>
-                        </div>
-                    </div>
-                </div>
+                showEditCatPopup &&
+                <EditCategoryPopup
+                    currentCategory={currentCategory}
+                    removeCategory={removeCategory}
+                    setShowEditCatPopup={setShowEditCatPopup}
+                    renameCategory={renameCategory}
+                    loading={loading}
+                />
             }
         </div>
 

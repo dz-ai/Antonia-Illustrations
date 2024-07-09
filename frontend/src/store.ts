@@ -74,6 +74,7 @@ class Store {
     triggerRerender(whatToRender: 'downSearchScroll' | 'reloadPortfolioImages'): void {
         if (whatToRender === 'reloadPortfolioImages') this.reloadPortfolioImages = !this.reloadPortfolioImages;
         if (whatToRender === 'downSearchScroll') this.triggerDownScrollOnSearch = !this.triggerDownScrollOnSearch;
+        console.log('running', this.reloadPortfolioImages);
     }
 
     async getImages(imagesGroupName: ImagesGroupsNamesEnum): Promise<boolean> {
@@ -139,18 +140,31 @@ class Store {
             },
             body: JSON.stringify({val: categoryToRemove})
         })
-            .then(res => res.json())
+            .then(res => res.ok ? res.json() : res.json().then(err => {
+                throw err
+            }))
             .then(results => {
-                if (typeof results === 'string') {
-                    return results;
-                } else {
-                    this.categories = results;
-                    return `${categoryToRemove} has removed`;
-                }
-            })
-            .catch(error => {
-                console.log(error);
-                return 'Error, check console for more info';
+                this.categories = results;
+                return `${categoryToRemove} has removed`;
+            });
+    }
+
+    async renameCategory(categoryToRename: string, newName: string, imageGroupName: ImagesGroupsNamesEnum): Promise<string> {
+        return fetch(`${this.url}/api/categories/renameCategory/${imageGroupName}`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                'auth': `Bearer ${localStorage.getItem('token')}`,
+            },
+            body: JSON.stringify({categoryToRename, newName})
+        })
+            .then(res => res.ok ? res.json() : res.json().then(err => {
+                throw err
+            }))
+            .then(results => {
+                this.categories = results.categoriesArr;
+                this.images = results.updatedImages;
+                return results.updatedCategory
             });
     }
 

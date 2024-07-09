@@ -7,7 +7,7 @@ const {
     setImageMetaData,
     deleteImage
 } = require("./controllers/uploadImageControllers");
-const {getCategories, addCategory, removeCategory} = require("./controllers/categoriesController");
+const {getCategories, addCategory, removeCategory, renameCategory} = require("./controllers/categoriesController");
 const {editAboutMe, getAboutMe, deleteAboutMeImage} = require("./controllers/aboutMeController");
 
 exports.userRouter = express.Router({mergeParams: true});
@@ -30,6 +30,7 @@ this.uploadRouter.delete('/deleteImage/:imagesGroupName', protect, deleteImage);
 this.categoryRouter.get('/getCategories', getCategories);
 this.categoryRouter.post('/addCategory', protect, addCategory);
 this.categoryRouter.post('/removeCategory', protect, removeCategory);
+this.categoryRouter.post('/renameCategory/:imagesGroupName', protect, renameCategory);
 
 // ---- AboutMe Routes ---- //
 this.aboutMeRouter.get('/getAboutMe', getAboutMe);

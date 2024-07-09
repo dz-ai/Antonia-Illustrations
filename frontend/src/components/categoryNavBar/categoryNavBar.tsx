@@ -10,6 +10,11 @@ export function CategoryNavBar({categories}: Props) {
     const ref = useRef<HTMLDivElement>(null);
 
     const [isOverFlow, setIsOverFlow] = useState<boolean>(false);
+    const [renderCategories, setRenderCategories] = useState<string[]>(categories);
+
+    useEffect(() => {
+        setRenderCategories(categories);
+    }, [categories]);
 
     // set isOverFlow to false or true according to screen size.
     useEffect(() => {
@@ -77,7 +82,7 @@ export function CategoryNavBar({categories}: Props) {
                 }}
             >
                 {
-                    categories.map((category, index) =>
+                    renderCategories.map((category, index) =>
                         <div key={index} onClick={() => handelNavBtnClick(category)}>{category}</div>
                     )
                 }
