@@ -190,17 +190,6 @@
     }
   }
 
-  .add-category-column {
-    @extend .add-category;
-    flex-direction: column;
-    max-width: 90%;
-
-    .rem-warning-message {
-      margin: 5px 0;
-      text-align: center;
-    }
-  }
-
   @media (max-width: 600px) {
     .add-category {
       flex-direction: column;
