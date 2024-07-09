@@ -7,7 +7,7 @@ export function PopupMessage({message}: { message: string }) {
         </div>
     );
 }
-
+// todo protect from not string type message
 const PopupContext: React.Context<any> = createContext(null);
 
 const PopupProvider = ({children}: { children: any }) => {
