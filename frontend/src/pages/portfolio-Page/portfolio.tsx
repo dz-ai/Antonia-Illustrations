@@ -41,6 +41,10 @@ function Portfolio() {
                 } else {
                     setLoadingImages('No Images To Show');
                 }
+            })
+            .catch(error => {
+                console.log(error);
+                setLoadingImages('Something went wrong 🤔');
             });
     }
 

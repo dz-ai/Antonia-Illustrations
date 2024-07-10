@@ -86,6 +86,14 @@ function Dropdown(
     const renameCategory = (newCategoryName: string): void => {
         setLoading(true);
 
+        // todo consider suggestion of merging the tow categories
+        const categoryExists = renderCategories.some(category => category.toLowerCase() === newCategoryName.toLowerCase());
+        if (categoryExists) {
+            popupContext.showPopup(`${newCategoryName} already exist`);
+            setLoading(false);
+            return;
+        }
+
         store.renameCategory(categoryToEdit, newCategoryName.trim(), ImagesGroupsNamesEnum.portfolioImagesGroupName)
             .then(results => {
                 const newCategory: string = results;
@@ -99,7 +107,7 @@ function Dropdown(
                 console.log(err);
                 setLoading(false);
                 setShowEditCatPopup(false);
-                popupContext.showPopup('Error please check console for more details');
+                popupContext.showPopup(err);
             });
     }
 

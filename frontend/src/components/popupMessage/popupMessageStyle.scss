@@ -7,6 +7,7 @@
   left: 20px;
   width: 400px;
   height: 50px;
+  padding: 5px 0;
   max-width: 80%;
   z-index: 19999999999999;
   background: #d2ffd2;
@@ -18,6 +19,10 @@
   text-align: center;
   opacity: 0;
   transition: opacity 0.7s ease-in-out;
+}
+
+.long-text {
+  height: 100px;
 }
 
 .popup-message.show {

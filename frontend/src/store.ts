@@ -81,7 +81,6 @@ class Store {
         return fetch(`${this.url}/api/uploadImage/getImages/${imagesGroupName}`)
             .then(res => res.json())
             .then(data => {
-                // todo What happen when for some reason there is no data?
                 this.images = data;
                 this.imagesArray = Array.from(Object.keys(data));
                 return Array.from(Object.keys(data)).length > 0;

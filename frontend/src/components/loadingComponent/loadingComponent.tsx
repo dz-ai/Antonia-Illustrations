@@ -9,7 +9,7 @@ export function LoadingComponent({loading}: { loading: boolean | string }) {
             :
             jsx = null;
     } else {
-        jsx = <p className="no-image-to-show">No Images to show</p>;
+        jsx = <p className="no-image-to-show">{loading}</p>;
     }
     return (
         <>

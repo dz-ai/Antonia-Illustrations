@@ -1,29 +1,38 @@
 import React, {useState, createContext} from "react";
+import {useMediaQuery} from "react-responsive";
 
 export function PopupMessage({message}: { message: string }) {
+    const mobileScreen = useMediaQuery({query: '(max-width: 520px)'})
+
+    let className: string = '';
+    if (message && !mobileScreen) className = 'popup-message show';
+    if (message && message.length > 25 && mobileScreen) className = 'popup-message show long-text';
+    if (!message) className = 'popup-message';
+
     return (
-        <div className={`popup-message ${message ? "show" : ""}`}>
+        <div className={className}>
             <p>{message}</p>
         </div>
     );
 }
-// todo protect from not string type message
+
 const PopupContext: React.Context<any> = createContext(null);
 
 const PopupProvider = ({children}: { children: any }) => {
     const [popupMessage, setPopupMessage] = useState('');
     const [displayPopup, setDisplayPopup] = useState<boolean>(false);
 
-    const showPopup = (message: string): void => {
+    const showPopup = (message: string | unknown): void => {
+        typeof message !== 'string' ? message = 'Some Error has been probably occur check console for details' : null;
         setDisplayPopup(true);
 
         let showMessageDuration: number = 5;
-        if (message.length > 40) {
+        if (typeof message === 'string' && message.length > 40) {
             showMessageDuration = 8;
         }
         // separate the component display and the actual message appearing with the animation effect
         setTimeout(() => {
-            setPopupMessage(message);
+            setPopupMessage(message as string);
         }, 100);
         // remove the message with the animation effect
         setTimeout(() => {
