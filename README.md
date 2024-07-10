@@ -1,4 +1,4 @@
-[Website Link](https://antonia-illustrations.onrender.com)  
+[Website Link](https://mysite.antoniaillustrations.online/)  
 # Antonia Illustrations Project
 
 ## Description
@@ -6,8 +6,7 @@ The site can be visited in two modes:
 1. **Visitor:** The content is available to view, but the user cannot edit it.
 2. **Admin:** The user can edit the content as desired.
 
-To enter the site as an Admin, use the registration link below:  
-[Registration Page](https://antonia-illustrations.onrender.com/register)
+To enter the site as an Admin, use the registration link [Registration Page](https://mysite.antoniaillustrations.online/register)
 - **Email:** antoniatest@gmail.com (Note: This is not a real email)
 - **Password:** luzi1978AIL
 
@@ -33,3 +32,6 @@ The server also serves static files to the browser.
 The application is deployed on Render.com.  
 Images are uploaded to ImageKit.io, while image categories and descriptions are saved on the Node.js server in a JSON file and backed up in the database.  
 An ID reference is saved to facilitate correlation between the server and the ImageKit.io service.  
+
+## Deployment  
+This application has been deployed on an AWS EC2 instance.
